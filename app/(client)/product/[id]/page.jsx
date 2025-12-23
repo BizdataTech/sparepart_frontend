@@ -5,7 +5,6 @@ import { Details } from "./Details";
 import { ImageGrid } from "./ImageGrid";
 import ProductList from "./ProductList";
 import { useProduct } from "./useProduct";
-import ProductCard from "@/components/client/Product/ProductCard";
 
 const Productpage = () => {
   const { product, products, genuineProduct, addProducttoCart } = useProduct();
