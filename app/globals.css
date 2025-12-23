@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+:root {
+  --primary: #0665c4;
+}
+
+* {
+  /* border: 1px solid green; */
+}
+
+html {
+  font-family: var(--font-inter);
+  font-size: 10px;
+}
+
+.bg--primary {
+  background-color: var(--primary);
+}
+
+.header {
+  @apply flex items-center gap-12 w-[85%] mx-auto py-[1.2rem];
+}
+
+.bg-pattern {
+  --s: 16px; /* control the size*/
+  --c1: #f2f2f2;
+  --c2: #d9d9d9;
+
+  --g: var(--c1) 3.125%, var(--c2) 0 9.375%, var(--c1) 0 15.625%,
+    var(--c2) 0 21.875%, var(--c1) 0 28.125%, #0000 0;
+  background: linear-gradient(
+        225deg,
+        #0000 3.125%,
+        var(--c2) 0 9.375%,
+        #0000 0 78.125%,
+        var(--c2) 0 84.375%,
+        #0000 0
+      )
+      0 calc(var(--s) / 2),
+    linear-gradient(45deg, var(--g)) 0 var(--s),
+    linear-gradient(45deg, var(--g)) calc(var(--s) / -2) calc(var(--s) / -2),
+    linear-gradient(225deg, var(--g)) var(--s) 0,
+    linear-gradient(225deg, var(--g)) calc(var(--s) / 2) var(--s),
+    repeating-linear-gradient(
+      -45deg,
+      var(--c1) -3.125% 3.125%,
+      var(--c2) 0 9.375%
+    );
+  background-size: calc(2 * var(--s)) calc(2 * var(--s));
+}
+
+.button {
+  @apply px-8 py-4 text-[1.5rem] font-medium rounded-[.3rem] transition;
+}
+
+.box--form {
+  @apply w-full max-w-[50rem] flex flex-col translate-y-[6rem] rounded-[1rem] py-8 px-12;
+}
+
+.input--form {
+  @apply w-full border border-neutral-400 py-4 px-4 text-[1.6rem] rounded-[.5rem];
+}
+.error--input {
+  @apply text-[1.55rem] text-red-800 mt-1 ml-2;
+}
+
+.text--body {
+  @apply text-[1.4rem];
+}
+
+.text--links {
+  @apply text-[1.4rem] py-2 px-2 font-medium;
+}
+
+/* MODALS */
+.modal {
+  @apply w-[50rem] bg-white p-8;
+}
+.modal--input {
+  @apply w-full text-[1.6rem] border border-neutral-400 outline-0 p-4;
+}
+.modal--button {
+  @apply text-[1.5rem] text-white bg-black font-medium py-4 w-full;
+}
+
+.shimmer {
+  @apply py-5 bg-gradient-to-r from-neutral-200 via-neutral-400 to-neutral-200 overflow-x-hidden;
+  background-size: 200% 100%;
+  animation: anime--shimmer 1s infinite;
+}
+
+@keyframes anime--shimmer {
+  0% {
+    background-position: -100%, 0;
+  }
+  100% {
+    background-position: 100%, 0;
+  }
+}
