@@ -1,10 +1,8 @@
-"use client";
-
 import { useState, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 
-const useCategories = () => {
+const useCategories = (action, category_id) => {
   const [categories, setCategories] = useState(null);
   const [error, setError] = useState(null);
   const [actualCategoryTitle, setActualCategoryTitle] = useState("");
@@ -18,9 +16,9 @@ const useCategories = () => {
 
   const router = useRouter();
   const BACKEND_API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-  const searchParams = useSearchParams();
-  const action = searchParams.get("action");
-  const category_id = searchParams.get("category_id");
+  // const searchParams = useSearchParams();
+  // const action = searchParams.get("action");
+  // const category_id = searchParams.get("category_id");
 
   // fetching matching category info for updation
   useEffect(() => {
