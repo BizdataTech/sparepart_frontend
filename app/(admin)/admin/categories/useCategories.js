@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 const useCategories = (action, category_id) => {
@@ -20,7 +20,6 @@ const useCategories = (action, category_id) => {
   // const action = searchParams.get("action");
   // const category_id = searchParams.get("category_id");
 
-  // fetching matching category info for updation
   useEffect(() => {
     const fetchCategory = async () => {
       const response = await fetch(
