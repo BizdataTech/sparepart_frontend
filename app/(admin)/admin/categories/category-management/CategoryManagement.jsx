@@ -1,6 +1,6 @@
 "use client";
 
-import { useSearchParams } from "next/navigation.js";
+import { useSearchParams } from "next/navigation";
 import useCategories from "../useCategories.js";
 
 const CategoryManagement = () => {

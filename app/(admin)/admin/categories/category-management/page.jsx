@@ -3,7 +3,7 @@ import CategoryManagement from "./CategoryManagement";
 
 const Page = () => {
   return (
-    <Suspense>
+    <Suspense fallback={null}>
       <CategoryManagement />
     </Suspense>
   );
