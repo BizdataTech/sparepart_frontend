@@ -7,7 +7,7 @@ import { toast } from "sonner";
 
 const Checkout = () => {
   const router = useRouter();
-  const { cart, clearCart } = useContext(CartContext);
+  let cart = null;
   let address = {
     firstName: "John",
     lastName: "Philip",
@@ -17,20 +17,14 @@ const Checkout = () => {
     phone: "919087887898",
   };
 
-  const handlePayment = async () => {
-    let result = await clearCart();
-    if (result) router.push("/summary");
-    else toast.error("Payment Failed : Something Went Wrong!");
-  };
-
   return (
-    <div className="w-[95%] mx-auto pt-[12rem] pb-4 gap-10 text-neutral-800">
+    <div className="w-[85%] mx-auto pt-[17rem] pb-4 gap-10 text-neutral-800">
       <div className="flex flex-col lg:flex-row gap-8">
         <div className="w-full lg:w-9/12 space-y-4">
           {/* Products */}
           <div className="items grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {cart &&
-              cart?.items.map((item) => (
+              [].map((item) => (
                 <div
                   key={item._id}
                   className="border border-neutral-300 p-6 rounded-[.5rem] bg-white flex gap-8"
@@ -121,10 +115,7 @@ const Checkout = () => {
               <p className="capitalize">total</p>
               <p className="font-medium">{cart?.cartTotal}</p>
             </div>
-            <button
-              onClick={handlePayment}
-              className="bg-black mt-16 text-white text-[1.7rem] font-medium py-[.85rem] rounded-[.3rem] cursor-pointer "
-            >
+            <button className="bg-black mt-16 text-white text-[1.7rem] font-medium py-[.85rem] rounded-[.3rem] cursor-pointer ">
               Confirm Payment
             </button>
           </div>
