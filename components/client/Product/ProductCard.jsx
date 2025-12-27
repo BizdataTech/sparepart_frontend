@@ -3,6 +3,7 @@
 import Link from "next/link";
 
 const ProductCard = ({ product }) => {
+  console.log("product page details:", product);
   return (
     <Link
       className="space-y-4 bg-white relative shadow-sm cursor-pointer"

@@ -5,6 +5,7 @@ import { UserContext } from "@/context/userContext";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { toast } from "sonner";
 
 export const ImageGrid = ({ config }) => {
   let { _id, images, stock, addProducttoCart } = config;
@@ -17,6 +18,7 @@ export const ImageGrid = ({ config }) => {
 
   let BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
   let [cartStatus, setCartStatus] = useState(false);
+  let [wishlistStatus, setWishlistStatus] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -24,8 +26,13 @@ export const ImageGrid = ({ config }) => {
   }, []);
 
   useEffect(() => {
-    if (user) getStatus();
-    else setCartStatus(false);
+    if (user) {
+      getStatus();
+      getWishlistStatus();
+    } else {
+      setCartStatus(false);
+      setWishlistStatus(false);
+    }
   }, [user]);
 
   const handleCartAccess = async (id) => {
@@ -49,6 +56,42 @@ export const ImageGrid = ({ config }) => {
     }
   };
 
+  let getWishlistStatus = async () => {
+    try {
+      let response = await fetch(
+        `${BACKEND_URL}/api/users/wishlist/product/${_id}`,
+        {
+          method: "GET",
+          credentials: "include",
+        }
+      );
+      let result = await response.json();
+      if (!response.ok) throw new Error(result.message);
+      setWishlistStatus(result.result);
+    } catch (error) {
+      console.log("error:", error.message);
+    }
+  };
+
+  const addToWishlist = async () => {
+    try {
+      let response = await fetch(`${BACKEND_URL}/api/users/wishlist`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ productId: _id }),
+      });
+      let result = await response.json();
+      if (response.status === 409) return toast.error(result.message);
+      if (!response.ok) throw new Error(result.message);
+      setWishlistStatus(true);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   const [zoomPosition, setZoomPosition] = useState({ x: "", y: "" });
   const [show, setShow] = useState(false);
   const handleMouseMovement = (e) => {
@@ -62,7 +105,7 @@ export const ImageGrid = ({ config }) => {
   if (!mounted || !DOMContainer) return null;
 
   return (
-    <div className="md:w-3/6 space-y-4">
+    <div className="md:w-3/6 space-y-8">
       <div className="h-[35rem] flex gap-4 self-start">
         <div className="flex flex-col gap-4 items-center justify-start">
           {images.map((image, index) => (
@@ -98,10 +141,23 @@ export const ImageGrid = ({ config }) => {
           )}
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-6">
-        <button className="button border border-neutral-900 text-neutral-900 bg-white cursor-pointer">
-          Add to Whishlist
-        </button>
+      <div className="grid grid-cols-2 gap-4">
+        {wishlistStatus ? (
+          <Link
+            href="/wishlist"
+            className="button bg-white border border-red-900 text-red-900 text-center"
+          >
+            View Wishlist
+          </Link>
+        ) : (
+          <button
+            className="button border border-neutral-900 text-neutral-900 bg-white cursor-pointer"
+            onClick={addToWishlist}
+          >
+            Add to Whishlist
+          </button>
+        )}
+
         {cartStatus ? (
           <Link
             className={`button bg-red-900 text-white text-center`}
