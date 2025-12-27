@@ -40,7 +40,7 @@ const Cart = () => {
             {cart?.items.map((item, index) => (
               <CartItem
                 item={item}
-                key={index}
+                key={item._id}
                 setCartTotal={setCartTotal}
                 getCart={getCart}
               />
