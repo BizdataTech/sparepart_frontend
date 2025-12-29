@@ -7,15 +7,13 @@ const useProfile = () => {
   let [boxStatus, setBoxStatus] = useState(false);
   let BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-  let { user } = useContext(UserContext);
-
   useEffect(() => {
     getUserData();
   }, []);
 
   let getUserData = async () => {
     try {
-      let response = await fetch(`${BACKEND_URL}/api/auth/user/${user}`, {
+      let response = await fetch(`${BACKEND_URL}/api/auth/user`, {
         method: "GET",
         credentials: "include",
       });

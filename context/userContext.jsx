@@ -61,7 +61,7 @@ const UserProvider = ({ children }) => {
         body: JSON.stringify(userData),
       });
       let data = await response.json();
-      if (response.status === 400) {
+      if (response.status === 409) {
         return { email_error: data.message };
       }
       if (!response.ok) throw new Error(data.message);

@@ -29,7 +29,7 @@ const ClientPage = () => {
       <div className="w-[85%] mx-auto space-y-4 my-[8rem]">
         <div className="text-[2rem] uppercase font-medium">Air Filters</div>
         {products.length > 0 && (
-          <div className="grid grid-cols-6 gap-8">
+          <div className="grid grid-cols-6 gap-5">
             {products.map((product) => (
               <ProductCard product={product} />
             ))}

@@ -123,10 +123,10 @@ const Profile = () => {
       {box.boxStatus && DOMContainer && (
         <div className="fixed inset-0 bg-black/30 flex justify-center items-center z-100">
           {mode === "username" && (
-            <UserNameModal close={box.setBoxStatus} refetch={refetch} />
+            <UserNameModal open={box.setBoxStatus} refetch={refetch} />
           )}
           {mode === "email" && (
-            <EmailModal close={box.setBoxStatus} refetch={refetch} />
+            <EmailModal open={box.setBoxStatus} refetch={refetch} />
           )}
           {mode === "address" && (
             <AddressModal
