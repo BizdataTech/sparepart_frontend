@@ -16,7 +16,7 @@ const Summary = ({ cartTotal }) => {
           <div>{`₹ ${Intl.NumberFormat("en-IN").format(cartTotal)}`}</div>
         </div>
         <button className="button w-full bg-black text-white mt-8 hover:opacity-65 transition-colors cursor-not-allowed">
-          Checkout
+          Complete Order
         </button>
       </div>
     </section>

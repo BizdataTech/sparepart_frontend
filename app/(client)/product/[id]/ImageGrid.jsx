@@ -22,7 +22,7 @@ export const ImageGrid = ({ config }) => {
 
   useEffect(() => {
     setMounted(true);
-    setDOMContainer(document.getElementById("sign-container"));
+    setDOMContainer(document.getElementById("modal-container"));
   }, []);
 
   useEffect(() => {

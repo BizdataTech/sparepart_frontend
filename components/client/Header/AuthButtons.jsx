@@ -14,7 +14,7 @@ const AuthButtons = () => {
 
   useEffect(() => {
     setMounted(true);
-    setDOMContainer(document.getElementById("sign-container"));
+    setDOMContainer(document.getElementById("modal-container"));
   }, []);
 
   if (!mounted || !DOMContainer) return null;

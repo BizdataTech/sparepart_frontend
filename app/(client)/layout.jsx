@@ -7,7 +7,7 @@ export default function ClientLayout({ children }) {
     <>
       <Toaster position="top-center" richColors="true" />
       <main className="h-screen bg-neutral-100 flex flex-col justify-between">
-        <div id="sign-container"></div>
+        <div id="modal-container"></div>
         <Header />
         {children}
         <Footer />

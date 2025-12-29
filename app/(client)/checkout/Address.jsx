@@ -1,46 +1,68 @@
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import AddressModal from "./AddressModal";
+import AddressCard from "./AddressCard";
 
 const Address = () => {
-  const [addresses, setAddresses] = useState([]);
-  const [defaultAddress, setDefaultAddress] = useState(null);
+  const [address, setAddress] = useState(null);
+  const [selectedAddressId, setSelectedAddressId] = useState(null);
+  const [modal, setModal] = useState(false);
 
   let BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
   useEffect(() => {
-    const getDefaultAddress = async () => {
-      try {
-        let response = await fetch(`${BACKEND_URL}/api/users/address`, {
-          method: "GET",
-          credentials: "include",
-        });
-        let result = await response.json();
-        if (!response.ok) throw new Error(result.message);
-        setAddresses(result.addresses);
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
     getDefaultAddress();
   }, []);
 
-  useEffect(() => {
-    setDefaultAddress(addresses.find((add) => add.default));
-  }, [addresses]);
+  const getDefaultAddress = async () => {
+    try {
+      let response = await fetch(
+        `${BACKEND_URL}/api/users/address?type=default`,
+        {
+          method: "GET",
+          credentials: "include",
+        }
+      );
+      let result = await response.json();
+      if (!response.ok) throw new Error(result.message);
+      setAddress(result?.address);
+      setSelectedAddressId(result?.address?._id || null);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <section className="space-y-4">
-      <div className="text-[1.6rem] font-medium uppercase">Deliver To:</div>
-      {defaultAddress === null ? (
+      <div className="flex justify-between items-center text-[1.6rem]">
+        <div className="font-medium uppercase">Deliver To:</div>
+        <div
+          className="underline text-red-800 cursor-pointer hover:text-red-950 transition-colors"
+          onClick={() => setModal(true)}
+        >
+          Change Address
+        </div>
+      </div>
+
+      {address === null ? (
         <div>Loading...</div>
-      ) : defaultAddress === undefined ? (
+      ) : address === undefined ? (
         <div></div>
       ) : (
-        <div className="border border-neutral-300 bg-white p-4 text-[1.6rem]">
-          <div className="font-medium">{`${defaultAddress.address}, ${defaultAddress.house_number}`}</div>
-          <div>{`${defaultAddress.street}, ${defaultAddress.city}, ${defaultAddress.district}`}</div>
-          <div>{`${defaultAddress.state}, ${defaultAddress.pincode}`}</div>
-          <div className="mt-4">{`Phone Number: ${defaultAddress.phone_number}`}</div>
-        </div>
+        <AddressCard address={address} />
       )}
+      {modal &&
+        createPortal(
+          <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-200">
+            <AddressModal
+              setModal={setModal}
+              addressId={selectedAddressId}
+              setAddressId={setSelectedAddressId}
+              setAddress={setAddress}
+            />
+          </div>,
+          document.getElementById("modal-container")
+        )}
     </section>
   );
 };
