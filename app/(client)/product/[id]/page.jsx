@@ -6,6 +6,7 @@ import { ImageGrid } from "./ImageGrid";
 import ProductList from "./ProductList";
 import { useProduct } from "./useProduct";
 import SmallDetails from "./SmallDetails";
+import { useState } from "react";
 
 const Productpage = () => {
   const { product, products, genuineProduct, addProducttoCart } = useProduct();
@@ -24,14 +25,35 @@ const Productpage = () => {
     },
     { oems: [], aftermarkets: [] }
   );
-  console.log("product types:", product_types);
+
+  let [heroImage, setHeroImage] = useState(imageConfig.images[0]);
+  let [zoomPosition, setZoomPosition] = useState({ x: "", y: "" });
+  let [show, setShow] = useState(false);
+  const handleMouseMovement = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+
+    setZoomPosition({ x, y });
+  };
 
   return product ? (
     <div className="w-[90%] md:w-[85%] mx-auto pt-[15rem] md:pt-[17rem] pb-12 space-y-16">
       <div className="flex flex-col md:flex-row gap-5">
         <SmallDetails config={productConfig} />
-        <ImageGrid config={imageConfig} />
-        <Details config={productConfig} />
+        <ImageGrid
+          config={imageConfig}
+          handleMouseMovement={handleMouseMovement}
+          setShow={setShow}
+          image={heroImage}
+          setImage={setHeroImage}
+        />
+        <Details
+          config={productConfig}
+          show={show}
+          zoomPosition={zoomPosition}
+          image={heroImage}
+        />
       </div>
       <div className="p-[3rem] bg-red-200/30 text-[1.6rem] grid grid-cols-1 md:grid-cols-3 gap-[6rem] md:gap-0">
         <div className="flex flex-col md:flex-row gap-4 items-center justify-center">

@@ -1,10 +1,10 @@
-export const Details = ({ config }) => {
+export const Details = ({ config, show, zoomPosition, image }) => {
   let { product } = config;
   let { sections } = product?.parent || [];
 
   return (
     <div className="md:w-3/6 space-y-6">
-      <section className="bg-white p-6 flex flex-col gap-4">
+      <section className="relative bg-white p-6 flex flex-col gap-4">
         <div className="flex items-start justify-between">
           <div className="space-y-8">
             <div className="hidden md:block">
@@ -46,6 +46,16 @@ export const Details = ({ config }) => {
           <div className="font-medium">Product Description</div>
           <p className="line-clamp-4">{product?.description}</p>
         </div>
+        {show && (
+          <div
+            className="absolute inset-0 h-[50rem] pointer-events-none shadow-2xl"
+            style={{
+              backgroundImage: `url(${image})`,
+              backgroundPosition: `${zoomPosition.x}% ${zoomPosition.y}%`,
+              backgroundSize: "150%",
+            }}
+          ></div>
+        )}
       </section>
 
       {sections && (

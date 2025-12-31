@@ -37,7 +37,7 @@ export const HeaderBottom = () => {
 
   return (
     <nav style={{ backgroundColor: "#121212", color: "white" }}>
-      <div className="w-[95%] md:w-[85%] text-[1.3rem] md:text-[1.6rem] flex mx-auto relative group overflow-x-auto">
+      <div className="w-[95%] md:w-[85%] text-[1.3rem] md:text-[1.6rem] flex mx-auto relative group ">
         {categories.map((cata, i) => (
           <>
             <div
@@ -48,10 +48,10 @@ export const HeaderBottom = () => {
               {cata.title}
             </div>
             {children && (
-              <div className="hidden group-hover:flex flex-col absolute left-0 w-full top-full h-[40rem] bg-[#121212] p-6">
+              <div className="group-hover:flex flex-col absolute left-0 w-full top-full h-[40rem] bg-[#121212] p-6">
                 {children.map((c) => (
                   <Link
-                    className="font-light py-2 cursor-pointer hover:underline"
+                    className="font-light py-2 cursor-pointer hover:underline block"
                     href={`/category/${c.slug}`}
                     onClick={() => setChildren(null)}
                   >

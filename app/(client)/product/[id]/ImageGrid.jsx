@@ -7,9 +7,14 @@ import { useContext, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { toast } from "sonner";
 
-export const ImageGrid = ({ config }) => {
+export const ImageGrid = ({
+  config,
+  handleMouseMovement,
+  setShow,
+  image,
+  setImage,
+}) => {
   let { _id, images, stock, addProducttoCart } = config;
-  let [heroImage, setHeroImage] = useState(images[0]);
 
   let { user } = useContext(UserContext);
   let [mounted, setMounted] = useState(false);
@@ -92,16 +97,6 @@ export const ImageGrid = ({ config }) => {
     }
   };
 
-  const [zoomPosition, setZoomPosition] = useState({ x: "", y: "" });
-  const [show, setShow] = useState(false);
-  const handleMouseMovement = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-
-    setZoomPosition({ x, y });
-  };
-
   if (!mounted || !DOMContainer) return null;
 
   return (
@@ -114,7 +109,7 @@ export const ImageGrid = ({ config }) => {
               alt={`product ${index}`}
               key={index}
               className="w-[6rem] h-[6rem] border-2 border-red-900 p-1 cursor-pointer"
-              onMouseEnter={() => setHeroImage(image)}
+              onMouseEnter={() => setImage(image)}
             />
           ))}
         </div>
@@ -125,20 +120,10 @@ export const ImageGrid = ({ config }) => {
           onMouseLeave={() => setShow(false)}
         >
           <img
-            src={heroImage}
+            src={image || images[0]}
             alt="product image"
             className="w-full h-full object-contain mx-auto bg-white"
           />
-          {show && (
-            <div
-              className="absolute inset-0 pointer-events-none"
-              style={{
-                backgroundImage: `url(${heroImage})`,
-                backgroundPosition: `${zoomPosition.x}% ${zoomPosition.y}%`,
-                backgroundSize: "200%",
-              }}
-            ></div>
-          )}
         </div>
       </div>
       <div className="grid grid-cols-2 gap-4">
