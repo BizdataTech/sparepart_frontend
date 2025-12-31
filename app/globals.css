@@ -18,7 +18,7 @@ html {
 }
 
 .header {
-  @apply flex items-center gap-12 w-[85%] mx-auto py-[1.2rem];
+  @apply flex items-center gap-12 w-[90%] md:w-[85%] mx-auto py-[1.2rem];
 }
 
 .bg-pattern {
@@ -50,7 +50,7 @@ html {
 }
 
 .button {
-  @apply px-8 py-4 text-[1.5rem] font-medium rounded-[.3rem] transition;
+  @apply px-4 md:px-8 py-2 md:py-4 text-[1.5rem] font-medium rounded-[.1rem] md:rounded-[.3rem] transition;
 }
 
 .box--form {

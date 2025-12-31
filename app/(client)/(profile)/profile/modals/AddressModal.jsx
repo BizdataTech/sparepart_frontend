@@ -70,12 +70,12 @@ const AddressModal = ({ close, refetch, addressId }) => {
     }
   };
   return (
-    <div className="modal !w-[80rem] space-y-8 relative">
+    <div className="bg-white p-8 w-[35rem] md:w-[80rem] h-[50rem] md:h-auto overflow-y-scroll space-y-2 md:space-y-8 relative">
       <div>
         <div className="text-[1.8rem] font-medium">
           {addressId ? "Update this address" : "Add new address"}
         </div>
-        <div className="flex justify-between items-end">
+        <div className="flex justify-between items-end hidden md:block">
           <div className="text-[1.6rem] w-[60%]">
             {addressId
               ? "Make changes on the following fields for performing update."
@@ -89,7 +89,7 @@ const AddressModal = ({ close, refetch, addressId }) => {
       </div>
 
       <form
-        className="flex flex-col gap-8 mt-[4rem]"
+        className="flex flex-col gap-8 mt-[2rem] md:mt-[4rem]"
         onSubmit={handleSubmit(submitAddress)}
       >
         <div className="space-y-2">
@@ -100,7 +100,7 @@ const AddressModal = ({ close, refetch, addressId }) => {
             {...register("address", { required: true })}
           />
         </div>
-        <div className="flex gap-4">
+        <div className="flex flex-col md:flex-row gap-4">
           <div className="w-[50%] space-y-2">
             <FormLabel title="House Number" error={errors?.house_number} />
             <input
@@ -126,7 +126,7 @@ const AddressModal = ({ close, refetch, addressId }) => {
             />
           </div>
         </div>
-        <div className="flex gap-4">
+        <div className="flex flex-col md:flex-row gap-4">
           <div className="w-full space-y-2">
             <FormLabel title="District" error={errors?.district} />
             <input

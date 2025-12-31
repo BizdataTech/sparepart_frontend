@@ -12,7 +12,7 @@ const CategoryProductList = () => {
   let { products, filters } = useCategoryProducts(category, customerFilters);
 
   return (
-    <main className="w-[85%] mx-auto mt-[17rem] mb-[4rem] flex gap-8">
+    <main className="w-[90%] md:w-[85%] mx-auto pt-[15rem] md:pt-[17rem] pb-[2rem] md:pb-[4rem] flex gap-4 md:gap-8">
       <Sidebar setter={setCustomerFilters} filters={filters} />
       <ProductList products={products} />
     </main>

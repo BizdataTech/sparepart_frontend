@@ -37,12 +37,12 @@ export const HeaderBottom = () => {
 
   return (
     <nav style={{ backgroundColor: "#121212", color: "white" }}>
-      <div className="w-[85%] flex mx-auto relative group">
+      <div className="w-[95%] md:w-[85%] text-[1.3rem] md:text-[1.6rem] flex mx-auto relative group overflow-x-auto">
         {categories.map((cata, i) => (
           <>
             <div
               key={i}
-              className="text-[1.6rem] py-4 px-6 cursor-pointer hover:bg-neutral-700 transition-colors"
+              className=" py-3 md:py-4 px-4 md:px-6 cursor-pointer hover:bg-neutral-700 transition-colors leading-[1.6rem] md:leading-normal"
               onMouseOver={() => getChildren(cata._id)}
             >
               {cata.title}
@@ -51,7 +51,7 @@ export const HeaderBottom = () => {
               <div className="hidden group-hover:flex flex-col absolute left-0 w-full top-full h-[40rem] bg-[#121212] p-6">
                 {children.map((c) => (
                   <Link
-                    className="text-[1.6rem] font-light py-2 cursor-pointer hover:underline"
+                    className="font-light py-2 cursor-pointer hover:underline"
                     href={`/category/${c.slug}`}
                     onClick={() => setChildren(null)}
                   >

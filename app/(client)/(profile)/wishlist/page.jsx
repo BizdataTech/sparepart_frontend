@@ -56,14 +56,14 @@ const Wishlist = () => {
               <Link
                 href={`/product/${p._id}`}
                 key={i}
-                className="text-[1.6rem] border border-neutral-300 flex justify-between items-start p-8"
+                className="text-[1.4rem] md:text-[1.6rem] border border-neutral-300 flex justify-between items-start p-8"
               >
                 <div className="flex gap-8">
                   <div>
                     <img
                       src={p.images[0]}
                       alt=""
-                      className="w-[15rem] h-[10rem] object-cover"
+                      className="w-[7rem] md:w-[15rem] h-[7rem] md:h-[10rem] object-cover"
                     />
                   </div>
                   <div>

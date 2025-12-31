@@ -7,7 +7,7 @@ const ProductList = ({ products }) => {
   return (
     <section className="w-full bg-white p-4">
       {products.length > 0 ? (
-        <div className="grid grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           {products.map((product) => (
             <Link
               className="space-y-4 p-8 border border-neutral-300 hover:scale-102 transition-transform cursor-pointer"
@@ -17,13 +17,13 @@ const ProductList = ({ products }) => {
                 <img
                   src={product.images[0]}
                   alt=""
-                  className="w-full h-[20rem] object-contain p-8"
+                  className="w-full h-[13rem] md:h-[20rem] object-contain p-2 md:p-8"
                 />
               </div>
-              <div className="text-[1.8rem] text-center">
+              <div className="text-[1.4rem] md:text-[1.8rem] text-center">
                 <div>{product.product_title}</div>
                 <div>{product.brand.brand_name}</div>
-                <div className="mt-6 font-medium">{`₹ ${product.price}`}</div>
+                <div className="mt-4 md:mt-6 font-medium">{`₹ ${product.price}`}</div>
               </div>
             </Link>
           ))}

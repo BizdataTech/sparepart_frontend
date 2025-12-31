@@ -1,5 +1,5 @@
 export const Details = ({ config }) => {
-  let { product, addProducttoCart } = config;
+  let { product } = config;
   let { sections } = product?.parent || [];
 
   return (
@@ -7,7 +7,7 @@ export const Details = ({ config }) => {
       <section className="bg-white p-6 flex flex-col gap-4">
         <div className="flex items-start justify-between">
           <div className="space-y-8">
-            <div className="">
+            <div className="hidden md:block">
               <h1 className="text-[2rem] font-medium leading-[3rem] uppercase">
                 {product?.product_title}
               </h1>
@@ -30,7 +30,7 @@ export const Details = ({ config }) => {
           </div>
         </div>
 
-        <div>
+        <div className="hidden md:block">
           <img
             src={product.brand.image}
             alt={product.brand.brand_name}
@@ -38,7 +38,7 @@ export const Details = ({ config }) => {
           />
         </div>
 
-        <div className="flex gap-6">
+        <div className="flex gap-6 hidden md:block">
           <p className="text-[3.5rem] font-semibold">₹{product.price}</p>
         </div>
 

@@ -1,27 +1,27 @@
 "use client";
 
 import Link from "next/link";
-import { useContext } from "react";
-import { CartContext } from "@/context/cartContext";
-import { UserContext } from "@/context/userContext";
-import AuthButtons from "./AuthButtons";
+import { useState } from "react";
 import useDebounce from "./useDebounce.js";
+import { List } from "phosphor-react";
+import SlideNavigation from "./SlideNavigation";
+import NavLinks from "./NavLinks";
 
 const HeaderMiddle = () => {
-  const { items } = useContext(CartContext);
-  const { user } = useContext(UserContext);
   const { query, setQuery, results, box, setBox, load } = useDebounce();
+  const [slide, setSlide] = useState(false);
+
   return (
     <div className="border border-neutral-300">
       <div className="header w-full flex justify-between">
         <div className="left flex items-center gap-8">
           <Link href={`/`}>
-            <div className="leading-[2.4rem] uppercase text-[2.5rem]">
+            <div className=" uppercase text-[1.8rem] md:text-[2.5rem] leading-[1.8rem] md:leading-[2.4rem]">
               <span className="text-[#b00015] font-semibold">prototype</span>{" "}
               <br /> <span className="text-black font-medium">site</span>
             </div>
           </Link>
-          <div className="flex items-center space-x-3">
+          <div className="hidden md:flex items-center space-x-3">
             <form className="relative">
               <input
                 type="search"
@@ -56,29 +56,18 @@ const HeaderMiddle = () => {
           </div>
         </div>
 
-        <nav>
-          <ul className="options flex items-center gap-[2.8rem] text-[1.6rem] font-medium text-neutral-800">
-            <div className="relative">
-              <Link href={`/cart`} className="capitalize cursor-pointer">
-                cart
-              </Link>
-              <span className="absolute top-0 right-[-1.5rem] text-[.9rem] py-[.1rem] px-[.5rem] bg-red-600 text-white rounded-full">
-                {items.length}
-              </span>
-            </div>
+        <NavLinks />
+        <div className="md:hidden" onClick={() => setSlide(true)}>
+          <List className="w-[3rem] h-[3rem] text-black" weight="fill" />
+        </div>
+      </div>
 
-            <Link href={`/wishlist`} className="capitalize cursor-pointer">
-              wishlist
-            </Link>
-            {user && (
-              <Link href={`/profile`} className="capitalize cursor-pointer">
-                profile
-              </Link>
-            )}
-
-            <AuthButtons />
-          </ul>
-        </nav>
+      <div
+        className={`fixed inset-0 z-200 bg-white  transition-transform ${
+          slide ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <SlideNavigation open={setSlide} />
       </div>
     </div>
   );

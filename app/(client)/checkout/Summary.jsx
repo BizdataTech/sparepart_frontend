@@ -1,6 +1,6 @@
 const Summary = ({ cartTotal }) => {
   return (
-    <section className="w-4/12 space-y-4">
+    <section className="md:w-4/12 space-y-4">
       <div className="text-[1.6rem] uppercase font-medium">Order Summary</div>
       <div className="text-[1.6rem] bg-white border border-neutral-400 p-4">
         <div className="flex justify-between py-4">

@@ -33,10 +33,10 @@ const Profile = () => {
   if (!userData) return <div>Loading Data...</div>;
   return (
     <section className="space-y-4">
-      <div className="space-y-8">
+      <div className="space-y-4 md:space-y-8">
         <h1 className="text-[2rem] uppercase font-medium">User Profile</h1>
         <div className="space-y-8">
-          <div className="grid grid-cols-2 text-[1.6rem] gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 text-[1.6rem] gap-8">
             <div className="space-y-2">
               <div className="font-medium">User Name</div>
               <div className="p-4 bg-red-50 flex justify-between items-center">

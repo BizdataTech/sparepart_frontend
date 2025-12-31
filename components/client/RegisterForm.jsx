@@ -71,8 +71,10 @@ const RegisterForm = ({ setBox }) => {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-center items-center shadow-xl z-200">
-      <div className="bg-white w-[55rem] space-y-[3rem] px-10 py-12 relative">
-        <div className="text-[3rem] font-bold uppercase">Sign in / Sign up</div>
+      <div className="bg-white w-[35rem] md:w-[55rem] space-y-[2.5rem] md:space-y-[3rem] px-8 md:px-10 py-10 md:py-12 relative">
+        <div className="text-[2.4rem] md:text-[3rem] font-bold uppercase">
+          Sign in / Sign up
+        </div>
         <form
           className="space-y-6"
           onSubmit={handleSubmit(submitForm)}
@@ -148,7 +150,7 @@ const RegisterForm = ({ setBox }) => {
               {loading ? (
                 <div className="flex items-center gap-2">
                   Submitting{" "}
-                  <Spinner className="animate-spin w-[1.5rem] h-[1.5rem]" />
+                  <Spinner className="animate-spin w-[1.8rem] h-[1.8rem]" />
                 </div>
               ) : isRegister ? (
                 "Create Account"

@@ -73,16 +73,16 @@ const CartItem = ({ item, setCartTotal, getCart }) => {
   };
 
   return (
-    <div className="border border-neutral-300 p-8 bg-white flex justify-between gap-[2rem]">
-      <div className="flex justify-start gap-8">
+    <div className="border border-neutral-300 p-4 md:p-8 bg-white flex flex-col md:flex-row justify-between gap-[2rem]">
+      <div className="flex justify-between md:justify-start gap-8">
         <div className="">
           <img
             src={item?.productId?.images[0]}
             alt="product image"
-            className="w-[10rem] h-[10rem] object-cover"
+            className="w-[8rem] md:w-[10rem] h-[8rem] md:h-[10rem] object-cover"
           />
         </div>
-        <div className="text-[1.6rem]">
+        <div className="text-[1.4rem] md:text-[1.6rem] text-end md:text-start space-y-2 md:space-y-0">
           <div className="font-medium uppercase">
             {item?.productId?.product_title}
           </div>
@@ -93,10 +93,10 @@ const CartItem = ({ item, setCartTotal, getCart }) => {
         </div>
       </div>
       <div className="flex flex-col justify-between">
-        <div className="self-end" onClick={removeItem}>
+        <div className="self-end hidden md:block" onClick={removeItem}>
           <X className="w-[1.8rem] h-[1.8rem] text-neutral-400 hover:text-red-600 transition-colors cursor-pointer" />
         </div>
-        <div className="flex gap-[4rem]">
+        <div className="flex justify-between md:justify-normal gap-[4rem]">
           <div className="flex items-center gap-6">
             <MinusCircle
               className="w-[2.5rem] h-[2.5rem] cursor-pointer"

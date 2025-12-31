@@ -8,7 +8,7 @@ const ProfileSidebar = () => {
   const pathname = usePathname();
   console.log("pathname:", pathname);
   return (
-    <aside className="w-[30rem] h-[50rem] bg-white border border-neutral-200 p-4 flex flex-col space-y-2">
+    <aside className="sticky  top-[14rem] md:static md:w-[30rem] md:h-[50rem] bg-white border border-neutral-200 p-4 flex flex-row md:flex-col space-y-2">
       <Link
         href="/profile"
         className={`px-4 py-2 text-[1.6rem] hover:bg-neutral-200/50 transition-colors flex items-center gap-4 ${

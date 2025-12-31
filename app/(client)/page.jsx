@@ -24,12 +24,14 @@ const ClientPage = () => {
     getProducts();
   }, []);
   return (
-    <main className="pt-[16rem]">
+    <main className="pt-[14rem] md:pt-[16rem]">
       <Banner />
-      <div className="w-[85%] mx-auto space-y-4 my-[8rem]">
-        <div className="text-[2rem] uppercase font-medium">Air Filters</div>
+      <div className="w-[90%] md:w-[85%] mx-auto space-y-4 my-[4rem] md:my-[8rem]">
+        <div className="text-[1.6rem] md:text-[2rem] uppercase font-medium">
+          Air Filters
+        </div>
         {products.length > 0 && (
-          <div className="grid grid-cols-6 gap-5">
+          <div className="grid grid-cols-2 md:grid-cols-6 gap-5">
             {products.map((product) => (
               <ProductCard product={product} />
             ))}
