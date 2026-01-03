@@ -3,9 +3,8 @@ import { createPortal } from "react-dom";
 import AddressModal from "./AddressModal";
 import AddressCard from "./AddressCard";
 
-const Address = () => {
+const Address = ({ selectedId, setId }) => {
   const [address, setAddress] = useState(null);
-  const [selectedAddressId, setSelectedAddressId] = useState(null);
   const [modal, setModal] = useState(false);
 
   let BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
@@ -25,8 +24,8 @@ const Address = () => {
       );
       let result = await response.json();
       if (!response.ok) throw new Error(result.message);
-      setAddress(result?.address);
-      setSelectedAddressId(result?.address?._id || null);
+      setAddress(result?.address || null);
+      setId(result?.address?._id || null);
     } catch (error) {
       console.log(error.message);
     }
@@ -56,8 +55,8 @@ const Address = () => {
           <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-200">
             <AddressModal
               setModal={setModal}
-              addressId={selectedAddressId}
-              setAddressId={setSelectedAddressId}
+              addressId={selectedId}
+              setAddressId={setId}
               setAddress={setAddress}
             />
           </div>,

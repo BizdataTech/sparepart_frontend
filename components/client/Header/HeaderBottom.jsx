@@ -37,13 +37,16 @@ export const HeaderBottom = () => {
 
   return (
     <nav style={{ backgroundColor: "#121212", color: "white" }}>
-      <div className="w-[95%] md:w-[85%] text-[1.3rem] md:text-[1.6rem] flex mx-auto relative group ">
+      <div
+        className="w-[95%] md:w-[85%] text-[1.3rem] md:text-[1.6rem] flex mx-auto relative group"
+        onMouseLeave={() => setChildren(null)}
+      >
         {categories.map((cata, i) => (
           <>
             <div
               key={i}
               className=" py-3 md:py-4 px-4 md:px-6 cursor-pointer hover:bg-neutral-700 transition-colors leading-[1.6rem] md:leading-normal"
-              onMouseOver={() => getChildren(cata._id)}
+              onMouseEnter={() => getChildren(cata._id)}
             >
               {cata.title}
             </div>

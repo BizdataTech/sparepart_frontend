@@ -26,7 +26,7 @@ const Cart = () => {
   return (
     <section className="w-[90%] md:w-[85%] mx-auto pb-4">
       {!cart || !cart?.items.length ? (
-        <div className="bg-neutral-200 p-8 ">
+        <div className="bg-neutral-200 mt-[10rem] p-8 ">
           <div className="text-[2.2rem] font-medium">
             Oops, Your cart is empty!
           </div>

@@ -1,24 +1,12 @@
-"use client";
+import AppProvider from "./context/AppProvider";
+import AdminLayoutContext from "./admin/AdminLayoutContext";
 
-import Sidebar from "@/components/admin/Sidebar";
-import AdminSectionTitle from "@/components/admin/AdminSectionTitle";
-import AdminBreadCrumbs from "@/components/admin/AdminBreadCrumbs";
-import useRoute from "./admin/useRoute";
-import "./admin.css";
-
-const adminLayout = ({ children }) => {
-  const { page_title, icon_class, breadcrumbs, routes_length } = useRoute();
+const Layout = ({ children }) => {
   return (
-    <main className="relative flex min-h-screen bg-[#f2f2f2]">
-      <Sidebar />
-      <div className="ml-[28rem] mt-8 flex-1 mr-10 a-section--container">
-        <AdminSectionTitle title={page_title} icon={icon_class} />
-        <AdminBreadCrumbs data={breadcrumbs} length={routes_length} />
-        {children}
-        <div id="reference-modal"></div>
-      </div>
-    </main>
+    <AppProvider>
+      <AdminLayoutContext>{children}</AdminLayoutContext>
+    </AppProvider>
   );
 };
 
-export default adminLayout;
+export default Layout;
