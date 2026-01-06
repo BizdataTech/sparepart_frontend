@@ -123,6 +123,25 @@ html {
   animation: anime--shimmer 1s infinite;
 }
 
+.loading--container {
+  @apply relative bg-neutral-300 overflow-x-hidden rounded-[.5rem];
+}
+.loading--mask {
+  @apply absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent;
+}
+.loading--animation {
+  animation: loading__animation 2s infinite;
+}
+
+@keyframes loading__animation {
+  0% {
+    transform: translateX(-30%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
 @keyframes anime--shimmer {
   0% {
     background-position: -100%, 0;

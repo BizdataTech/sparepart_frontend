@@ -15,7 +15,7 @@ const Summary = ({ cartTotal, addressId, payment }) => {
     if (!payment)
       return toast.error("Checkout Failed : Payment method is not selected.");
     try {
-      let response = await fetch(`${BACKEND_URL}/api/order`, {
+      let response = await fetch(`${BACKEND_URL}/api/orders`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -29,7 +29,7 @@ const Summary = ({ cartTotal, addressId, payment }) => {
       let result = await response.json();
       if (!response.ok) throw new Error(result.message);
       console.log(result.message);
-      router.replace("/order-summary");
+      router.replace(`/order-summary?orderId=${result.orderId}`);
       getCart();
     } catch (error) {
       console.log(error.message);
