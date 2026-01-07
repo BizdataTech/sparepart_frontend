@@ -6,6 +6,7 @@ import { useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import CartItem from "./CartItem";
 import { useRouter } from "next/navigation";
+import ButtonLoading from "@/components/client/ButtonLoading";
 
 const Cart = () => {
   const { cart, getCart } = useContext(CartContext);
@@ -13,6 +14,7 @@ const Cart = () => {
   const router = useRouter();
 
   let [cartTotal, setCartTotal] = useState(0);
+  let [redirectLoading, setRedirectLoading] = useState(false);
 
   useEffect(() => {
     if (user === false) router.push("/");
@@ -37,7 +39,7 @@ const Cart = () => {
       ) : (
         <div className="flex flex-col md:flex-row gap-4 pt-[17rem]">
           <div className="md:w-4/6 flex flex-col gap-4">
-            {cart?.items.map((item, index) => (
+            {cart?.items.map((item) => (
               <CartItem
                 item={item}
                 key={item._id}
@@ -73,10 +75,18 @@ const Cart = () => {
             </div>
             {cart?.items.length > 0 && (
               <Link
-                className="button bg-black text-white text-center"
+                className={`button bg-black text-white text-center ${
+                  redirectLoading &&
+                  "cursor-not-allowed opacity-70 pointer-events-none"
+                }`}
                 href="/checkout"
+                onClick={() => setRedirectLoading(true)}
               >
-                Checkout
+                {redirectLoading ? (
+                  <ButtonLoading text="Directing to Checkout" />
+                ) : (
+                  "Checkout"
+                )}
               </Link>
             )}
           </div>

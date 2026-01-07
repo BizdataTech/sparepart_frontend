@@ -1,5 +1,6 @@
 "use client";
 
+import ButtonLoading from "@/components/client/ButtonLoading";
 import RegisterForm from "@/components/client/RegisterForm";
 import { UserContext } from "@/context/userContext";
 import Link from "next/link";
@@ -25,6 +26,9 @@ export const ImageGrid = ({
   let [cartStatus, setCartStatus] = useState(false);
   let [wishlistStatus, setWishlistStatus] = useState(false);
 
+  let [cartLoading, setCartLoading] = useState(false);
+  let [viewLoading, setViewLoading] = useState(false);
+
   useEffect(() => {
     setMounted(true);
     setDOMContainer(document.getElementById("modal-container"));
@@ -42,7 +46,9 @@ export const ImageGrid = ({
 
   const handleCartAccess = async (id) => {
     if (!user) return setBox(true);
+    setCartLoading(true);
     let _ = await addProducttoCart(id);
+    setCartLoading(false);
     getStatus();
   };
 
@@ -145,20 +151,33 @@ export const ImageGrid = ({
 
         {cartStatus ? (
           <Link
-            className={`button bg-red-900 text-white text-center`}
+            className={`button bg-red-900 text-white text-center ${
+              viewLoading && "cursor-not-allowed opacity-70 pointer-events-none"
+            }`}
+            onClick={() => setViewLoading(true)}
             href="/cart"
           >
-            View Cart
+            {viewLoading ? (
+              <ButtonLoading text="Directing to Cart" />
+            ) : (
+              "View Cart"
+            )}
           </Link>
         ) : (
           <button
             className={`button bg-red-900 text-white text-center ${
-              stock <= 0 ? "cursor-not-allowed opacity-40" : "cursor-pointer"
+              stock <= 0 || cartLoading
+                ? "cursor-not-allowed opacity-40"
+                : "cursor-pointer"
             }  `}
             onClick={() => handleCartAccess(_id)}
-            disabled={stock <= 0}
+            disabled={stock <= 0 || cartLoading}
           >
-            Add to Cart
+            {cartLoading ? (
+              <ButtonLoading text={"Adding to Cart"} />
+            ) : (
+              "Add to Cart"
+            )}
           </button>
         )}
       </div>

@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import AddressModal from "./AddressModal";
+import ProfileModal from "../(profile)/profile/modals/AddressModal";
 import AddressCard from "./AddressCard";
 
 const Address = ({ selectedId, setId }) => {
   const [address, setAddress] = useState(null);
   const [modal, setModal] = useState(false);
+  const [newModal, setNewModal] = useState(false);
 
   let BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -24,7 +26,8 @@ const Address = ({ selectedId, setId }) => {
       );
       let result = await response.json();
       if (!response.ok) throw new Error(result.message);
-      setAddress(result?.address || null);
+      console.log("default address:", result.address);
+      setAddress(result?.address || undefined);
       setId(result?.address?._id || null);
     } catch (error) {
       console.log(error.message);
@@ -35,18 +38,34 @@ const Address = ({ selectedId, setId }) => {
     <section className="space-y-4">
       <div className="flex justify-between items-center text-[1.6rem]">
         <div className="font-medium uppercase">Deliver To:</div>
-        <div
-          className="underline text-red-800 cursor-pointer hover:text-red-950 transition-colors"
-          onClick={() => setModal(true)}
-        >
-          Change Address
-        </div>
+        {address && (
+          <div
+            className="underline text-red-800 cursor-pointer hover:text-red-950 transition-colors"
+            onClick={() => setModal(true)}
+          >
+            Change Address
+          </div>
+        )}
       </div>
 
       {address === null ? (
-        <div>Loading...</div>
+        <div className="loading--container w-full h-[15rem]">
+          <div className="loading--mask loading--animation"></div>
+        </div>
       ) : address === undefined ? (
-        <div></div>
+        <div className="bg-white border border-neutral-300 text-[1.6rem] p-4">
+          <div className="font-medium">Address Not found</div>
+          <div>
+            You have not added any address so far. Add a new address to place
+            your order safely.{" "}
+            <span
+              className="underline text-purple-800 cursor-pointer"
+              onClick={() => setNewModal(true)}
+            >
+              Add new address
+            </span>
+          </div>
+        </div>
       ) : (
         <AddressCard address={address} />
       )}
@@ -59,6 +78,13 @@ const Address = ({ selectedId, setId }) => {
               setAddressId={setId}
               setAddress={setAddress}
             />
+          </div>,
+          document.getElementById("modal-container")
+        )}
+      {newModal &&
+        createPortal(
+          <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-200">
+            <ProfileModal close={setNewModal} refetch={getDefaultAddress} />
           </div>,
           document.getElementById("modal-container")
         )}

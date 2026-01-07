@@ -26,7 +26,7 @@ const Productpage = () => {
     { oems: [], aftermarkets: [] }
   );
 
-  let [heroImage, setHeroImage] = useState(imageConfig.images[0]);
+  let [heroImage, setHeroImage] = useState(imageConfig?.images[0]);
   let [zoomPosition, setZoomPosition] = useState({ x: "", y: "" });
   let [show, setShow] = useState(false);
   const handleMouseMovement = (e) => {
@@ -53,6 +53,7 @@ const Productpage = () => {
           show={show}
           zoomPosition={zoomPosition}
           image={heroImage}
+          imageConfig={imageConfig}
         />
       </div>
       <div className="p-[3rem] bg-red-200/30 text-[1.6rem] grid grid-cols-1 md:grid-cols-3 gap-[6rem] md:gap-0">

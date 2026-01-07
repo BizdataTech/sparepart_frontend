@@ -3,14 +3,15 @@
 import { useSearchParams } from "next/navigation";
 import useOrder from "./useOrder";
 import Link from "next/link";
-import { Cube } from "phosphor-react";
+import { Cube, Gift, Sparkle, Spinner } from "phosphor-react";
+import { useState } from "react";
 
 const OrderSummaryLayout = () => {
   let searchParams = useSearchParams();
   let orderId = searchParams.get("orderId");
 
   let { order } = useOrder(orderId);
-  console.log("order data:", order);
+  let [redirecting, setRedirecting] = useState(false);
   return (
     <main className="w-[85%] mx-auto pt-[17rem] pb-[4rem]">
       {order ? (
@@ -82,10 +83,17 @@ const OrderSummaryLayout = () => {
               </div>
               <div className="mt-8">
                 <Link
-                  href={`/orders`}
-                  className="underline hover:text-purple-800"
+                  href={`/orders/${order._id}`}
+                  className={`underline text-purple-800 hover:text-purple-500 flex items-center gap-2 ${
+                    redirecting &&
+                    "cursor-not-allowed opacity-50 pointer-events-none"
+                  }`}
+                  onClick={() => setRedirecting(true)}
                 >
-                  View Order Details
+                  View Order Details{" "}
+                  {redirecting && (
+                    <Spinner className="animate-spin w-[2rem] h-[2rem]" />
+                  )}
                 </Link>
               </div>
               <div className="absolute top-7 right-6 flex gap-2">
@@ -99,7 +107,17 @@ const OrderSummaryLayout = () => {
                 />
               </div>
             </div>
-            <div className="bg-white p-4 w-3/12"></div>
+            <div className="bg-white p-4 w-3/12 text-[1.6rem] flex flex-col justify-between">
+              <div className="font-medium leading-[2rem]">
+                Expolore more deals while you are here
+              </div>
+              <Link
+                href="/"
+                className="underline text-blue-700 cursor-pointer hover:text-blue-500 self-end"
+              >
+                Continue Shopping
+              </Link>
+            </div>
           </div>
         </div>
       ) : (

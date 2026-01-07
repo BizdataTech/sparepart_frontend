@@ -6,10 +6,8 @@ export const useProduct = () => {
   let [product, setProduct] = useState(null);
   let [products, setProducts] = useState([]);
   let [genuineProduct, setGenuineProduct] = useState(null);
-  let router = useRouter();
   const { id } = useParams();
 
-  const { user } = useContext(UserContext);
   const { addToCart } = useContext(CartContext);
   let BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 

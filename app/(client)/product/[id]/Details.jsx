@@ -1,4 +1,5 @@
-export const Details = ({ config, show, zoomPosition, image }) => {
+export const Details = ({ config, show, zoomPosition, image, imageConfig }) => {
+  let { images } = imageConfig;
   let { product } = config;
   let { sections } = product?.parent || [];
 
@@ -50,7 +51,7 @@ export const Details = ({ config, show, zoomPosition, image }) => {
           <div
             className="absolute inset-0 h-[50rem] pointer-events-none shadow-2xl"
             style={{
-              backgroundImage: `url(${image})`,
+              backgroundImage: `url(${image || images[0]})`,
               backgroundPosition: `${zoomPosition.x}% ${zoomPosition.y}%`,
               backgroundSize: "150%",
             }}

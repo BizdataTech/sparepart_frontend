@@ -45,7 +45,6 @@ const AddressModal = ({ close, refetch, addressId }) => {
   };
 
   const submitAddress = async (values) => {
-    console.log("values:", values);
     let response = null;
     try {
       if (addressId) {
