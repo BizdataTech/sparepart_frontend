@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import LoadingLayer from "../Home/LoadingLayer";
 
 export const HeaderBottom = () => {
   let [categories, setCategories] = useState([]);
