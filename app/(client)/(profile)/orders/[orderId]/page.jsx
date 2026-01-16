@@ -14,9 +14,8 @@ const Page = () => {
   const { order } = useOrder(orderId);
   const leftConfig = {
     products: order?.products,
-    orderStatus: order?.orderStatus,
+    orderHistory: order?.orderStatusHistory,
     orderNumber: order?.orderNumber,
-    createdAt: order?.createdAt,
   };
 
   const rightConfig = {
@@ -35,7 +34,7 @@ const Page = () => {
         <CaretRight />
         <div>Details</div>
       </div>
-      <div className="flex gap-[2rem]">
+      <div className="flex gap-[1rem]">
         <PageLeft config={leftConfig} />
         <PageRight config={rightConfig} />
       </div>

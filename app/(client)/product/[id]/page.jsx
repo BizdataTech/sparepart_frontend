@@ -13,10 +13,11 @@ const Productpage = () => {
   const productConfig = { product };
   const imageConfig = {
     _id: product?._id,
-    stock: product?.stock,
+    stock: product?.available_stock,
     images: product?.images || [],
     addProducttoCart,
   };
+
   const product_types = products.reduce(
     (obj, prod) => {
       if (prod.product_type === "oem") obj.oems.push(prod);

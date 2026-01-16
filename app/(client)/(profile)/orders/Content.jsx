@@ -5,6 +5,10 @@ const Content = ({ orders }) => {
     switch (type) {
       case "placed":
         return <div className="text-green-800 font-semibold">Order Placed</div>;
+      case "confirmed":
+        return (
+          <div className="text-green-800 font-semibold">Order Confirmed</div>
+        );
       default:
         return;
     }
@@ -25,25 +29,18 @@ const Content = ({ orders }) => {
           <div
             href={`/orders/${order._id}`}
             key={order._id}
-            className="border border-neutral-300 text-[1.6rem] shadow-sm p-8 w-full min-h-[15rem]"
+            className="border border-neutral-300 text-[1.6rem] shadow-sm p-8 w-full"
           >
-            <Link href={`/orders/${order._id}`} className="space-y-4">
-              <div className="relative">
-                {order.products.map((product, i) => (
-                  <img
-                    key={product._id}
-                    src={product.images[0]}
-                    alt={`${product.product_title} image`}
-                    className="absolute left-0 top-0 w-[8rem] h-[8rem] shadow-md"
-                    style={{
-                      transform: `translateY(${20 * i}px) translateX(${
-                        10 * i
-                      }px)`,
-                    }}
-                  />
-                ))}
+            <Link href={`/orders/${order._id}`} className="flex gap-[4rem]">
+              <div className="">
+                <img
+                  key={order.products[0]._id}
+                  src={order.products[0].images[0]}
+                  alt={`${order.products[0].product_title} image`}
+                  className="w-[8rem] h-[8rem]"
+                />
               </div>
-              <div className="ml-[13rem] flex justify-between items-start">
+              <div className="flex justify-between flex-1">
                 <div className="space-y-4">
                   <div>
                     <div className="text-[1.4rem]">Order Number</div>
@@ -62,7 +59,7 @@ const Content = ({ orders }) => {
                     </div>
                   </div>
                   <div className="text-end">
-                    {getElement(order.orderStatus)}
+                    {getElement(order.currentOrderStatus)}
                   </div>
                 </div>
               </div>

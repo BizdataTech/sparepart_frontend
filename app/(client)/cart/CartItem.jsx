@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 
 const CartItem = ({ item, setCartTotal, getCart }) => {
   let [quantity, setQuantity] = useState(item.quantity);
-  let [totalQuantity, setTotalQuantity] = useState(item.productId.stock);
+  let [totalQuantity, setTotalQuantity] = useState(item.available_stock);
   let [productTotal, setProductTotal] = useState(item.totalAmount);
 
   let firstRender = useRef(true);

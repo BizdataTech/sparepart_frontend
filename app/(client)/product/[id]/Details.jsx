@@ -16,7 +16,18 @@ export const Details = ({ config, show, zoomPosition, image, imageConfig }) => {
                 {product?.brand?.brand_name}
               </h2>
             </div>
-            <div className="text-[1.6rem] uppercase font-medium ">
+            <div className="text-[1.6rem] flex">
+              {product.available_stock > 0 ? (
+                <div className="font-medium text-green-900 bg-green-100 px-2 py-1">
+                  Stock available
+                </div>
+              ) : (
+                <div className="font-medium text-red-900 bg-red-100 px-2 py-1">
+                  Stock not available
+                </div>
+              )}
+            </div>
+            <div className="text-[1.6rem] uppercase font-medium">
               <span>P/N : </span>
               <span className="text-red-600">{product.part_number}</span>
             </div>

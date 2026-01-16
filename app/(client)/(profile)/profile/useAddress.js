@@ -36,6 +36,7 @@ const useAddress = (refetch) => {
       console.log("address deletion error:", error.message);
     }
   };
+
   const updateAddress = async () => {};
 
   return { setAsDefault, deleteAddress, updateAddress };

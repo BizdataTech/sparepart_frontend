@@ -12,6 +12,7 @@ const AddressModal = ({ close, refetch, addressId }) => {
     formState: { errors },
   } = useForm({
     defaultValues: {
+      name: "",
       address: "",
       house_number: "",
       street: "",
@@ -91,13 +92,23 @@ const AddressModal = ({ close, refetch, addressId }) => {
         className="flex flex-col gap-8 mt-[2rem] md:mt-[4rem]"
         onSubmit={handleSubmit(submitAddress)}
       >
-        <div className="space-y-2">
-          <FormLabel title="Address" error={errors?.address} />
-          <input
-            type="text"
-            className="modal--input"
-            {...register("address", { required: true })}
-          />
+        <div className="flex items-center gap-4">
+          <div className="space-y-2 w-2/6">
+            <FormLabel title="Name" error={errors?.name} />
+            <input
+              type="text"
+              className="modal--input"
+              {...register("name", { required: true })}
+            />
+          </div>
+          <div className="space-y-2 w-4/6">
+            <FormLabel title="Address" error={errors?.address} />
+            <input
+              type="text"
+              className="modal--input"
+              {...register("address", { required: true })}
+            />
+          </div>
         </div>
         <div className="flex flex-col md:flex-row gap-4">
           <div className="w-[50%] space-y-2">

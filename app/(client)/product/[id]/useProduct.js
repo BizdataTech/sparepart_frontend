@@ -1,6 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { UserContext } from "@/context/userContext";
-import { useRouter, useParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import { CartContext } from "@/context/cartContext";
 export const useProduct = () => {
   let [product, setProduct] = useState(null);
@@ -19,9 +18,7 @@ export const useProduct = () => {
         });
         let result = await response.json();
         if (!response.ok) throw new Error(result.message);
-        else {
-          setProduct(result.product);
-        }
+        setProduct(result.product);
       } catch (error) {
         console.log("error:", error.message);
       }
@@ -77,10 +74,10 @@ export const useProduct = () => {
       );
       const result = await response.json();
       if (!response.ok) throw new Error(result.message);
-      if (result.product_stock <= 0)
+      if (result.stock <= 0)
         return toast.error("Sorry, This product is now out of stock.");
       //   add product to cart
-      const result2 = await addToCart(productId);
+      await addToCart(productId);
       return;
     } catch (error) {
       console.log("stock fetch error:", error.message);
@@ -88,5 +85,10 @@ export const useProduct = () => {
     }
   };
 
-  return { product, products, genuineProduct, addProducttoCart };
+  return {
+    product,
+    products,
+    genuineProduct,
+    addProducttoCart,
+  };
 };

@@ -16,7 +16,7 @@ const OrderSummaryLayout = () => {
     <main className="w-[85%] mx-auto pt-[17rem] pb-[4rem]">
       {order ? (
         <div className="space-y-6">
-          {order.orderStatus === "placed" && (
+          {order.currentOrderStatus === "placed" && (
             <div className="flex justify-between gap-6">
               <div className="bg-green-100 text-green-800 w-full p-6 leading-[3.5rem]">
                 <div className="text-[3rem] font-semibold">Success</div>
@@ -33,7 +33,7 @@ const OrderSummaryLayout = () => {
           <div className="flex gap-6">
             <div className="w-full bg-white space-y-4 p-6">
               <div className="text-[2rem] font-medium">Ordered Products</div>
-              <div className="grid grid-cols-3">
+              <div className="grid grid-cols-3 gap-6">
                 {order.products.map((product) => (
                   <div className="flex gap-4 border border-stone-200 p-4 text-[1.6rem]">
                     <div>

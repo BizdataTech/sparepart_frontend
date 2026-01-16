@@ -12,7 +12,7 @@ const useRoute = () => {
   );
   const breadcrumbs = routes.map((route) => {
     const match = adminRouteData.find((data) => data.slug === route);
-    return match ? { title: match.breadcrumbs, path: match.path } : null;
+    return match ? { title: match?.breadcrumbs, path: match?.path } : null;
   });
   return {
     page_title: currentPageRouteData?.page_title,

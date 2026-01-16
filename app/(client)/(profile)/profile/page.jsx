@@ -75,6 +75,10 @@ const Profile = () => {
                   <div className="text-[1.6rem] border border-neutral-300 flex justify-between p-4">
                     <div className="space-y-4">
                       <div>
+                        <div>
+                          Name :{" "}
+                          <span className="font-medium">{ad?.name || "-"}</span>
+                        </div>
                         <div className="font-medium">{ad.address}</div>
                         <div>H/N - {ad.house_number}</div>
                         <div>{`${ad.street}, ${ad.city}, ${ad.district}`}</div>

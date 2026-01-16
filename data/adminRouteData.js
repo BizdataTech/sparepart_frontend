@@ -9,6 +9,15 @@ export default [
     breadcrumbs: "Admin Dashboard",
   },
   {
+    path: "/admin/orders",
+    sidebar_title: "Orders",
+    page_title: "Admin Order",
+    icon_class: "fa-solid fa-box-open",
+    sidebar: true,
+    slug: "orders",
+    breadcrumbs: "Admin Orders",
+  },
+  {
     path: "/admin/products",
     sidebar_title: "Products",
     page_title: "Admin Products",
@@ -97,5 +106,14 @@ export default [
     sidebar: false,
     slug: "product-management",
     breadcrumbs: "Product Management",
+  },
+  {
+    path: "/admin/orders/order-management",
+    sidebar_title: "",
+    page_title: "Order Management",
+    icon_class: "fa-solid fa-gear",
+    sidebar: false,
+    slug: "order-management",
+    breadcrumbs: "Order Management",
   },
 ];

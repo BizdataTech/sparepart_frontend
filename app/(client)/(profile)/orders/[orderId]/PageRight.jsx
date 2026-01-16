@@ -29,7 +29,7 @@ const PageRight = ({ config }) => {
               <User className="w-[2rem] h-[2rem]" />
             </div>
             <div>
-              <div>{address.username || "Name not found"}</div>
+              <div>{`User Name : ${address.name || "Name not found"}`}</div>
               <div>{`Phone Number : ${address.phone_number}`}</div>
             </div>
           </div>
