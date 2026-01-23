@@ -34,9 +34,9 @@ const Content = ({ orders }) => {
             <Link href={`/orders/${order._id}`} className="flex gap-[4rem]">
               <div className="">
                 <img
-                  key={order.products[0]._id}
-                  src={order.products[0].images[0]}
-                  alt={`${order.products[0].product_title} image`}
+                  key={order.items[0].product._id}
+                  src={order.items[0].product.images[0]}
+                  alt={`${order.items[0].product.product_title} image`}
                   className="w-[8rem] h-[8rem]"
                 />
               </div>
@@ -48,7 +48,7 @@ const Content = ({ orders }) => {
                   </div>
                   <div className="flex gap-4">
                     <div>Total Products</div>
-                    <div>{order.products.length}</div>
+                    <div>{order.items.length}</div>
                   </div>
                 </div>
                 <div className="space-y-4">

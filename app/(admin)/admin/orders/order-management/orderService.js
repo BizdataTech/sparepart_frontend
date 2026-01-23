@@ -15,7 +15,7 @@ export const confirmOrder = async (orderId) => {
     {
       method: "PATCH",
       credentials: "include",
-    }
+    },
   );
   if (!response.ok) throw new Error("Confirmation Failed");
   return response.json();

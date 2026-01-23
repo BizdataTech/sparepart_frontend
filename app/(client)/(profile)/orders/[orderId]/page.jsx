@@ -13,7 +13,7 @@ const Page = () => {
 
   const { order } = useOrder(orderId);
   const leftConfig = {
-    products: order?.products,
+    items: order?.items,
     orderHistory: order?.orderStatusHistory,
     orderNumber: order?.orderNumber,
   };
