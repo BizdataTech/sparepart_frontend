@@ -72,13 +72,13 @@ export default [
     breadcrumbs: "Admin Coupons",
   },
   {
-    path: "/admin/banner-management",
-    sidebar_title: "Banner",
-    page_title: "Banner Management",
+    path: "/admin/home-management",
+    sidebar_title: "Home UI",
+    page_title: "Home UI Management",
     icon_class: "fa-solid fa-image",
     sidebar: true,
-    slug: "banner-management",
-    breadcrumbs: "Banner Management",
+    slug: "home-management",
+    breadcrumbs: "Home UI Management",
   },
   {
     path: "/admin/product-section",
