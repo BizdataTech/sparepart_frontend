@@ -1,13 +1,13 @@
-import Logo from "./Logo";
-import Sections from "./Sections";
+import Logo from "./logo/Logo.jsx";
+import Sections from "./section/Sections.jsx";
 
-const BannerManagement = () => {
+const HomeManagement = () => {
   return (
-    <main className="space-y-4">
-      <Logo />
+    <main className="flex gap-4">
       <Sections />
+      <Logo />
     </main>
   );
 };
 
-export default BannerManagement;
+export default HomeManagement;

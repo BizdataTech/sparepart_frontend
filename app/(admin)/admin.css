@@ -68,6 +68,25 @@
   animation: shimmer-anime 2s infinite;
 }
 
+.animation--container {
+  @apply relative bg-neutral-300 overflow-x-hidden rounded-[.5rem];
+}
+.animation--mask {
+  @apply absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent;
+}
+.animation--effect {
+  animation: loading--effect 2s infinite;
+}
+
+@keyframes loading--effect {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
 @keyframes shimmer-anime {
   from {
     transform: translateX(-50%);

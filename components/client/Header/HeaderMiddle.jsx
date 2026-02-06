@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useDebounce from "./useDebounce.js";
 import { List } from "phosphor-react";
 import SlideNavigation from "./SlideNavigation";
@@ -10,16 +10,36 @@ import NavLinks from "./NavLinks";
 const HeaderMiddle = () => {
   const { query, setQuery, results, box, setBox, load } = useDebounce();
   const [slide, setSlide] = useState(false);
+  const [logo, setLogo] = useState(null);
+
+  let BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
+  useEffect(() => {
+    let getLogo = async () => {
+      try {
+        let response = await fetch(`${BACKEND_URL}/api/client/logo`, {
+          method: "GET",
+        });
+        let result = await response.json();
+        if (!response.ok) throw new Error(result.message);
+        setLogo(result.url);
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    getLogo();
+  }, []);
 
   return (
     <div className="border border-neutral-300">
       <div className="header w-full flex justify-between">
         <div className="left flex items-center gap-8">
           <Link href={`/`}>
-            <div className=" uppercase text-[1.8rem] md:text-[2.5rem] leading-[1.8rem] md:leading-[2.4rem]">
-              <span className="text-[#b00015] font-semibold">prototype</span>{" "}
-              <br /> <span className="text-black font-medium">site</span>
-            </div>
+            <img
+              src={logo}
+              alt="website logo"
+              className="w-[9rem] h-[6.5rem] object-contain"
+            />
           </Link>
           <div className="hidden md:flex items-center space-x-3">
             <form className="relative">

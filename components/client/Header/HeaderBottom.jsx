@@ -1,9 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import LoadingLayer from "../Home/LoadingLayer";
 
 export const HeaderBottom = () => {
   let [categories, setCategories] = useState([]);
@@ -20,7 +18,7 @@ export const HeaderBottom = () => {
           {
             method: "GET",
             credentials: "include",
-          }
+          },
         );
         setLoading(false);
         let result = await response.json();

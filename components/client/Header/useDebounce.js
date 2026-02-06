@@ -21,7 +21,7 @@ const useDebounce = () => {
             {
               method: "GET",
               credentials: "include",
-            }
+            },
           );
           setLoad(false);
           let result = await response.json();

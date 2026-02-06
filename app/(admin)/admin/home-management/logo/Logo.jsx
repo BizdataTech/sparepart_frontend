@@ -2,6 +2,7 @@
 
 import { Spinner } from "phosphor-react";
 import { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
 
 const Logo = () => {
   let [file, setFile] = useState(null);
@@ -35,6 +36,7 @@ const Logo = () => {
 
   const submitLogo = async () => {
     try {
+      if (!file) return;
       const formData = new FormData();
       formData.append("logo", file);
       setLoading(true);
@@ -45,50 +47,53 @@ const Logo = () => {
       setLoading(false);
       let result = await response.json();
       if (!response.ok) throw new Error(result.message);
-      console.log(result.message);
+      toast.success(result.message);
+      setFile(null);
     } catch (error) {
       console.log(error.message);
     }
   };
 
   return (
-    <section className="a-section--box w-1/2 flex flex-col gap-4">
-      <div className="flex items-center justify-between">
-        <div className="a-section--title">Select / Update Logo</div>
-        <button
-          className="a-text--button bg-neutral-100 hover:bg-neutral-200 transition-colors active:bg-neutral-100"
-          onClick={() => inputRef.current.click()}
-        >
-          {!file ? "Select Logo" : "Update Logo"}
-        </button>
-        <input
-          type="file"
-          className="hidden"
-          ref={inputRef}
-          onChange={handleInput}
-        />
-      </div>
-      <div>
-        {!preview ? (
-          <img
-            src="/admin/empty.webp"
-            className="w-full h-[20rem] object-cover opacity-50"
+    <section className="w-2/6 space-y-2">
+      <div className="a-section--title">Select / Update Logo</div>
+      <div className="a-section--box flex flex-col gap-4">
+        <div className="flex items-center justify-end">
+          <button
+            className="a-text--button bg-neutral-100 hover:bg-neutral-200 transition-colors active:bg-neutral-100"
+            onClick={() => inputRef.current.click()}
+          >
+            {!file ? "Select Logo" : "Update Logo"}
+          </button>
+          <input
+            type="file"
+            className="hidden"
+            ref={inputRef}
+            onChange={handleInput}
           />
-        ) : (
-          <img src={preview} className="h-[10rem] object-contain" />
-        )}
+        </div>
+        <div>
+          {!preview ? (
+            <img
+              src="/admin/empty.webp"
+              className="w-full h-[20rem] object-cover opacity-50"
+            />
+          ) : (
+            <img src={preview} className="h-[20rem] w-full object-contain" />
+          )}
+        </div>
+        <button
+          className={`py-4 text-[1.4rem] font-medium bg-black text-white transition-colors ${!file || loading ? "!cursor-not-allowed hover:bg-neutral-700 flex justify-center" : "cursor-pointer"}`}
+          onClick={submitLogo}
+          disabled={loading || !file}
+        >
+          {loading ? (
+            <Spinner className="w-[2rem] h-[2rem] animate-spin" />
+          ) : (
+            "Submit Logo"
+          )}
+        </button>
       </div>
-      <button
-        className={`a-text--button text-neutral-900 bg-neutral-50 self-end transition-colors ${!file || loading ? "!cursor-not-allowed hover:bg-neutral-50 !opacity/10" : "hover:bg-green-100/80 "}`}
-        onClick={submitLogo}
-        disabled={loading || !file}
-      >
-        {loading ? (
-          <Spinner className="w-[2rem] h-[2rem] animate-spin" />
-        ) : (
-          "Submit Logo"
-        )}
-      </button>
     </section>
   );
 };

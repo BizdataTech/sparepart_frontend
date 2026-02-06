@@ -24,7 +24,7 @@ const Productpage = () => {
       if (prod.product_type === "after_market") obj.aftermarkets.push(prod);
       return obj;
     },
-    { oems: [], aftermarkets: [] }
+    { oems: [], aftermarkets: [] },
   );
 
   let [heroImage, setHeroImage] = useState(imageConfig?.images[0]);
@@ -39,7 +39,7 @@ const Productpage = () => {
   };
 
   return product ? (
-    <div className="w-[90%] md:w-[85%] mx-auto pt-[15rem] md:pt-[17rem] pb-12 space-y-16">
+    <div className="pt-[15rem] md:pt-[17rem] lg:pt-[19rem] pb-12 space-y-16">
       <div className="flex flex-col md:flex-row gap-5">
         <SmallDetails config={productConfig} />
         <ImageGrid
