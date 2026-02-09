@@ -25,11 +25,13 @@ const ProductListingSection = ({ section }) => {
     getData();
   }, []);
   return (
-    <section className="space-y-4 w-full">
-      <div className="text-[2.2rem] font-medium">{section?.title}</div>
+    <section className="space-y-4 w-full mb-8">
+      <div className="text-[1.3rem] lg:text-[2.2rem] font-medium">
+        {section?.title}
+      </div>
       <div className="w-full">
         {items === false && (
-          <div className="grid grid-cols-6 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-6 gap-6">
             {Array.from({ length: 6 }).map((item, i) => (
               <div className="loading--container h-[25rem]">
                 <div className="loading--mask loading--animation"></div>
@@ -38,23 +40,25 @@ const ProductListingSection = ({ section }) => {
           </div>
         )}
         {items && items.length >= 1 && (
-          <div className="grid grid-cols-6 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-6 gap-4 lg:gap-6">
             {items.map((item) => (
               <Link
                 href={`/product/${item._id}`}
-                className="bg-white h-[35rem] space-y-4"
+                className="bg-white h-[25rem] lg:h-[35rem] space-y-4"
               >
                 <img
                   src={item.images[0]}
                   alt="product image"
-                  className="w-full h-[20rem] object-contain"
+                  className="w-full h-[10rem] lg:h-[20rem] object-contain"
                 />
-                <div className="h-full space-y-2 p-4">
-                  <div className="text-[1.6rem] font-medium uppercase leading-[2.3rem]">
+                <div className="h-full space-y-1 lg:space-y-2 p-4">
+                  <div className="text-[1.3rem] lg:text-[1.6rem] font-medium uppercase leading-[2.3rem]">
                     {item.product_title}
                   </div>
-                  <div className="text-[1.6rem]">{item.brand}</div>
-                  <div className="text-[1.8rem] font-semibold">
+                  <div className="text-[1.3rem] lg:text-[1.6rem]">
+                    {item.brand}
+                  </div>
+                  <div className="text-[1.4rem] lg:text-[1.8rem] font-semibold mt-4">
                     ₹ {Intl.NumberFormat("en-IN").format(item.price)}
                   </div>
                 </div>

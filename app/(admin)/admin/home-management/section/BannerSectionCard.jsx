@@ -1,6 +1,6 @@
 "use client";
 
-import { Spinner, XCircle } from "phosphor-react";
+import { Spinner, X } from "phosphor-react";
 import { useEffect, useRef, useState } from "react";
 import useResults from "./useResults";
 import { InputLabel } from "@/components/admin/InputLabel";
@@ -9,7 +9,7 @@ import { toast } from "sonner";
 const BannerSectionCard = ({ section }) => {
   const [edit, setEdit] = useState(false);
   const sectionData = {
-    url: section.url,
+    secure_url: section.secure_url,
     data_source: section.data_source,
     reference_id: section.reference_id,
   };
@@ -81,7 +81,7 @@ const BannerSectionCard = ({ section }) => {
     setSelectedFile(file);
     setNewData((prev) => ({
       ...prev,
-      url: URL.createObjectURL(file),
+      secure_url: URL.createObjectURL(file),
     }));
   };
 
@@ -130,18 +130,44 @@ const BannerSectionCard = ({ section }) => {
     getReference();
   };
 
+  const [loading, setLoading] = useState(false);
+
   const updateSection = async () => {
     if (!Object.keys(newData).length)
       return toast.warning("Couldn't find any changes for updation");
-    setErrors((prev) => {
-      let new_errors = { ...prev };
-      Object.entries(newData).forEach(([key, value]) => {
-        if (!value.trim()) new_errors[key] = "Required";
-      });
-      return new_errors;
+    let flag = true;
+    let new_errors = {};
+
+    Object.entries(newData).forEach(([key, value]) => {
+      if (typeof value === "string" && !value.trim()) {
+        new_errors[key] = "Required";
+        flag = false;
+      }
     });
-    if (Object.keys(errors).length) return;
-    console.log("safe");
+
+    if (Object.keys(new_errors).length)
+      setErrors((prev) => ({ ...prev, ...new_errors }));
+
+    if (!flag) return;
+    try {
+      let formData = new FormData();
+      Object.entries(newData).forEach(([key, value]) => {
+        if (key === "secure_url") formData.append("secure_url", selectedFile);
+        else formData.append(key, value);
+      });
+      setLoading(true);
+      let response = await fetch(`${BACKEND_URL}/api/sections/${section._id}`, {
+        method: "PATCH",
+        body: formData,
+      });
+      setLoading(false);
+      let result = await response.json();
+      if (!response.ok) throw new Error(result.message);
+      toast.success(result.message);
+      console.log(result.message);
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   useEffect(() => {
@@ -159,8 +185,7 @@ const BannerSectionCard = ({ section }) => {
             className="p-2 text-[1.2rem] text-neutral-800 bg-neutral-200 cursor-pointer flex items-center gap-2"
             onClick={cancelEdit}
           >
-            Cancel Editing{" "}
-            <XCircle className="w-[1.5rem] h-[1.5rem]" weight="fill" />
+            Cancel Editing <X className="w-[1.5rem] h-[1.5rem]" weight="fill" />
           </div>
         )}
       </div>
@@ -173,7 +198,7 @@ const BannerSectionCard = ({ section }) => {
           }}
         >
           <img
-            src={newData.url || sectionData.url}
+            src={newData.secure_url || sectionData.secure_url}
             alt="banner image"
             className="w-full h-[20rem] border border-neutral-400 bg-neutral-200 object-contain"
           />
@@ -218,9 +243,8 @@ const BannerSectionCard = ({ section }) => {
                 {referenceText && (
                   <div className="!flex justify-between items-center absolute top-0 right-0 left-0 bottom-0 bg-white a-input z-100">
                     <div>{referenceText}</div>
-                    <XCircle
-                      className="w-[1.8rem] h-[1.8rem] text-neutral-600 cursor-pointer"
-                      weight="fill"
+                    <X
+                      className="w-[1.5rem] h-[1.5rem] text-neutral-600 cursor-pointer"
                       onClick={() => {
                         if (!edit) return;
                         setReferenceText("");
@@ -281,14 +305,25 @@ const BannerSectionCard = ({ section }) => {
           </button>
         ) : (
           <>
-            <button className="a-text--button text-white bg-red-700 hover:bg-red-900 transition-colors">
+            <button
+              className={`a-text--button text-white bg-red-700 hover:bg-red-900 transition-colors ${loading ? "cursor-not-allowed opacity-70" : "cursor-pointer"}`}
+              disabled={loading}
+            >
               Delete Section
             </button>
             <button
-              className="a-text--button text-green-800 border border-green-900 hover:text-white hover:bg-green-800  transition-colors"
+              className={`a-text--button text-green-800 border border-green-900 hover:text-white hover:bg-green-800  transition-colors ${loading ? "cursor-not-allowed opacity-70" : "cursor-pointer"}`}
               onClick={updateSection}
+              disabled={loading}
             >
-              Update Section
+              {loading ? (
+                <div className="flex items-center gap-1">
+                  Updating{" "}
+                  <Spinner className="w-[1.3rem] h-[1.3ren] animate-spin" />
+                </div>
+              ) : (
+                "Update Section"
+              )}
             </button>
           </>
         )}

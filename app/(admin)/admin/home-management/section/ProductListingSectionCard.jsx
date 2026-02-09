@@ -1,6 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import getReference from "./getReference";
+import { Spinner, X } from "phosphor-react";
+import useResults from "./useResults";
+import { InputLabel } from "@/components/admin/InputLabel";
+import { toast } from "sonner";
 
 const ProductListingSectionCard = ({ section }) => {
   const [edit, setEdit] = useState(false);
@@ -13,10 +18,145 @@ const ProductListingSectionCard = ({ section }) => {
     layout: section.layout,
     limit: section.limit,
   };
-  let data_sources = [["category", "categories"]];
   let [newData, setNewData] = useState({});
+  let [referenceText, setReferenceText] = useState("");
+  let [errors, setErrors] = useState({});
+
+  let BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
+  useEffect(() => {
+    if (edit) return;
+    const getReferenceText = async () => {
+      try {
+        let text = await getReference(
+          section.reference_id,
+          section.data_source,
+        );
+        setReferenceText(text);
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    getReferenceText();
+  }, [edit]);
+
+  const editMode = () => {
+    setEdit(true);
+  };
+
+  const cancelEdit = () => {
+    setEdit(false);
+    setNewData({});
+  };
+
+  const handleData = (e) => {
+    let { name, value } = e.target;
+    setNewData((prev) => {
+      let new_data = { ...prev };
+      if (sectionData[name] === value) delete new_data[name];
+      else new_data[name] = value;
+      return new_data;
+    });
+    setErrors((prev) => {
+      let { [name]: _, ...rest } = prev;
+      return rest;
+    });
+  };
+
+  const removeReference = () => {
+    setReferenceText("");
+    setNewData((prev) => ({
+      ...prev,
+      reference_id: "",
+    }));
+  };
+
+  const debounce = useRef(null);
+  const [searchResults, setSearchResults] = useState(null);
+  let [loading, setLoading] = useState(false);
+  let [box, setBox] = useState(false);
+  const [query, setQuery] = useState("");
+
+  useEffect(() => {
+    if (!query.trim()) {
+      setBox(false);
+      setSearchResults(null);
+      setNewData((prev) => ({
+        ...prev,
+      }));
+      return;
+    }
+    if (debounce.current) clearTimeout(debounce.current);
+    debounce.current = setTimeout(async () => {
+      try {
+        setBox(true);
+        setLoading(true);
+        let results = await useResults(query, section.data_source);
+        setLoading(false);
+        console.log(results);
+        setSearchResults(results);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }, 200);
+  }, [query]);
+
+  const selectReference = (item) => {
+    setReferenceText(
+      `${item.brand || ""} ${item.product_title || ""} ${item.title || ""}`,
+    );
+    setNewData((prev) => ({
+      ...prev,
+      reference_id: item._id,
+    }));
+    setErrors((prev) => {
+      let { reference_id, ...rest } = prev;
+      return rest;
+    });
+    setBox(false);
+    setSearchResults(null);
+  };
+
+  const [submitLoad, setSubmitLoad] = useState(false);
+  const submitSection = async () => {
+    if (!Object.keys(newData).length)
+      return toast.warning("Updation Dismissed : No update value found.");
+    let flag = true;
+    Object.entries(newData).forEach(([key, value]) => {
+      if (!value.trim()) {
+        flag = false;
+        setErrors((prev) => ({
+          ...prev,
+          [key]: "Required",
+        }));
+      }
+    });
+    if (!flag) return;
+    try {
+      setSubmitLoad(false);
+      let response = await fetch(`${BACKEND_URL}/api/sections/${section._id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newData),
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.message);
+      setEdit(false);
+
+      toast.success(result.message);
+    } catch (error) {
+      toast.error("Updation Failed");
+      console.log(error.message);
+    }
+  };
+
+  const title =
+    newData.title || newData.title === "" ? newData.title : sectionData.title;
+
   return (
-    <section className="a-section--box !space-y-8">
+    <section className="a-section--box flex flex-col gap-8">
       <div className="flex justify-between items-center">
         <div className="a-section--title capitalize">
           {section.section_type.split("_").join(" ")}
@@ -24,35 +164,79 @@ const ProductListingSectionCard = ({ section }) => {
         {edit && (
           <div
             className="a-text--button text-neutral-800 bg-neutral-200 flex items-center gap-2"
-            onClick={() => setEdit(false)}
+            onClick={cancelEdit}
           >
-            Cancel Editing{" "}
-            <XCircle className="w-[1.5rem] h-[1.5rem]" weight="fill" />
+            Cancel Editing <X className="w-[1.3rem] h-[1.3rem]" weight="fill" />
           </div>
         )}
       </div>
       <div className="flex flex-col gap-8">
         <div className="w-1/2">
-          <div className="a-text--label">Section Title</div>
+          <InputLabel label="Section Title" error={errors.title} />
           <input
             type="text"
-            value={sectionData.title}
+            name="title"
+            value={title}
             className="a-input"
             disabled={!edit}
+            onChange={handleData}
           />
         </div>
         <div className="flex gap-4">
           <div className="w-1/2 space-y-1">
             <div className="a-text--label">Data Source</div>
             <select className="a-input" disabled={!edit}>
-              {data_sources.map(([key, value]) => (
-                <option value={value} className="capitalize">
-                  {key}
-                </option>
-              ))}
+              <option value="category">Category</option>
             </select>
           </div>
-          <div className="w-1/2 space-y-1"></div>
+          <div className="w-1/2 space-y-1">
+            <InputLabel label="Reference Data" error={errors.reference_id} />
+            <div className="relative">
+              <input
+                type="text"
+                className="a-input"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+              />
+              {box && (
+                <div className="absolute top-full left-0 right-0 max-h-[20rem] overflow-y-scroll bg-white  shadow-md p-4 text-[1.4rem]">
+                  {loading && (
+                    <div className="flex justify-center items-center gap-1">
+                      Searching{" "}
+                      <Spinner className="w-[1.3rem] h-[1.3ren] animate-spin" />
+                    </div>
+                  )}
+                  {searchResults && searchResults.length === 0 && (
+                    <div className="text-center">
+                      Couldn't find any matching result
+                    </div>
+                  )}
+                  {searchResults && searchResults.length >= 1 && (
+                    <>
+                      {searchResults.map((item) => (
+                        <div
+                          key={item._id}
+                          className="py-1 hover:bg-neutral-100 transition-colors"
+                          onClick={() => selectReference(item)}
+                        >{`${item.brand || ""} ${item.product_title || ""} ${item.title || ""}`}</div>
+                      ))}
+                    </>
+                  )}
+                </div>
+              )}
+              {referenceText && (
+                <div className="absolute inset-0 bg-white a-input z-100 !flex justify-between items-center">
+                  <div className="">{referenceText}</div>
+                  <X
+                    className="w-[1.3rem] h-[1.3rem]"
+                    onClick={() => {
+                      if (edit) removeReference();
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
         </div>
         <div className="flex flex-col gap-4">
           <div className="a-text--label">Section Item Limit</div>
@@ -71,6 +255,30 @@ const ProductListingSectionCard = ({ section }) => {
             ))}
           </div>
         </div>
+      </div>
+      <div className="self-end flex items-center gap-4">
+        {!edit ? (
+          <button
+            className="a-text--button bg-black text-white hover:bg-black/70 active:bg-black transition-colors"
+            onClick={editMode}
+          >
+            Edit Section
+          </button>
+        ) : (
+          <>
+            <button
+              className={`a-text--button text-white bg-red-700 hover:bg-red-900 transition-colors`}
+            >
+              Delete Section
+            </button>
+            <button
+              className={`a-text--button text-green-800 border border-green-900 hover:text-white hover:bg-green-800  transition-colors`}
+              onClick={submitSection}
+            >
+              Update Section
+            </button>
+          </>
+        )}
       </div>
     </section>
   );

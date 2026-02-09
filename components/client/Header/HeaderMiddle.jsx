@@ -38,7 +38,7 @@ const HeaderMiddle = () => {
             <img
               src={logo}
               alt="website logo"
-              className="w-[9rem] h-[6.5rem] object-contain"
+              className="w-[5rem] lg:w-[9rem] h-[5rem] lg:h-[6.5rem] object-contain"
             />
           </Link>
           <div className="hidden md:flex items-center space-x-3">

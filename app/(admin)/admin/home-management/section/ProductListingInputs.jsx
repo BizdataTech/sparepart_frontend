@@ -1,5 +1,5 @@
 import { InputLabel } from "@/components/admin/InputLabel";
-import { Spinner } from "phosphor-react";
+import { LockLaminated, Spinner, X } from "phosphor-react";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -14,7 +14,7 @@ const ProductListingInputs = () => {
     reset,
   } = useForm();
 
-  const [contentDetails, setContentDetails] = useState({
+  const [sectionDetails, setSectionDetails] = useState({
     data_source: "",
     reference_id: "",
   });
@@ -23,6 +23,7 @@ const ProductListingInputs = () => {
   const [query, setQuery] = useState("");
   const [box, setBox] = useState(false);
   const [searchResults, setSearchResults] = useState(null);
+  const [referenceText, setReferenceText] = useState("");
   const debounce = useRef(null);
 
   const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
@@ -39,7 +40,7 @@ const ProductListingInputs = () => {
         setLoading(true);
         setBox(true);
         let response = await fetch(
-          `${BACKEND_URL}/api/sections/search/${contentDetails.data_source}?query=${query}`,
+          `${BACKEND_URL}/api/sections/search/${sectionDetails.data_source}?query=${query}`,
           {
             method: "GET",
           },
@@ -56,44 +57,55 @@ const ProductListingInputs = () => {
   }, [query]);
 
   const hanndleReferenceSelection = (item) => {
-    setContentDetails((prev) => ({
+    setSectionDetails((prev) => ({
       ...prev,
       reference_id: String(item._id),
     }));
     setBox(false);
     setSearchResults(null);
     clearErrors("reference_id");
-    switch (contentDetails.data_source) {
-      case "categories":
-        setQuery(`${item.title}`);
-        break;
-      default:
-        break;
-    }
+    setReferenceText(
+      `${item.brand || ""} ${item.product_title || ""} ${item.title || ""}`,
+    );
+    setQuery("");
+  };
+
+  const cancelReferenceSelection = () => {
+    setSectionDetails((prev) => ({
+      ...prev,
+      reference_id: "",
+    }));
+    setReferenceText("");
+  };
+
+  const handleDataSource = (e) => {
+    console.log("selected value:", e.target.value);
+    setSectionDetails((prev) => {
+      let new_details = { ...prev };
+      new_details.data_source = e.target.value;
+      new_details.reference_id = "";
+      return new_details;
+    });
+    clearErrors("data_source");
+    setReferenceText("");
   };
 
   const submitForm = async (values) => {
-    console.log("listing values:", values);
-    Object.entries(contentDetails).forEach(([key, value]) => {
-      if (!value.trim())
-        return setError(key, {
+    let flag = true;
+    Object.entries(sectionDetails).forEach(([key, value]) => {
+      if (!value.trim()) {
+        flag = false;
+        setError(key, {
           type: "manual",
           message: "Required",
         });
+      }
     });
 
-    switch (contentDetails.data_source) {
-      case "products":
-        contentDetails.data_source = "product";
-        break;
-      case "categories":
-        contentDetails.data_source = "category";
-      default:
-        break;
-    }
+    if (!flag) return;
 
-    values.data_source = contentDetails.data_source;
-    values.reference_id = contentDetails.reference_id;
+    values.data_source = sectionDetails.data_source;
+    values.reference_id = sectionDetails.reference_id;
     values.section_type = "product_listing";
 
     try {
@@ -106,7 +118,7 @@ const ProductListingInputs = () => {
       });
       let result = await response.json();
       if (!response.ok) throw new Error(result.message);
-      setContentDetails({
+      setSectionDetails({
         data_source: "",
         reference_id: "",
       });
@@ -136,64 +148,65 @@ const ProductListingInputs = () => {
             label="Data Source"
             error={errors?.data_source?.message}
           />
-          <select
-            className="a-input"
-            onChange={(e) =>
-              setContentDetails((prev) => {
-                let new_value = { ...prev };
-                new_value.data_source = e.target.value;
-                clearErrors("data_source");
-                return new_value;
-              })
-            }
-          >
+          <select className="a-input" onChange={handleDataSource}>
             <option value="" selected disabled>
               Select one data source
             </option>
-            <option value="categories">Categories</option>
+            <option value="category">Categories</option>
           </select>
         </div>
-        <div className="space-y-2 w-1/2">
-          <InputLabel
-            label="Data Reference"
-            error={errors?.reference_id?.message}
-          />
-          <div className="relative">
-            <input
-              type="text"
-              className="a-input"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
+        {sectionDetails.data_source && (
+          <div className="space-y-2 w-1/2">
+            <InputLabel
+              label="Data Reference"
+              error={errors?.reference_id?.message}
             />
-            {box && (
-              <div className="absolute left-0 right-0 max-h-[20rem] overflow-y-scroll bg-white shadow-md p-4 z-100">
-                {searchResults === null && (
-                  <div className="flex items-center justify-center gap-2">
-                    Loading{" "}
-                    <Spinner className="w-[1.5rem] h-[1.5rem] animate-spin" />
-                  </div>
-                )}
-                {searchResults &&
-                  searchResults.length >= 1 &&
-                  contentDetails.data_source === "categories" && (
-                    <div className="w-full h-full">
-                      {searchResults.map((result) => (
-                        <div
-                          className="cursor-pointer hover:bg-neutral-100 active:bg-neutral-200/60 transition-colors p-2"
-                          onClick={() => hanndleReferenceSelection(result)}
-                        >
-                          {result.title}
-                        </div>
-                      ))}
+            <div className="relative">
+              <input
+                type="text"
+                className="a-input"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+              />
+              {sectionDetails.reference_id && (
+                <div className="!flex justify-between items-center absolute left-0 right-0 top-0 bottom-0 bg-white-500 z-100 a-input">
+                  <div>{referenceText}</div>
+                  <X
+                    className="w-[1.5rem] h-[1.5rem] cursor-pointer"
+                    onClick={cancelReferenceSelection}
+                  />
+                </div>
+              )}
+              {box && (
+                <div className="absolute left-0 right-0 max-h-[20rem] overflow-y-scroll bg-white shadow-md p-4 z-100">
+                  {searchResults === null && (
+                    <div className="flex items-center justify-center gap-2">
+                      Loading{" "}
+                      <Spinner className="w-[1.5rem] h-[1.5rem] animate-spin" />
                     </div>
                   )}
-                {searchResults && searchResults.length === 0 && (
-                  <div className="text-center">No matching results found</div>
-                )}
-              </div>
-            )}
+                  {searchResults &&
+                    searchResults.length >= 1 &&
+                    sectionDetails.data_source === "category" && (
+                      <div className="w-full h-full">
+                        {searchResults.map((result) => (
+                          <div
+                            className="cursor-pointer hover:bg-neutral-100 active:bg-neutral-200/60 transition-colors p-2"
+                            onClick={() => hanndleReferenceSelection(result)}
+                          >
+                            {result.title}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  {searchResults && searchResults.length === 0 && (
+                    <div className="text-center">No matching results found</div>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
       <div className="space-y-4 w-1/2">
         <InputLabel label="Section Item Count" error={errors?.count?.message} />

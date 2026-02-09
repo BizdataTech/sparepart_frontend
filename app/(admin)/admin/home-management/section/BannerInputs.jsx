@@ -1,4 +1,4 @@
-import { Spinner, XCircle } from "phosphor-react";
+import { Spinner, X } from "phosphor-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
@@ -117,7 +117,7 @@ const BannerInputs = ({ refetch }) => {
 
     let formData = new FormData();
     formData.append("section_type", "banner");
-    formData.append("url", file);
+    formData.append("secure_url", file);
     formData.append("data_source", bannerDetails.data_source);
     formData.append("reference_id", bannerDetails.reference_id);
     try {
@@ -231,7 +231,7 @@ const BannerInputs = ({ refetch }) => {
               {bannerDetails.reference_id && (
                 <div className="absolute left-0 top-0 right-0 bottom-0 bg-white a-input !flex justify-between items-center z-100">
                   <div>{selectedText}</div>
-                  <XCircle
+                  <X
                     className="w-[1.8rem] h-[1.8rem] text-neutral-400"
                     weight="fill"
                     onClick={() => setQuery("")}
