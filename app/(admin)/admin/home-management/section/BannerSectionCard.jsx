@@ -6,7 +6,7 @@ import useResults from "./useResults";
 import { InputLabel } from "@/components/admin/InputLabel";
 import { toast } from "sonner";
 
-const BannerSectionCard = ({ section }) => {
+const BannerSectionCard = ({ section, deleteSection, refetch }) => {
   const [edit, setEdit] = useState(false);
   const sectionData = {
     secure_url: section.secure_url,
@@ -132,6 +132,12 @@ const BannerSectionCard = ({ section }) => {
 
   const [loading, setLoading] = useState(false);
 
+  const handleDelete = async (id) => {
+    setLoading(true);
+    await deleteSection(id);
+    setLoading(false);
+  };
+
   const updateSection = async () => {
     if (!Object.keys(newData).length)
       return toast.warning("Couldn't find any changes for updation");
@@ -164,7 +170,8 @@ const BannerSectionCard = ({ section }) => {
       let result = await response.json();
       if (!response.ok) throw new Error(result.message);
       toast.success(result.message);
-      console.log(result.message);
+      setEdit(false);
+      refetch();
     } catch (error) {
       console.log(error.message);
     }
@@ -297,22 +304,26 @@ const BannerSectionCard = ({ section }) => {
       </div>
       <div className="flex justify-end items-center gap-4 mt-[5rem]">
         {!edit ? (
-          <button
-            className="a-text--button bg-black text-white hover:bg-black/70 active:bg-black transition-colors"
-            onClick={() => setEdit(true)}
-          >
-            Edit Section
-          </button>
-        ) : (
           <>
             <button
-              className={`a-text--button text-white bg-red-700 hover:bg-red-900 transition-colors ${loading ? "cursor-not-allowed opacity-70" : "cursor-pointer"}`}
+              className={`a-text--button text-white bg-red-700 hover:bg-red-900 transition-colors ${loading ? "!cursor-not-allowed opacity-70" : "cursor-pointer"}`}
               disabled={loading}
+              onClick={() => handleDelete(section._id)}
             >
               Delete Section
             </button>
             <button
-              className={`a-text--button text-green-800 border border-green-900 hover:text-white hover:bg-green-800  transition-colors ${loading ? "cursor-not-allowed opacity-70" : "cursor-pointer"}`}
+              className={`a-text--button bg-black text-white hover:bg-black/70 active:bg-black transition-colors ${loading ? "!cursor-not-allowed opacity-70" : "cursor-pointer"}`}
+              onClick={() => setEdit(true)}
+              disabled={loading}
+            >
+              Edit Section
+            </button>
+          </>
+        ) : (
+          <>
+            <button
+              className={`a-text--button text-green-800 border border-green-900 hover:text-white hover:bg-green-800  transition-colors ${loading ? "!cursor-not-allowed opacity-70" : "cursor-pointer"}`}
               onClick={updateSection}
               disabled={loading}
             >

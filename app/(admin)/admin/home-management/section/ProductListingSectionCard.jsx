@@ -7,7 +7,7 @@ import useResults from "./useResults";
 import { InputLabel } from "@/components/admin/InputLabel";
 import { toast } from "sonner";
 
-const ProductListingSectionCard = ({ section }) => {
+const ProductListingSectionCard = ({ section, deleteSection, refetch }) => {
   const [edit, setEdit] = useState(false);
 
   let sectionData = {
@@ -38,7 +38,7 @@ const ProductListingSectionCard = ({ section }) => {
       }
     };
     getReferenceText();
-  }, [edit]);
+  }, [edit, section]);
 
   const editMode = () => {
     setEdit(true);
@@ -65,6 +65,7 @@ const ProductListingSectionCard = ({ section }) => {
 
   const removeReference = () => {
     setReferenceText("");
+    setQuery("");
     setNewData((prev) => ({
       ...prev,
       reference_id: "",
@@ -117,7 +118,13 @@ const ProductListingSectionCard = ({ section }) => {
     setSearchResults(null);
   };
 
-  const [submitLoad, setSubmitLoad] = useState(false);
+  const [operationLoading, setOperationLoading] = useState(false);
+  const handleDelete = async (id) => {
+    setOperationLoading(true);
+    await deleteSection(id);
+    setOperationLoading(false);
+  };
+
   const submitSection = async () => {
     if (!Object.keys(newData).length)
       return toast.warning("Updation Dismissed : No update value found.");
@@ -133,7 +140,7 @@ const ProductListingSectionCard = ({ section }) => {
     });
     if (!flag) return;
     try {
-      setSubmitLoad(false);
+      setOperationLoading(true);
       let response = await fetch(`${BACKEND_URL}/api/sections/${section._id}`, {
         method: "PATCH",
         headers: {
@@ -141,11 +148,14 @@ const ProductListingSectionCard = ({ section }) => {
         },
         body: JSON.stringify(newData),
       });
+      setOperationLoading(false);
       const result = await response.json();
       if (!response.ok) throw new Error(result.message);
       setEdit(false);
-
       toast.success(result.message);
+      setNewData({});
+      setReferenceText("");
+      refetch();
     } catch (error) {
       toast.error("Updation Failed");
       console.log(error.message);
@@ -216,7 +226,7 @@ const ProductListingSectionCard = ({ section }) => {
                       {searchResults.map((item) => (
                         <div
                           key={item._id}
-                          className="py-1 hover:bg-neutral-100 transition-colors"
+                          className="py-1 hover:bg-neutral-100 transition-colors cursor-pointer"
                           onClick={() => selectReference(item)}
                         >{`${item.brand || ""} ${item.product_title || ""} ${item.title || ""}`}</div>
                       ))}
@@ -228,7 +238,7 @@ const ProductListingSectionCard = ({ section }) => {
                 <div className="absolute inset-0 bg-white a-input z-100 !flex justify-between items-center">
                   <div className="">{referenceText}</div>
                   <X
-                    className="w-[1.3rem] h-[1.3rem]"
+                    className="w-[1.3rem] h-[1.3rem] cursor-pointer"
                     onClick={() => {
                       if (edit) removeReference();
                     }}
@@ -258,24 +268,37 @@ const ProductListingSectionCard = ({ section }) => {
       </div>
       <div className="self-end flex items-center gap-4">
         {!edit ? (
-          <button
-            className="a-text--button bg-black text-white hover:bg-black/70 active:bg-black transition-colors"
-            onClick={editMode}
-          >
-            Edit Section
-          </button>
-        ) : (
           <>
             <button
-              className={`a-text--button text-white bg-red-700 hover:bg-red-900 transition-colors`}
+              className={`a-text--button text-white bg-red-700 hover:bg-red-900 transition-colors ${operationLoading ? "!cursor-not-allowed opacity-70" : "!cursor-pointer"}`}
+              onClick={() => handleDelete(section._id)}
+              disabled={operationLoading}
             >
               Delete Section
             </button>
             <button
-              className={`a-text--button text-green-800 border border-green-900 hover:text-white hover:bg-green-800  transition-colors`}
-              onClick={submitSection}
+              className={`a-text--button bg-black text-white hover:bg-black/70 active:bg-black transition-colors ${operationLoading ? "!cursor-not-allowed opacity-70" : "!cursor-pointer"}`}
+              onClick={editMode}
+              disabled={operationLoading}
             >
-              Update Section
+              Edit Section
+            </button>
+          </>
+        ) : (
+          <>
+            <button
+              className={`a-text--button text-green-800 border border-green-900 hover:text-white hover:bg-green-800 ${operationLoading ? "!cursor-not-allowed opacity-70" : "cursor-pointer"} transition-colors`}
+              onClick={submitSection}
+              disabled={operationLoading}
+            >
+              {operationLoading ? (
+                <div className="flex items-center gap-1">
+                  Updating{" "}
+                  <Spinner className="w-[1.5rem] h-[1.5rem] animate-spin" />
+                </div>
+              ) : (
+                "Update Section"
+              )}
             </button>
           </>
         )}

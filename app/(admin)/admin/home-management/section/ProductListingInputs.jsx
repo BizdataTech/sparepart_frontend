@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-const ProductListingInputs = () => {
+const ProductListingInputs = ({ refetch }) => {
   const {
     register,
     handleSubmit,
@@ -124,6 +124,7 @@ const ProductListingInputs = () => {
       });
       reset();
       setQuery("");
+      refetch();
       toast.success(result.message);
     } catch (error) {
       toast.error("Failed : Section creation failed");

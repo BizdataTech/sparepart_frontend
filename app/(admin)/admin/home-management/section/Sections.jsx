@@ -6,7 +6,7 @@ import BannerSectionCard from "./BannerSectionCard";
 import ProductListingSectionCard from "./ProductListingSectionCard";
 
 const Sections = () => {
-  let { sections, refetch } = useSection();
+  let { sections, deleteSection, refetch } = useSection();
   return (
     <section className="w-5/6 space-y-4">
       {sections === null && (
@@ -30,9 +30,17 @@ const Sections = () => {
           <div className="space-y-8">
             {sections.map((section) =>
               section.section_type === "banner" ? (
-                <BannerSectionCard section={section} />
+                <BannerSectionCard
+                  section={section}
+                  deleteSection={deleteSection}
+                  refetch={refetch}
+                />
               ) : section.section_type === "product_listing" ? (
-                <ProductListingSectionCard section={section} />
+                <ProductListingSectionCard
+                  section={section}
+                  deleteSection={deleteSection}
+                  refetch={refetch}
+                />
               ) : (
                 <></>
               ),
@@ -42,7 +50,10 @@ const Sections = () => {
       )}
       <div className="a-section--box !space-y-4">
         <div className="a-section--title">Add New Section</div>
-        <SectionCreation refetch={refetch} />
+        <SectionCreation
+          refetch={refetch}
+          count={(sections && sections.length) || 0}
+        />
       </div>
     </section>
   );

@@ -9,7 +9,7 @@ const ProductListingSection = ({ section }) => {
     let getData = async () => {
       try {
         let response = await fetch(
-          `${BACKEND_URL}/api/sections/${section.data_source}?id=${section.reference_id}&limit=${section.limit}`,
+          `${BACKEND_URL}/api/sections/${section.section_type}?reference_id=${section.reference_id}&data_source=${section.data_source}&limit=${section.limit}`,
           {
             method: "GET",
           },
