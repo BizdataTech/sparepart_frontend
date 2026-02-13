@@ -1,12 +1,12 @@
 export default [
   {
-    path: "/admin/dashboard",
-    sidebar_title: "Dashboard",
-    page_title: "Admin Dashboard",
-    icon_class: "fa-solid fa-chart-simple",
+    path: "/admin/products",
+    sidebar_title: "Products",
+    page_title: "Admin Products",
+    icon_class: "fa-solid fa-tag",
     sidebar: true,
-    slug: "dashboard",
-    breadcrumbs: "Admin Dashboard",
+    slug: "products",
+    breadcrumbs: "Admin Products",
   },
   {
     path: "/admin/orders",
@@ -16,15 +16,6 @@ export default [
     sidebar: true,
     slug: "orders",
     breadcrumbs: "Admin Orders",
-  },
-  {
-    path: "/admin/products",
-    sidebar_title: "Products",
-    page_title: "Admin Products",
-    icon_class: "fa-solid fa-tag",
-    sidebar: true,
-    slug: "products",
-    breadcrumbs: "Admin Products",
   },
   {
     path: "/admin/categories",
@@ -63,15 +54,6 @@ export default [
     breadcrumbs: "Admin Users",
   },
   {
-    path: "/admin/coupons",
-    sidebar_title: "Coupons",
-    page_title: "Admin Coupons",
-    icon_class: "fa-solid fa-ticket-simple",
-    sidebar: true,
-    slug: "coupons",
-    breadcrumbs: "Admin Coupons",
-  },
-  {
     path: "/admin/home-management",
     sidebar_title: "Home UI",
     page_title: "Home UI Management",
@@ -79,15 +61,6 @@ export default [
     sidebar: true,
     slug: "home-management",
     breadcrumbs: "Home UI Management",
-  },
-  {
-    path: "/admin/product-section",
-    sidebar_title: "Product Section",
-    page_title: "Product Section Management",
-    icon_class: "fa-solid fa-list",
-    sidebar: true,
-    slug: "product-section",
-    breadcrumbs: "Product Section Management",
   },
   {
     path: "/admin/categories/category-management",
