@@ -15,7 +15,7 @@ const ProductList = ({ products }) => {
             >
               <div>
                 <img
-                  src={product.images[0]}
+                  src={product.images[0]?.url}
                   alt=""
                   className="w-full h-[13rem] md:h-[20rem] object-contain p-2 md:p-8"
                 />

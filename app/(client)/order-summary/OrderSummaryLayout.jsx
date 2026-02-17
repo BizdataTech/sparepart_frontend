@@ -13,7 +13,7 @@ const OrderSummaryLayout = () => {
   let { order } = useOrder(orderId);
   let [redirecting, setRedirecting] = useState(false);
   return (
-    <main className="w-[85%] mx-auto pt-[17rem] pb-[4rem]">
+    <main className="pt-[15rem] lg:pt-[18rem] pb-[4rem]">
       {order ? (
         <div className="space-y-6">
           {order.currentOrderStatus === "placed" && (
@@ -34,24 +34,24 @@ const OrderSummaryLayout = () => {
             <div className="w-full bg-white space-y-4 p-6">
               <div className="text-[2rem] font-medium">Ordered Products</div>
               <div className="grid grid-cols-3 gap-6">
-                {order.products.map((product) => (
+                {order.items.map((item) => (
                   <div className="flex gap-4 border border-stone-200 p-4 text-[1.6rem]">
                     <div>
                       <img
-                        src={product.images[0]}
+                        src={item.product.images[0]?.url}
                         alt="product image"
                         className="w-[12rem] h-[10rem] object-cover"
                       />
                     </div>
                     <div>
-                      <div>{product.product_title}</div>
+                      <div>{item.product.product_title}</div>
                       <div>
                         Part Number :{" "}
                         <span className="font-medium">
-                          {product.part_number}
+                          {item.product.part_number}
                         </span>
                       </div>
-                      <div className="mt-4">Price : {product.price}/-</div>
+                      <div className="mt-4">Price : {item.product.price}/-</div>
                     </div>
                   </div>
                 ))}

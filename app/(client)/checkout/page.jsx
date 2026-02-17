@@ -37,7 +37,7 @@ const Checkout = () => {
   }, []);
 
   return (
-    <div className="w-[85%] mx-auto pt-[15rem] md:pt-[17rem] pb-[4rem] text-neutral-800 flex flex-col md:flex-row gap-6">
+    <div className="pt-[16rem] md:pt-[18rem] pb-[4rem] text-neutral-800 flex flex-col md:flex-row gap-6">
       <div className="w-full md:w-8/12 space-y-[4rem]">
         <ProductList items={cart?.items || []} loading={cartLoad} />
         <Address selectedId={selectedAddressId} setId={setSelectedAddressId} />

@@ -1,10 +1,10 @@
 import { useRef, useState } from "react";
-import { ImageSquare } from "phosphor-react";
+import { ImageSquare, X } from "phosphor-react";
 import { InputLabel } from "@/components/admin/InputLabel";
 
 const Images = ({ utility_object, error }) => {
   let [currentImage, setCurrentImage] = useState(null);
-  let { images, handleImages } = utility_object;
+  let { images, handleImages, cancelImage } = utility_object;
   let inputRef = useRef(null);
 
   const addImage = (event) => {
@@ -30,13 +30,18 @@ const Images = ({ utility_object, error }) => {
             {images.length > 0 &&
               images.map((image) => (
                 <div
-                  className="border-2 border-dashed text-neutral-400 p-4 cursor-pointer"
+                  className="border-2 border-dashed text-neutral-400 p-4 cursor-pointer relative"
                   onMouseOver={() => setCurrentImage(image)}
                 >
                   <img
-                    src={image.preview}
+                    src={image.url || image.preview}
                     alt="image preview"
                     className="w-full h-full object-contain"
+                  />
+                  <X
+                    className="absolute top-1 right-1 w-[1.4rem] h-[1.4rem] text-red-700"
+                    weight="bold"
+                    onClick={(e) => cancelImage(e, image)}
                   />
                 </div>
               ))}
@@ -56,7 +61,7 @@ const Images = ({ utility_object, error }) => {
         <div className="w-1/2 border border-neutral-300 h-[35rem] rounded-sm flex flex-col justify-center items-center relative">
           {currentImage ? (
             <img
-              src={currentImage?.preview}
+              src={currentImage?.url || currentImage?.preview}
               alt="preview image"
               className="w-full h-full object-contain"
             />

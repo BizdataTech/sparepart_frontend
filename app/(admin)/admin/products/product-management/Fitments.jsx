@@ -29,11 +29,11 @@ const Fitments = ({ utility_object, error }) => {
       try {
         let response = await fetch(
           `${BACKEND_URL}/api/auto-vehicles?type=admin-product-search&query=${encodeURIComponent(
-            query.trim()
+            query.trim(),
           )}`,
           {
             method: "GET",
-          }
+          },
         );
         setSearchLoad(false);
         let result = await response.json();

@@ -9,6 +9,7 @@ const useOrder = (id) => {
     let getOrderData = async () => {
       try {
         let response = await fetchOrder(id);
+        console.log("order data:", response);
         setOrder(response);
       } catch (error) {
         console.log(error.message);

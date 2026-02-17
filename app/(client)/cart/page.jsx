@@ -26,9 +26,9 @@ const Cart = () => {
 
   if (!user) return null;
   return (
-    <section className="w-[90%] md:w-[85%] mx-auto pb-4">
+    <section className="">
       {!cart || !cart?.items.length ? (
-        <div className="bg-neutral-200 mt-[10rem] p-8 ">
+        <div className="bg-neutral-200 mt-[10rem] p-8">
           <div className="text-[2.2rem] font-medium">
             Oops, Your cart is empty!
           </div>
@@ -37,7 +37,7 @@ const Cart = () => {
           </div>
         </div>
       ) : (
-        <div className="flex flex-col md:flex-row gap-4 pt-[17rem]">
+        <div className="flex flex-col md:flex-row gap-4 pt-[16rem] md:pt-[18rem]">
           <div className="md:w-4/6 flex flex-col gap-4">
             {cart?.items.map((item) => (
               <CartItem

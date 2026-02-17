@@ -34,16 +34,18 @@ const ProductItem = ({ product }) => {
           />
           {open && (
             <div
-              className="absolute right-[50%] bott bg-white z-100 py-2 px-4"
+              className="absolute right-[50%] bott bg-white z-100"
               ref={boxRef}
             >
               <Link
-                className="py-2 cursor-pointer"
+                className="cursor-pointer"
                 href={`/admin/products/product-management?id=${product._id}`}
               >
-                Update
+                <div className="py-2 px-6 hover:bg-neutral-100 transition-colors">
+                  Update
+                </div>
               </Link>
-              <div className="py-2 font-medium text-red-800 cursor-pointer">
+              <div className="py-2 px-6 hover:bg-neutral-100 transition-colors font-medium text-red-800 cursor-pointer">
                 Delete
               </div>
             </div>

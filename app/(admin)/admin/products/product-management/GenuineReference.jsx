@@ -22,7 +22,7 @@ const GenuineReference = ({ utility_object }) => {
           let response = await fetch(
             `${BACKEND_URL}/api/auto-products?filter=products&category=${
               category._id
-            }&query=${encodeURIComponent(query)}&type=genuine`
+            }&query=${encodeURIComponent(query)}&type=genuine`,
           );
           let result = await response.json();
           if (!response.ok) throw new Error(result.message);
@@ -117,7 +117,7 @@ const GenuineReference = ({ utility_object }) => {
               </div>
             </div>
           </div>,
-          document.getElementById("reference-modal")
+          document.getElementById("reference-modal"),
         )}
       <div className="a-section--box w-2/6 self-start">
         <button
@@ -140,8 +140,7 @@ const GenuineReference = ({ utility_object }) => {
         {genuineReference ? (
           <div className={`flex justify-between h-full`}>
             <div className="flex flex-col">
-              <div className="flex gap-2 items-center mb-4">
-                <CheckCircle weight="fill" className="w-[1rem] h-[1rem] " />
+              <div className="flex gap-2 items-center text-neutral-500 mb-4">
                 <div className="text-[1.2rem] font-medium">
                   Selected Genuine Product Reference
                 </div>

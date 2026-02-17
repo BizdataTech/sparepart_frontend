@@ -4,7 +4,7 @@ const ProductCard = ({ item }) => {
     <div className="border border-neutral-300 p-4 text-[1.6rem] flex items-start gap-8">
       <div>
         <img
-          src={product.images[0]}
+          src={product.images[0]?.url}
           alt={`${product.product_title} image`}
           className="w-[7rem] h-[7rem]"
         />

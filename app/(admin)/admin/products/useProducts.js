@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
-const useProducts = () => {
+const useProducts = (product = null) => {
+  console.log("update-product :", product);
+  let [updateData, setUpdateData] = useState({});
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedBrand, setSelectedBrand] = useState(null);
   const [categories, setCategories] = useState([]);
@@ -14,10 +16,8 @@ const useProducts = () => {
   const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
   const router = useRouter();
 
-  // ui related variables
   const [apiLoading, setApiLoading] = useState(false);
 
-  // input field schema
   let generalDataSchema = {
     product_title: "",
     product_type: "genuine",
@@ -49,7 +49,7 @@ const useProducts = () => {
           `http://localhost:4000/api/auto-products?filter=admin-products&current_page=${currentPage}`,
           {
             method: "GET",
-          }
+          },
         );
         let data = await response.json();
         if (!response.ok) throw new Error(data.message);
@@ -70,7 +70,7 @@ const useProducts = () => {
         `${BACKEND_URL}/api/auto-categories?filter=product-category`,
         {
           method: "GET",
-        }
+        },
       );
       const data = await response.json();
       setCategories(data.categories);
@@ -94,11 +94,14 @@ const useProducts = () => {
     getBrands();
   }, []);
 
-  useEffect(() => {}, [selectedCategory]);
-
   const handleCategory = (category) => {
     setSelectedCategory(category);
     setGenuineReference(null);
+    setUpdateData((prev) => ({
+      ...prev,
+      category: category._id,
+      genuine_reference: null,
+    }));
     setErrors((prev) => {
       let { category, ...rest } = prev;
       return rest;
@@ -107,6 +110,10 @@ const useProducts = () => {
 
   const handleBrand = (brand) => {
     setSelectedBrand(brand);
+    setUpdateData((prev) => ({
+      ...prev,
+      brand: brand._id,
+    }));
     setErrors((prev) => {
       let { brand, ...rest } = prev;
       return rest;
@@ -124,6 +131,50 @@ const useProducts = () => {
   let [adminFields, setAdminFields] = useState(adminFieldSchema);
 
   useEffect(() => {
+    if (product) {
+      setGeneralData({
+        product_title: product.product_title,
+        product_type: product.product_type,
+        description: product.description,
+        price: String(product.price),
+        stock: String(product.available_stock),
+      });
+      setAdminFields({
+        part_number: product.part_number,
+      });
+      setSelectedCategory(product.category);
+      setSelectedBrand(product.brand);
+
+      setImages(
+        product.images.map((file) => ({
+          url: file.url,
+          public_id: file.public_id,
+        })),
+      );
+      setSelectedVehicles(product.fitments);
+
+      try {
+        if (product.genuine_reference) {
+          const getReferenceObject = async () => {
+            let response = await fetch(
+              `${BACKEND_URL}/api/auto-products/${product.genuine_reference}?filter=genuine-update`,
+              {
+                method: "GET",
+              },
+            );
+            let result = await response.json();
+            if (!response.ok) throw new Error(result.message);
+            setGenuineReference(result.product);
+          };
+          getReferenceObject();
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+  }, [product]);
+
+  useEffect(() => {
     setErrors((prev) => {
       if (prev.reference) {
         let { reference, ...rest } = prev;
@@ -131,7 +182,9 @@ const useProducts = () => {
       }
       return prev;
     });
-    if (generalData.product_type === "genuine") setGenuineReference(null);
+    if (generalData.product_type === "genuine") {
+      setGenuineReference(null);
+    }
   }, [generalData.product_type]);
 
   let handleInput = (event) => {
@@ -146,6 +199,10 @@ const useProducts = () => {
         ...prev,
         [name]: value,
       }));
+    setUpdateData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
     if (value.trim().length) {
       setErrors((prev) => {
         let { [name]: _, ...rest } = prev;
@@ -157,6 +214,10 @@ const useProducts = () => {
 
   const handleGenuineReference = (reference_object) => {
     setGenuineReference(reference_object);
+    setUpdateData((prev) => ({
+      ...prev,
+      genuine_reference: reference_object._id,
+    }));
     setErrors((prev) => {
       let { reference, ...rest } = prev;
       return rest;
@@ -165,6 +226,12 @@ const useProducts = () => {
 
   const handleImages = (image_object) => {
     setImages((prev) => [...prev, image_object]);
+    if (product) {
+      setUpdateData((prev) => ({
+        ...prev,
+        images: [...(prev.images || []), image_object.file],
+      }));
+    }
     if (!images.length)
       return setErrors((prev) => {
         let { images, ...rest } = prev;
@@ -172,7 +239,51 @@ const useProducts = () => {
       });
   };
 
+  // image update
+  let [cancelledIDs, setCancelledIDs] = useState([]);
+
+  useEffect(() => {
+    setImages((prev) => {
+      return prev.filter((file) => !cancelledIDs.includes(file.public_id));
+    });
+    setUpdateData((prev) => {
+      let new_update = { ...prev };
+      if (!cancelledIDs.length) delete new_update.cancelledIDs;
+      else new_update.cancelledIDs = cancelledIDs;
+      return new_update;
+    });
+  }, [cancelledIDs]);
+
+  const cancelImage = (e, image) => {
+    e.stopPropagation();
+    if (image.public_id) {
+      setCancelledIDs((prev) => [...prev, image.public_id]);
+    } else {
+      setImages((prev) => prev.filter((obj) => obj.preview !== image.preview));
+      setUpdateData((prev) => {
+        let new_update = { ...prev };
+        if (new_update.images.length === 1) delete new_update.images;
+        else
+          new_update.images = new_update.images.filter(
+            (file) => file.preview !== image.preview,
+          );
+        return new_update;
+      });
+    }
+  };
+
+  const vehicleRef = useRef(false);
+
+  useEffect(() => {
+    if (!vehicleRef.current) return;
+    setUpdateData((prev) => ({
+      ...prev,
+      fitments: selectedVehicles,
+    }));
+  }, [selectedVehicles]);
+
   const selectVehicle = (vehicle) => {
+    if (!vehicleRef.current) vehicleRef.current = true;
     setSelectedVehicles((prev) => [...prev, vehicle]);
     if (!selectedVehicles.length) {
       setErrors((prev) => {
@@ -181,7 +292,9 @@ const useProducts = () => {
       });
     }
   };
+
   const removeVehicle = (id) => {
+    if (!vehicleRef.current) vehicleRef.current = true;
     setSelectedVehicles((prev) => {
       return prev.filter((pv) => pv._id !== id);
     });
@@ -220,29 +333,65 @@ const useProducts = () => {
       });
 
     let formData = new FormData();
-
-    Object.entries(data).forEach(([key, value]) => {
-      formData.append(key, value.trim());
-    });
-    if (genuineReference !== null)
-      formData.append("genuine_reference", genuineReference._id);
-    images.forEach((image) => formData.append("image", image.file));
-    let fitments = selectedVehicles.map((vehicle) => vehicle._id);
-    formData.append("fitments", JSON.stringify(fitments));
+    let response;
 
     try {
-      setApiLoading(true);
-      let response = await fetch(`${BACKEND_URL}/api/auto-products`, {
-        method: "POST",
-        body: formData,
-      });
-      setApiLoading(false);
+      if (product) {
+        console.log("update data:", updateData);
+        if (!Object.keys(updateData).length)
+          return toast.warning(
+            "Updation Dismissed : No new data detected to update product data",
+          );
+
+        Object.entries(updateData).forEach(([key, value]) => {
+          if (key === "images")
+            value.forEach((file) => formData.append("image", file));
+          else if (key === "cancelledIDs")
+            formData.append("cancelledIDs", JSON.stringify(value));
+          else if (key === "fitments")
+            formData.append(
+              "fitments",
+              JSON.stringify(value.map((v) => v._id)),
+            );
+          else formData.append(key, value);
+        });
+
+        // update request
+        setApiLoading(true);
+        response = await fetch(
+          `${BACKEND_URL}/api/auto-products/${product._id}`,
+          {
+            method: "PATCH",
+            body: formData,
+          },
+        );
+        setApiLoading(false);
+      } else {
+        Object.entries(data).forEach(([key, value]) => {
+          formData.append(key, value.trim());
+        });
+        if (genuineReference !== null)
+          formData.append("genuine_reference", genuineReference._id);
+        images.forEach((image) => formData.append("image", image.file));
+        let fitments = selectedVehicles.map((vehicle) => vehicle._id);
+        formData.append("fitments", JSON.stringify(fitments));
+
+        setApiLoading(true);
+        response = await fetch(`${BACKEND_URL}/api/auto-products`, {
+          method: "POST",
+          body: formData,
+        });
+        setApiLoading(false);
+      }
+
       let result = await response.json();
       if (!response.ok) throw new Error(result.message);
       console.log(result.message);
+      toast.success(result.message);
       router.push("/admin/products");
     } catch (error) {
-      console.log("error:", error.message);
+      console.log(error.message);
+      toast.error("Failed : Something went wrong!");
     }
   };
 
@@ -269,6 +418,7 @@ const useProducts = () => {
     },
     images,
     handleImages,
+    cancelImage,
     controlPage,
     currentPage,
     totalPages,

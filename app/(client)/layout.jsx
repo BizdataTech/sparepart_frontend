@@ -9,7 +9,7 @@ export default function ClientLayout({ children }) {
       <main className="h-screen bg-neutral-100 flex flex-col justify-between">
         <div id="modal-container"></div>
         <Header />
-        <div className="w-[90%] md:w-[85%] mx-auto ">{children}</div>
+        <div className="w-[90%] md:w-[85%] mx-auto">{children}</div>
         <Footer />
       </main>
     </>

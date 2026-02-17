@@ -77,7 +77,7 @@ const CartItem = ({ item, setCartTotal, getCart }) => {
       <div className="flex justify-between md:justify-start gap-8">
         <div className="">
           <img
-            src={item?.productId?.images[0]}
+            src={item?.productId?.images[0]?.url}
             alt="product image"
             className="w-[8rem] md:w-[10rem] h-[8rem] md:h-[10rem] object-cover"
           />

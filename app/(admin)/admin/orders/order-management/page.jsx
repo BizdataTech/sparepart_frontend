@@ -33,7 +33,7 @@ const OrderManagement = () => {
             >
               <div className="self-start">
                 <img
-                  src={item.product.images[0]}
+                  src={item.product.images[0]?.url}
                   alt={`${item.product.product_title} image`}
                   className="w-[7rem] h-[7rem] object-cover"
                 />

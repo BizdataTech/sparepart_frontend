@@ -47,7 +47,7 @@ const ProductListingSection = ({ section }) => {
                 className="bg-white h-[25rem] lg:h-[35rem] space-y-4"
               >
                 <img
-                  src={item.images[0]}
+                  src={item.image}
                   alt="product image"
                   className="w-full h-[10rem] lg:h-[20rem] object-contain"
                 />

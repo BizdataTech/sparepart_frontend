@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Spinner } from "phosphor-react";
 import useProducts from "../useProducts";
 import CategoryList from "./CategoryList";
@@ -8,8 +8,10 @@ import { InputLabel } from "@/components/admin/InputLabel";
 import Images from "./Images";
 import Fitments from "./Fitments";
 import GenuineReference from "./GenuineReference";
+import { useSearchParams } from "next/navigation";
 
 const ProductManagement = () => {
+  const [product, setProduct] = useState(null);
   const {
     data,
     categories,
@@ -21,16 +23,38 @@ const ProductManagement = () => {
     reference,
     images,
     handleImages,
+    cancelImage,
     vehicle_utility_object,
     createProduct,
     apiLoading,
     errors,
-  } = useProducts();
+  } = useProducts(product);
 
   let { generalData, adminFields, handleInput } = data;
   const levelCategories = categories.filter((category) => category.level === 1);
   const [isOpen, setIsOpen] = useState(false);
   const [brandOpen, setBrandOpen] = useState(false);
+
+  const params = useSearchParams();
+  const id = params.get("id");
+
+  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+  useEffect(() => {
+    if (!id) return;
+    const getProductData = async () => {
+      try {
+        let response = await fetch(`${BACKEND_URL}/api/auto-products/${id}`, {
+          method: "GET",
+        });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.message);
+        setProduct(result.product);
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    getProductData();
+  }, []);
 
   const handleIsOpen = () => {
     setIsOpen(!isOpen);
@@ -52,6 +76,7 @@ const ProductManagement = () => {
   const image_util = {
     images,
     handleImages,
+    cancelImage,
   };
 
   return (
@@ -199,17 +224,19 @@ const ProductManagement = () => {
             </div>
           )}
           <button
-            className="a-text--button  bg-black text-white !px-[4rem] !py-[1rem] !text-[1.4rem]"
+            className={`a-text--button bg-black text-white !px-[4rem] !py-[1rem] !text-[1.4rem] ${apiLoading && "opacity-60 !cursor-not-allowed"}`}
             onClick={createProduct}
             disabled={apiLoading}
           >
             {apiLoading ? (
               <div className="flex items-center gap-2">
-                <div>Creating Product</div>
-                <Spinner className="w-[2rem] h-[2rem] animate-spin" />
+                {product ? "Updating" : "Creating"}{" "}
+                <Spinner className="w-[1.7rem] h-[1.7rem] animate-spin" />
               </div>
+            ) : product ? (
+              "Update Product"
             ) : (
-              "Create this product"
+              "Create Product"
             )}
           </button>
         </div>

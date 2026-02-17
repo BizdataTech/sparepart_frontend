@@ -61,7 +61,7 @@ const Wishlist = () => {
                 <div className="flex gap-8">
                   <div>
                     <img
-                      src={p.images[0]}
+                      src={p.images[0]?.url}
                       alt=""
                       className="w-[7rem] md:w-[15rem] h-[7rem] md:h-[10rem] object-cover"
                     />

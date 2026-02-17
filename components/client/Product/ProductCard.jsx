@@ -10,7 +10,7 @@ const ProductCard = ({ product }) => {
     >
       <div>
         <img
-          src={product.images[0]}
+          src={product.images[0]?.url}
           alt="producgt image"
           className="h-[12rem] md:h-[15rem] w-full object-contain"
         />

@@ -19,7 +19,7 @@ const ProductList = ({ items, loading }) => {
             <div className="flex gap-8 border border-neutral-400 bg-white p-4">
               <div>
                 <img
-                  src={item.productId.images[0]}
+                  src={item.productId.images[0]?.url}
                   alt=""
                   className="w-[7rem] h-[7rem] object-cover"
                 />

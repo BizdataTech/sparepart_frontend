@@ -35,7 +35,7 @@ const Content = ({ orders }) => {
               <div className="">
                 <img
                   key={order.items[0].product._id}
-                  src={order.items[0].product.images[0]}
+                  src={order.items[0].product.images[0]?.url}
                   alt={`${order.items[0].product.product_title} image`}
                   className="w-[8rem] h-[8rem]"
                 />

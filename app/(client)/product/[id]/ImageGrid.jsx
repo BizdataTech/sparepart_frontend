@@ -74,7 +74,7 @@ export const ImageGrid = ({
         {
           method: "GET",
           credentials: "include",
-        }
+        },
       );
       let result = await response.json();
       if (!response.ok) throw new Error(result.message);
@@ -111,7 +111,7 @@ export const ImageGrid = ({
         <div className="flex flex-col gap-4 items-center justify-start">
           {images.map((image, index) => (
             <img
-              src={image}
+              src={image.url}
               alt={`product ${index}`}
               key={index}
               className="w-[6rem] h-[6rem] border-2 border-red-900 p-1 cursor-pointer"
@@ -126,7 +126,7 @@ export const ImageGrid = ({
           onMouseLeave={() => setShow(false)}
         >
           <img
-            src={image || images[0]}
+            src={image?.url || images[0]?.url}
             alt="product image"
             className="w-full h-full object-contain mx-auto bg-white"
           />
