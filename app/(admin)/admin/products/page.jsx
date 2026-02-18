@@ -8,8 +8,14 @@ import { CaretLeft, CaretRight } from "phosphor-react";
 import ProductItem from "./ProductItem";
 
 const Products = () => {
-  let { products, deleteAllProducts, controlPage, totalPages, currentPage } =
-    useProducts();
+  let {
+    products,
+    deleteAllProducts,
+    controlPage,
+    totalPages,
+    currentPage,
+    refetch,
+  } = useProducts();
   return (
     <section className="a-section--container pb-[4rem]">
       <div>
@@ -57,7 +63,7 @@ const Products = () => {
                 </div>
               </div>
               {products.map((product, index) => (
-                <ProductItem key={index} product={product} />
+                <ProductItem key={index} product={product} refetch={refetch} />
               ))}
             </div>
             <div className="flex justify-end items-center  gap-8 mt-auto">

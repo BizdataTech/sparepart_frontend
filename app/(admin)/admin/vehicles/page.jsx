@@ -26,7 +26,7 @@ const Vehicles = () => {
     vehicle: update.selectedVehicle,
   };
   return (
-    <main className="flex gap-4">
+    <main className="flex gap-6">
       <div className="w-4/6 bg-white self-start mb-8">
         {vehicles.length ? (
           <div className="p-6">
@@ -78,7 +78,7 @@ const Vehicles = () => {
                       <div>{engine}</div>
                     </div>
                   );
-                }
+                },
               )}
               <div></div>
             </div>

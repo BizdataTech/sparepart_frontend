@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { DotsThree } from "phosphor-react";
+import { DotsThree, Spinner } from "phosphor-react";
 import { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
 
-const ProductItem = ({ product }) => {
+const ProductItem = ({ product, refetch }) => {
   let [open, setOpen] = useState(false);
   let boxRef = useRef(null);
 
@@ -16,10 +17,25 @@ const ProductItem = ({ product }) => {
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
+  const [deleteLoad, setDeleteLoad] = useState(false);
+  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
   const deleteProduct = async (id) => {
+    if (deleteLoad) return;
     try {
+      setDeleteLoad(true);
+      let response = await fetch(`${BACKEND_URL}/api/auto-products/${id}`, {
+        method: "DELETE",
+      });
+      setDeleteLoad(false);
+      let result = await response.json();
+      if (response.status === 409) return toast.error(result.message);
+      if (!response.ok) throw new Error(result.message);
+      toast.success(result.message, { unstlyled: true });
+      refetch();
     } catch (error) {
       console.log(error.message);
+      return toast.error(error.message);
     }
   };
 
@@ -54,10 +70,18 @@ const ProductItem = ({ product }) => {
                 </div>
               </Link>
               <div
-                className="py-2 px-6 hover:bg-neutral-100 transition-colors font-medium text-red-800 cursor-pointer"
+                className={`py-2 px-6 hover:bg-neutral-100 shadow-xl transition-colors text-red-800 ${deleteLoad ? "cursor-not-allowed bg-neutral-100 opacity-70" : "cursor-pointer"}`}
                 onClick={() => deleteProduct(product._id)}
+                disabled={deleteLoad}
               >
-                Delete
+                {deleteLoad ? (
+                  <div className="flex items-center gap-1">
+                    Deleting{" "}
+                    <Spinner className="w-[1.5rem] h-[1.5rem] animate-spin" />
+                  </div>
+                ) : (
+                  "Delete"
+                )}
               </div>
             </div>
           )}

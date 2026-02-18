@@ -6,7 +6,7 @@ import useBrand from "./useBrand";
 
 const Brands = () => {
   const {
-    status,
+    loading,
     brandName,
     handleBrandName,
     fileInputRef,
@@ -14,12 +14,15 @@ const Brands = () => {
     handleFileChange,
     previewURL,
     submitBrand,
-    errors,
     brands,
+    handleSelect,
+    update,
+    cancel,
+    errors,
   } = useBrand();
 
   let creation_utils = {
-    status,
+    loading,
     brandName,
     handleBrandName,
     fileInputRef,
@@ -27,14 +30,15 @@ const Brands = () => {
     handleFileChange,
     previewURL,
     submitBrand,
+    update,
+    cancel,
     errors,
   };
 
   return (
-    <main>
+    <main className="flex gap-6">
+      <BrandList brands={brands} handleSelect={handleSelect} />
       <BrandCreation utils={creation_utils} />
-      <hr className="my-16 text-neutral-300" />
-      <BrandList brands={brands} />
     </main>
   );
 };

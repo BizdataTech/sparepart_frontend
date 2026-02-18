@@ -5,7 +5,7 @@ const Form = ({ utils }) => {
   let { data, handleInputs, submitVehicle, state, vehicle, errors } = utils;
   return (
     <section className="w-2/6 bg-white p-6 space-y-6 self-start">
-      <div className="a-section--title !text-[1.4rem]">#Vehicle Build Form</div>
+      <div className="a-section--title !text-[1.6rem]">#Vehicle Build Form</div>
       <div className="space-y-2">
         <InputLabel label={"Make"} />
         <input

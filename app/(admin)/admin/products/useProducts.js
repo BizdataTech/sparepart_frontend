@@ -3,7 +3,6 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
 const useProducts = (product = null) => {
-  console.log("update-product :", product);
   let [updateData, setUpdateData] = useState({});
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedBrand, setSelectedBrand] = useState(null);
@@ -43,26 +42,27 @@ const useProducts = (product = null) => {
   };
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        let response = await fetch(
-          `http://localhost:4000/api/auto-products?filter=admin-products&current_page=${currentPage}`,
-          {
-            method: "GET",
-          },
-        );
-        let data = await response.json();
-        if (!response.ok) throw new Error(data.message);
-        else {
-          setProducts(data.products);
-          setTotalPages(data.total_pages);
-        }
-      } catch (error) {
-        console.log("error:", error.message);
-      }
-    };
     fetchProducts();
   }, [currentPage]);
+
+  const fetchProducts = async () => {
+    try {
+      let response = await fetch(
+        `${BACKEND_URL}/api/auto-products?filter=admin-products&current_page=${currentPage}`,
+        {
+          method: "GET",
+        },
+      );
+      let data = await response.json();
+      if (!response.ok) throw new Error(data.message);
+      else {
+        setProducts(data.products);
+        setTotalPages(data.total_pages);
+      }
+    } catch (error) {
+      console.log("error:", error.message);
+    }
+  };
 
   useEffect(() => {
     const getCategories = async () => {
@@ -443,6 +443,7 @@ const useProducts = (product = null) => {
     createProduct,
     apiLoading,
     errors,
+    refetch: fetchProducts,
   };
 };
 
