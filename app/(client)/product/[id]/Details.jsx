@@ -44,7 +44,7 @@ export const Details = ({ config, show, zoomPosition, image, imageConfig }) => {
 
         <div className="hidden md:block">
           <img
-            src={product.brand.image}
+            src={product.brand.image.url}
             alt={product.brand.brand_name}
             className="w-[7rem] h-[7rem] object-contain"
           />

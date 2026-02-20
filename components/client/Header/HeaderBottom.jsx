@@ -23,8 +23,8 @@ export const HeaderBottom = () => {
         setLoading(false);
         let result = await response.json();
         if (!response.ok) throw new Error(result.message);
-        console.log("dropdown:", result.categories);
-        setCategories(result.categories);
+        setCategories(result.categories ? result.categories : []);
+        console.log("categories:", result.categories);
       } catch (error) {
         console.log("nav bar category fetch error:", error.message);
       }
