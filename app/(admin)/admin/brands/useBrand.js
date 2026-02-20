@@ -140,14 +140,43 @@ const useBrand = () => {
 
       let result = await response.json();
       if (!response.ok) throw new Error(result.message);
-      getBrands();
-      setPreviewURL(null);
-      setBrandName("");
+      setSelectedBrand(null);
       setUpdateData({});
+      setPreviewURL(null);
+      setFile(null);
+      setBrandName("");
+      getBrands();
       toast.success(result.message);
     } catch (error) {
       console.log("error", error.message);
       toast.error("Failed : Brand updation failed");
+    }
+  };
+
+  const [deleteLoad, setDeleteLoad] = useState(false);
+  const deleteBrand = async (id) => {
+    if (deleteLoad) return;
+    try {
+      setDeleteLoad(true);
+      let response = await fetch(
+        `${BACKEND_URL}/api/brands/${selectedBrand.id}`,
+        {
+          method: "DELETE",
+        },
+      );
+      setDeleteLoad(false);
+      let result = await response.json();
+      if (!response.ok) throw new Error(result.message);
+      setSelectedBrand(null);
+      setUpdateData({});
+      setPreviewURL(null);
+      setFile(null);
+      setBrandName("");
+      toast.success(result.message);
+      getBrands();
+    } catch (error) {
+      console.log(error.message);
+      toast.error("Brand Failed to Delete");
     }
   };
 
@@ -165,6 +194,8 @@ const useBrand = () => {
     handleSelect,
     update: selectedBrand ? true : false,
     cancel: cancelUpdate,
+    deleteBrand,
+    deleteLoad,
   };
 };
 

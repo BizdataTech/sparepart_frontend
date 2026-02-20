@@ -1,4 +1,6 @@
 import { Upload, Spinner, X } from "phosphor-react";
+import { useState } from "react";
+import { toast } from "sonner";
 
 const BrandCreation = ({ utils }) => {
   const {
@@ -12,8 +14,11 @@ const BrandCreation = ({ utils }) => {
     submitBrand,
     update,
     cancel,
+    deleteBrand,
+    deleteLoad,
     errors,
   } = utils;
+
   return (
     <section className="w-2/6 bg-white flex flex-col gap-4 p-6">
       <div className="flex justify-between items-center">
@@ -22,10 +27,10 @@ const BrandCreation = ({ utils }) => {
         </div>
         {update && (
           <div
-            className="text-[1.3rem] text-red-500 underline font-medium py-1 px-2 cursor-pointer hover:text-red-700 active:text-red-500 transition-colors flex items-center gap-1"
+            className="text-[1.3rem] text-red-700 bg-red-50 font-medium py-1 px-2 cursor-pointer hover:text-red-500 active:text-red-500 transition-colors flex items-center gap-1"
             onClick={cancel}
           >
-            Cancel Update
+            Cancel Update <X weight="bold" />
           </div>
         )}
       </div>
@@ -86,22 +91,43 @@ const BrandCreation = ({ utils }) => {
         </div>
       </div>
 
-      <button
-        className={`text-[1.6rem] text-white bg-black ${loading ? "cursor-not-allowed opacity-70" : "cursor-pointer"} mt-4 py-4`}
-        onClick={submitBrand}
-        disabled={loading}
-      >
-        {loading ? (
-          <div className="flex justify-center items-center gap-2">
-            {update ? "Updating" : "Creating"}
-            <Spinner className="w-[2rem] h-[2rem] animate-spin" />
-          </div>
-        ) : update ? (
-          "Update Brand"
-        ) : (
-          "Create Brand"
+      <div className="flex items-center gap-4 mt-4">
+        {update && (
+          <button
+            className={`w-full text-[1.6rem] text-white bg-red-700 py-4 ${deleteLoad ? "cursor-not-allowed opacity-70" : "cursor-pointer"}`}
+            onClick={deleteBrand}
+            disabled={deleteLoad}
+          >
+            {deleteLoad ? (
+              <div className="flex justify-center items-center gap-1">
+                Deleting{" "}
+                <Spinner
+                  className="w-[1.8rem] h-[1.8rem] animate-spin"
+                  weight="bold"
+                />
+              </div>
+            ) : (
+              "Delete Brand"
+            )}
+          </button>
         )}
-      </button>
+        <button
+          className={`w-full text-[1.6rem] text-white bg-black ${loading ? "cursor-not-allowed opacity-70" : "cursor-pointer"} py-4`}
+          onClick={submitBrand}
+          disabled={loading}
+        >
+          {loading ? (
+            <div className="flex justify-center items-center gap-2">
+              {update ? "Updating" : "Creating"}
+              <Spinner className="w-[2rem] h-[2rem] animate-spin" />
+            </div>
+          ) : update ? (
+            "Update Brand"
+          ) : (
+            "Create Brand"
+          )}
+        </button>
+      </div>
     </section>
   );
 };

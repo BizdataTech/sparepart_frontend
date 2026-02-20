@@ -18,6 +18,8 @@ const Brands = () => {
     handleSelect,
     update,
     cancel,
+    deleteBrand,
+    deleteLoad,
     errors,
   } = useBrand();
 
@@ -32,6 +34,8 @@ const Brands = () => {
     submitBrand,
     update,
     cancel,
+    deleteBrand,
+    deleteLoad,
     errors,
   };
 
