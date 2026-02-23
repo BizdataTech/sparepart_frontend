@@ -38,13 +38,13 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
-* {
-  /* border: 1px solid green; */
-}
-
 html {
   font-family: var(--font-inter);
   font-size: 10px;
+}
+
+.font--inter {
+  font-family: var(--font-inter);
 }
 
 .bg--primary {
@@ -60,9 +60,11 @@ html {
   --c1: #f2f2f2;
   --c2: #d9d9d9;
 
-  --g: var(--c1) 3.125%, var(--c2) 0 9.375%, var(--c1) 0 15.625%,
+  --g:
+    var(--c1) 3.125%, var(--c2) 0 9.375%, var(--c1) 0 15.625%,
     var(--c2) 0 21.875%, var(--c1) 0 28.125%, #0000 0;
-  background: linear-gradient(
+  background:
+    linear-gradient(
         225deg,
         #0000 3.125%,
         var(--c2) 0 9.375%,
@@ -111,7 +113,7 @@ html {
   @apply w-[50rem] bg-white p-8;
 }
 .modal--input {
-  @apply w-full text-[1.6rem] border border-neutral-400 outline-0 p-4;
+  @apply w-full text-[1.6rem] bg-neutral-200/50 rounded-[.7rem] outline-0 p-4;
 }
 .modal--button {
   @apply text-[1.5rem] text-white bg-black font-medium py-4 w-full;
