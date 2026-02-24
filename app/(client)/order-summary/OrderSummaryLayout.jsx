@@ -1,10 +1,11 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import useOrder from "./useOrder";
 import Link from "next/link";
 import { Cube, Gift, Sparkle, Spinner } from "phosphor-react";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "@/context/userContext";
 
 const OrderSummaryLayout = () => {
   let searchParams = useSearchParams();
@@ -12,6 +13,16 @@ const OrderSummaryLayout = () => {
 
   let { order } = useOrder(orderId);
   let [redirecting, setRedirecting] = useState(false);
+
+  const { user } = useContext(UserContext);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (user === false) router.replace("/");
+  }, [user]);
+
+  if (user === null) return null;
+
   return (
     <main className="pt-[15rem] lg:pt-[18rem] pb-[4rem]">
       {order ? (

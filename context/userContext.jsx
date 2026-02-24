@@ -8,14 +8,15 @@ const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   let BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
   useEffect(() => {
-    let url = `${BACKEND_URL}/api/auth/verify/me`;
     const getUserStat = async () => {
       try {
-        const response = await fetch(url, {
+        const response = await fetch(`${BACKEND_URL}/api/auth/verify/me`, {
           method: "GET",
           credentials: "include",
         });
         const result = await response.json();
+        console.log(result.message);
+        if (response.status === 403) toast.error(result.message);
         if (!response.ok) throw new Error(result.message);
         setUser(result.user);
       } catch (error) {
@@ -37,7 +38,7 @@ const UserProvider = ({ children }) => {
         body: JSON.stringify(userData),
       });
       let data = await response.json();
-      if (response.status === 401) {
+      if ([401, 403].includes(response.status)) {
         return { error: data.message };
       }
       if (!response.ok) throw new Error(data.message);
