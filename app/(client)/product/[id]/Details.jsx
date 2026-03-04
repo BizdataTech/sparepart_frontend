@@ -60,7 +60,7 @@ export const Details = ({ config, show, zoomPosition, image, imageConfig }) => {
         </div>
         {show && (
           <div
-            className="absolute inset-0 h-[50rem] pointer-events-none shadow-2xl"
+            className="absolute inset-0 h-[50rem] pointer-events-none shadow-2xl bg-white"
             style={{
               backgroundImage: `url(${image?.url || images[0]?.url})`,
               backgroundPosition: `${zoomPosition.x}% ${zoomPosition.y}%`,

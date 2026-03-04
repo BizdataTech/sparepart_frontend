@@ -35,7 +35,7 @@ const AddressModal = ({ close, refetch, addressId }) => {
         {
           method: "GET",
           credentials: "include",
-        }
+        },
       );
       let result = await response.json();
       if (!response.ok) throw new Error(result.message);

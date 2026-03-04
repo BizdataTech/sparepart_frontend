@@ -26,6 +26,7 @@ const ProductItem = ({ product, refetch }) => {
       setDeleteLoad(true);
       let response = await fetch(`${BACKEND_URL}/api/auto-products/${id}`, {
         method: "DELETE",
+        credentials: "include",
       });
       setDeleteLoad(false);
       let result = await response.json();
@@ -40,7 +41,7 @@ const ProductItem = ({ product, refetch }) => {
   };
 
   return (
-    <div className="flex justify-between py-4 px-4 border-b-0 border-neutral-200 last:border-b-0 text-[1.3rem] text-neutral-800 items-center even:bg-neutral-100">
+    <div className="flex justify-between py-4 px-4  text-neutral-800 items-center even:bg-neutral-100">
       <div className="grid grid-cols-4 w-[80%] gap-[2rem]">
         <div>{product?.product_title}</div>
         <div>{product?.category?.title}</div>

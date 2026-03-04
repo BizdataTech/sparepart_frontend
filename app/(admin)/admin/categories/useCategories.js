@@ -4,6 +4,7 @@ import { toast } from "sonner";
 
 const useCategories = (action, category_id) => {
   const [categories, setCategories] = useState(null);
+  const [results, setResults] = useState(null);
   const [error, setError] = useState(null);
   const [actualCategoryTitle, setActualCategoryTitle] = useState("");
   const [categoryTitle, setCategoryTitle] = useState("");
@@ -16,9 +17,6 @@ const useCategories = (action, category_id) => {
 
   const router = useRouter();
   const BACKEND_API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-  // const searchParams = useSearchParams();
-  // const action = searchParams.get("action");
-  // const category_id = searchParams.get("category_id");
 
   useEffect(() => {
     const fetchCategory = async () => {
@@ -26,7 +24,7 @@ const useCategories = (action, category_id) => {
         `${BACKEND_API_URL}/api/auto-categories/${category_id}`,
         {
           method: "GET",
-        }
+        },
       );
       const data = await response.json();
       if (response.ok) {
@@ -54,15 +52,15 @@ const useCategories = (action, category_id) => {
   useEffect(() => {
     const fetchCategories = async () => {
       const response = await fetch(
-        `${BACKEND_API_URL}/api/auto-categories?filter=all&current_page=${currentPage}`,
+        `${BACKEND_API_URL}/api/auto-categories?filter=all&current_page=${currentPage}&search=`,
         {
           method: "GET",
-        }
+        },
       );
       const data = await response.json();
       if (response.ok) {
         console.log("categories:", data.categories);
-        setCategories(data.categories);
+        setCategories(data.result);
         setTotalPages(data.total_pages);
       } else throw new Error(data.message);
     };
@@ -70,12 +68,15 @@ const useCategories = (action, category_id) => {
   }, [currentPage]);
 
   useEffect(() => {
+    setResults(categories);
+  }, [categories]);
+  useEffect(() => {
     async function fetchLevels() {
       const response = await fetch(
         `${BACKEND_API_URL}/api/auto-categories?filter=level`,
         {
           method: "GET",
-        }
+        },
       );
       const data = await response.json();
       if (response.ok) {
@@ -109,7 +110,7 @@ const useCategories = (action, category_id) => {
     try {
       const response = await fetch(
         `${BACKEND_API_URL}/api/auto-categories?filter=parent&level=${level}`,
-        { method: "GET" }
+        { method: "GET" },
       );
       const data = await response.json();
       if (response.ok) {
@@ -140,7 +141,7 @@ const useCategories = (action, category_id) => {
       else {
         const response = await fetch(
           `${BACKEND_API_URL}/api/auto-categories?filter=title&title=${categoryTitle}&actual_title=${actualCategoryTitle}`,
-          { method: "GET" }
+          { method: "GET" },
         );
         const data = await response.json();
         if (response.ok) {
@@ -175,6 +176,7 @@ const useCategories = (action, category_id) => {
           headers: {
             "Content-Type": "application/json",
           },
+          credentials: "include",
           body: JSON.stringify(data),
         });
       } else if (action === "update") {
@@ -185,8 +187,9 @@ const useCategories = (action, category_id) => {
             headers: {
               "Content-Type": "application/json",
             },
+            credentials: "include",
             body: JSON.stringify(data),
-          }
+          },
         );
       }
 
@@ -208,7 +211,8 @@ const useCategories = (action, category_id) => {
         `http://localhost:4000/api/auto-categories/${deleteid}`,
         {
           method: "DELETE",
-        }
+          credentials: "include",
+        },
       );
       const data = await response.json();
       if (response.ok) {
@@ -223,21 +227,10 @@ const useCategories = (action, category_id) => {
     }
   };
 
-  const deleteAll = async () => {
-    const response = await fetch(`${BACKEND_API_URL}/api/categories`, {
-      method: "DELETE",
-      credentials: "include",
-    });
-    if (response.ok) {
-      toast.success("All Categories Deleted");
-      setCategories([]);
-    }
-  };
-
   return {
-    deleteAll,
     action,
-    categories,
+    categories: results,
+    setResults,
     currentPage,
     totalPages,
     handlePage,

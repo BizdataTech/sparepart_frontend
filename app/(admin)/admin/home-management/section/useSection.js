@@ -27,6 +27,7 @@ const useSection = () => {
     try {
       let response = await fetch(`${BACKEND_URL}/api/sections/${id}`, {
         method: "DELETE",
+        credentials: "include",
       });
       let result = await response.json();
       if (!response.ok) throw new Error(result.message);

@@ -4,12 +4,14 @@ import { toast } from "sonner";
 
 const BannerInputs = ({ refetch }) => {
   let [errors, setErrors] = useState({});
+  let [bannerType, setBannerType] = useState("main");
   let [file, setFile] = useState(null);
   let [preview, setPreview] = useState(null);
   let [bannerDetails, setBannerDetails] = useState({
     data_source: "product",
     reference_id: "",
   });
+
   let [selectedText, setSelectedText] = useState("");
   let [query, setQuery] = useState("");
   let [searchResults, setSearchResults] = useState(null);
@@ -117,6 +119,7 @@ const BannerInputs = ({ refetch }) => {
 
     let formData = new FormData();
     formData.append("section_type", "banner");
+    formData.append("banner_type", bannerType);
     formData.append("secure_url", file);
     formData.append("data_source", bannerDetails.data_source);
     formData.append("reference_id", bannerDetails.reference_id);
@@ -124,6 +127,7 @@ const BannerInputs = ({ refetch }) => {
       setSubmitLoading(true);
       let response = await fetch(`${BACKEND_URL}/api/sections`, {
         method: "POST",
+        credentials: "include",
         body: formData,
       });
       setSubmitLoading(false);
@@ -152,6 +156,33 @@ const BannerInputs = ({ refetch }) => {
 
   return (
     <section className="flex flex-col gap-8">
+      <div className="flex flex-col gap-2 ">
+        <div>Banner Type</div>
+        <div className="flex items-center gap-[4rem]">
+          <div className="flex items-center gap-2">
+            <input
+              type="radio"
+              name="banner_type"
+              id="main"
+              value="main"
+              checked={bannerType === "main"}
+              onChange={() => setBannerType("main")}
+            />
+            <label htmlFor="main">Main</label>
+          </div>
+          <div className="flex items-center gap-2">
+            <input
+              type="radio"
+              name="banner_type"
+              id="mini"
+              value="mini"
+              checked={bannerType === "mini"}
+              onChange={() => setBannerType("mini")}
+            />
+            <label htmlFor="mini">Mini</label>
+          </div>
+        </div>
+      </div>
       <div className="space-y-4">
         <div className="flex justify-between items-end">
           <div>Banner Image</div>

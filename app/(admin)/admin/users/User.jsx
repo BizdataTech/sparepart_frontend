@@ -56,18 +56,21 @@ const User = ({ user, refetch }) => {
 
   return (
     <div
-      className="grid grid-cols-5 gap-8 border-b-0 border-neutral-200 last:border-b-0 text-[1.3rem] text-neutral-800 items-center even:bg-neutral-100"
+      className="a-text--body grid grid-cols-6 gap-8 border-b-0 border-neutral-200 last:border-b-0 text-neutral-800 items-center even:bg-neutral-100"
       key={user._id}
     >
-      <div className="text-start py-4 px-4">
-        {dayjs(user.createdAt).format("DD-MM-YYYY")}
-      </div>
-      <div className="text-center py-4 px-4">{user.username}</div>
+      <div className="text-start py-4 px-4">{user.username}</div>
       <div className="text-center py-4 px-4">{user.email}</div>
       <div
         className={`text-center font-medium py-4 px-4 ${user.blocked ? "text-red-700" : "text-green-700"}`}
       >
         {user.blocked ? "Blocked" : "Active"}
+      </div>
+      <div className="text-center py-4 px-4">
+        {dayjs(user.createdAt).format("DD-MM-YYYY")}
+      </div>
+      <div className="text-center py-4 px-4">
+        {dayjs(user.createdAt).format("hh:mm a")}
       </div>
       <div className="text-center py-4 px-4 relative">
         <DotsThree

@@ -99,7 +99,7 @@ const ImageModal = ({ variants, sku, func, handleImages }) => {
         </div>
       </div>
     </div>,
-    document.body
+    document.body,
   );
 };
 

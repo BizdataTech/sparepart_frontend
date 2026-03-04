@@ -14,7 +14,7 @@ const AddressModal = ({ setModal, addressId, setAddressId, setAddress }) => {
           {
             method: "GET",
             credentials: "include",
-          }
+          },
         );
         let result = await response.json();
         if (!response.ok) throw new Error(result.message);

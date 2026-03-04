@@ -150,7 +150,10 @@ const RegisterForm = ({ setBox }) => {
               {loading ? (
                 <div className="flex items-center gap-2">
                   Submitting{" "}
-                  <Spinner className="animate-spin w-[1.8rem] h-[1.8rem]" />
+                  <Spinner
+                    className="animate-spin w-[2rem] h-[2rem]"
+                    weight="bold"
+                  />
                 </div>
               ) : isRegister ? (
                 "Create Account"

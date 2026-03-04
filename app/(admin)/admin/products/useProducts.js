@@ -31,6 +31,7 @@ const useProducts = (product = null) => {
 
   // getting all products
   const [products, setProducts] = useState(null);
+  const [results, setResults] = useState(null);
   let [currentPage, setCurrentPage] = useState(1);
   let [totalPages, setTotalPages] = useState(1);
 
@@ -45,10 +46,14 @@ const useProducts = (product = null) => {
     fetchProducts();
   }, [currentPage]);
 
+  useEffect(() => {
+    setResults(products);
+  }, [products]);
+
   const fetchProducts = async () => {
     try {
       let response = await fetch(
-        `${BACKEND_URL}/api/auto-products?filter=admin-products&current_page=${currentPage}`,
+        `${BACKEND_URL}/api/auto-products?filter=admin-products&current_page=${currentPage}&search=`,
         {
           method: "GET",
         },
@@ -56,7 +61,7 @@ const useProducts = (product = null) => {
       let data = await response.json();
       if (!response.ok) throw new Error(data.message);
       else {
-        setProducts(data.products);
+        setProducts(data.result);
         setTotalPages(data.total_pages);
       }
     } catch (error) {
@@ -81,12 +86,12 @@ const useProducts = (product = null) => {
   useEffect(() => {
     let getBrands = async () => {
       try {
-        let response = await fetch(`${BACKEND_URL}/api/brands`, {
+        let response = await fetch(`${BACKEND_URL}/api/brands?search=`, {
           method: "GET",
         });
         let result = await response.json();
         if (!response.ok) throw new Error(result.message);
-        setBrands(result.brands);
+        setBrands(result.result);
       } catch (error) {
         console.log("error:", error.message);
       }
@@ -363,6 +368,7 @@ const useProducts = (product = null) => {
           {
             method: "PATCH",
             body: formData,
+            credentials: "include",
           },
         );
         setApiLoading(false);
@@ -379,6 +385,7 @@ const useProducts = (product = null) => {
         setApiLoading(true);
         response = await fetch(`${BACKEND_URL}/api/auto-products`, {
           method: "POST",
+          credentials: "include",
           body: formData,
         });
         setApiLoading(false);
@@ -395,21 +402,6 @@ const useProducts = (product = null) => {
     }
   };
 
-  const deleteAllProducts = async () => {
-    try {
-      let response = await fetch(`${BACKEND_URL}/api/products`, {
-        method: "DELETE",
-      });
-      let data = await response.json();
-      if (!response.ok) throw new Error(data.message);
-      else {
-        toast.success(data.message);
-      }
-    } catch (error) {
-      console.error(error.message);
-    }
-  };
-
   return {
     data: {
       generalData,
@@ -422,14 +414,14 @@ const useProducts = (product = null) => {
     controlPage,
     currentPage,
     totalPages,
-    deleteAllProducts,
     brands,
     selectedBrand,
     handleBrand,
     categories,
     selectedCategory,
     handleCategory,
-    products,
+    products: results,
+    setResults,
     reference: {
       genuineReference,
       handleGenuineReference,

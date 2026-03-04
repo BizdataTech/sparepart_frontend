@@ -17,6 +17,7 @@ const Logo = () => {
       try {
         let response = await fetch(`${BACKEND_URL}/api/admin/home/logo`, {
           method: "GET",
+          credentials: "include",
         });
         let result = await response.json();
         if (!response.ok) throw new Error(result.message);
@@ -43,6 +44,7 @@ const Logo = () => {
       let response = await fetch(`${BACKEND_URL}/api/admin/home/logo`, {
         method: "POST",
         body: formData,
+        credentials: "include",
       });
       setLoading(false);
       let result = await response.json();

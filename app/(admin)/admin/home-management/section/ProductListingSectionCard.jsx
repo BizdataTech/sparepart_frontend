@@ -22,6 +22,12 @@ const ProductListingSectionCard = ({ section, deleteSection, refetch }) => {
   let [referenceText, setReferenceText] = useState("");
   let [errors, setErrors] = useState({});
 
+  let selectedLimit =
+    newData.limit === undefined ? sectionData.limit : newData.limit;
+
+  let selectedLayout =
+    newData.layout === undefined ? sectionData.layout : newData.layout;
+
   let BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
   useEffect(() => {
@@ -146,6 +152,7 @@ const ProductListingSectionCard = ({ section, deleteSection, refetch }) => {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify(newData),
       });
       setOperationLoading(false);
@@ -251,18 +258,43 @@ const ProductListingSectionCard = ({ section, deleteSection, refetch }) => {
         <div className="flex flex-col gap-4">
           <div className="a-text--label">Section Item Limit</div>
           <div className="flex gap-[4rem] text-[1.4rem]">
-            {["4", "6", "8", "10", "12"].map((count, i) => (
+            {["4", "5", "6", "8", "10", "12"].map((count, i) => (
               <div className="flex items-center gap-2" key={i}>
                 <input
                   type="radio"
-                  name={`count-${section._id}`}
-                  id={`count-${section._id}-${count}`}
+                  name={`limit`}
+                  id={`limit-${section._id}-${count}`}
                   value={count}
-                  checked={String(sectionData.limit) == count}
+                  checked={selectedLimit == count}
+                  onChange={handleData}
+                  disabled={!edit}
                 />
-                <label htmlFor={`count-${section._id}-${count}`}>{count}</label>
+                <label htmlFor={`limit-${section._id}-${count}`}>{count}</label>
               </div>
             ))}
+          </div>
+        </div>
+        <div className="flex items-center gap-4">
+          <div className="space-y-2 w-1/2">
+            <InputLabel label="Layout" error={errors?.layout?.message} />
+            <div className="flex items-center gap-[4rem] text-[1.4rem]">
+              {["horizontal", "grid"].map((layout) => (
+                <div className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name="layout"
+                    id={layout}
+                    value={layout}
+                    checked={selectedLayout == layout}
+                    onChange={handleData}
+                    disabled={!edit}
+                  />
+                  <label htmlFor={layout} className="capitalize">
+                    {layout}
+                  </label>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

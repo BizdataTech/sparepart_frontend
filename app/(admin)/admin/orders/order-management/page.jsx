@@ -29,30 +29,30 @@ const OrderManagement = () => {
           {data.items.map((item) => (
             <div
               className="a-section--box !rounded-[0rem] a-text--body gap-8"
-              key={item.product._id}
+              key={item.product?._id}
             >
               <div className="self-start">
                 <img
-                  src={item.product.images[0]?.url}
-                  alt={`${item.product.product_title} image`}
+                  src={item.product?.images[0]?.url}
+                  alt={`${item.product?.product_title} image`}
                   className="w-[7rem] h-[7rem] object-cover"
                 />
               </div>
               <div>
-                <div>{item.product.product_title}</div>
+                <div>{item.product?.product_title}</div>
                 <div>
                   Part Number :{" "}
                   <span className="font-medium">
-                    {item.product.part_number}
+                    {item.product?.part_number}
                   </span>
                 </div>
                 <div className="flex items-center justify-between mt-8">
                   <div>
-                    ₹ <span className="font-medium">{item.product.price}</span>
+                    ₹ <span className="font-medium">{item.product?.price}</span>
                   </div>
                   <div>
                     Quantity :{" "}
-                    <span className="font-medium">{item.quantity}</span>
+                    <span className="font-medium">{item?.quantity}</span>
                   </div>
                 </div>
               </div>

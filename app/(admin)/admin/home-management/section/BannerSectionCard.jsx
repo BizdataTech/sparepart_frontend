@@ -164,6 +164,7 @@ const BannerSectionCard = ({ section, deleteSection, refetch }) => {
       setLoading(true);
       let response = await fetch(`${BACKEND_URL}/api/sections/${section._id}`, {
         method: "PATCH",
+        credentials: "include",
         body: formData,
       });
       setLoading(false);

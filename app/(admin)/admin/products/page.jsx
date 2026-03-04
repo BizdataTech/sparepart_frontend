@@ -6,52 +6,34 @@ import useProducts from "./useProducts";
 import ShimmerContainer from "@/components/admin/ShimmerContainer";
 import { CaretLeft, CaretRight } from "phosphor-react";
 import ProductItem from "./ProductItem";
+import SearchSection from "@/components/admin/SearchSection";
+import EmptyRow from "@/components/admin/EmptyRow";
 
 const Products = () => {
-  let {
-    products,
-    deleteAllProducts,
-    controlPage,
-    totalPages,
-    currentPage,
-    refetch,
-  } = useProducts();
+  let { products, setResults, controlPage, totalPages, currentPage, refetch } =
+    useProducts();
   return (
     <section className="a-section--container pb-[4rem]">
       <div>
         {products === null ? (
           <ShimmerContainer />
-        ) : products.length ? (
-          <div className="a-section--box w-full max-w-full min-h-[88svh] flex flex-col gap-2">
+        ) : (
+          <div className="w-full max-w-full min-h-[88svh] flex flex-col gap-4">
             <div className="flex flex-row justify-between items-center gap-4">
-              <div className="flex gap-4 w-full max-w-[50rem]">
-                <div className="bg-white w-full">
-                  <input
-                    type="search"
-                    className="bg-neutral-100 w-full py-[.8rem] px-4 text-[1.3rem] font-medium rounded-[.3rem]"
-                    placeholder="Search category here ..."
-                  />
-                </div>
-                <button className="search a-text--button text-black bg-neutral-200">
-                  Search
-                </button>
-                <button
-                  className="a-text--button bg-neutral-100 hover:bg-red-100 hover:text-red-700"
-                  onClick={deleteAllProducts}
-                  disabled
-                >
-                  delete all products
-                </button>
-              </div>
+              <SearchSection
+                placeholder="Search for products"
+                type="products"
+                setResults={setResults}
+              />
               <Link
-                className="a-text--button !text-[1.2rem] text-white bg-black/80 hover:bg-black !py-3 transition !rounded-[.3rem]"
+                className="a-text--button ml-auto !text-[1.2rem] text-white bg-black/80 hover:bg-black !py-3 transition !rounded-[.3rem]"
                 href="/admin/products/product-management"
               >
                 Add new product
               </Link>
             </div>
-            <div className="w-full border-0 border-neutral-300 bg-white">
-              <div className="flex justify-between py-4 px-4 border-0 border-neutral-200 text-[1.3rem] font-semibold text-neutral-700">
+            <div className="w-full a-text--body a-section--box !p-0 border-0 border-neutral-300 bg-white">
+              <div className="flex justify-between py-4 px-4 border-0 border-neutral-200 font-semibold text-neutral-700">
                 <div className="grid grid-cols-4 w-[80%] gap-[2rem]">
                   <div>Product Title</div>
                   <div>Category</div>
@@ -65,6 +47,7 @@ const Products = () => {
               {products.map((product, index) => (
                 <ProductItem key={index} product={product} refetch={refetch} />
               ))}
+              {products.length === 0 && <EmptyRow text="No result found" />}
             </div>
             <div className="flex justify-end items-center  gap-8 mt-auto">
               <CaretLeft
@@ -84,16 +67,7 @@ const Products = () => {
               />
             </div>
           </div>
-        ) : (
-          <AdminElseBlock
-            title={"Add the first product"}
-            section_note={
-              "Start adding your products in the application for you customers to access."
-            }
-            path={"/admin/products/product-management"}
-            button_text={"add product"}
-          />
-        )}{" "}
+        )}
       </div>
     </section>
   );

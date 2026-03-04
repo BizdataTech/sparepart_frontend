@@ -1,47 +1,49 @@
 "use client";
 
-import { CaretLeft, CaretRight } from "phosphor-react";
+import { CaretLeft, CaretRight, DotsThreeVertical } from "phosphor-react";
 import Form from "./Form.jsx";
 import useVehicles from "./useVehicles.js";
+import { useEffect, useState } from "react";
+import Data from "./Data.jsx";
+import SearchSection from "@/components/admin/SearchSection.jsx";
+import EmptyRow from "@/components/admin/EmptyRow.jsx";
 
 const Vehicles = () => {
   let {
     vehicles,
-    data,
-    handleInputs,
-    submitVehicle,
-    state,
+    setResults,
+    selectedVehicle,
+    setSelectedVehicle,
     currentPage,
     totalPages,
     handlePage,
-    update,
-    errors,
+    refetch,
   } = useVehicles();
-  let formUtils = {
-    data,
-    handleInputs,
-    submitVehicle,
-    state,
-    errors,
-    vehicle: update.selectedVehicle,
-  };
+
+  const [modalBox, setModalBox] = useState(false);
+
+  useEffect(() => {
+    if (selectedVehicle) setModalBox(true);
+  }, [selectedVehicle]);
+
   return (
     <main className="flex gap-6">
-      <div className="w-4/6 bg-white self-start mb-8">
-        {vehicles.length ? (
-          <div className="p-6">
-            <div className="flex items-center justify-between">
-              <div className="w-1/2 flex gap-2">
-                <input
-                  type="text"
-                  className="a-input"
-                  placeholder="Search for vehicles here"
-                />
-                <button className="bg-black text-white font-medium text-[1.4rem] px-4">
-                  Search
-                </button>
-              </div>
-              <div className="flex items-center gap-4 text-[1.4rem]">
+      <div className="w-full self-start">
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center justify-between">
+            <SearchSection
+              placeholder="Search for vehicles"
+              type="vehicles"
+              setResults={setResults}
+            />
+            <button
+              className="a-text--button ml-auto !text-[1.2rem] text-white bg-black/80 hover:bg-black !py-3 transition !rounded-[.3rem]"
+              onClick={() => setModalBox(true)}
+            >
+              Add New Vehicle
+            </button>
+          </div>
+          {/* <div className="flex items-center gap-4 self-end text-[1.4rem]">
                 <CaretLeft
                   weight="fill"
                   className="cursor-pointer"
@@ -53,46 +55,44 @@ const Vehicles = () => {
                   className="cursor-pointer"
                   onClick={() => handlePage("up")}
                 />
-              </div>
+              </div> */}
+          <div className="a-section--box !p-0">
+            <div className="grid grid-cols-5 gap-2">
+              {["Make", "Model", "Year", "Engine", "Options"].map((head, i) => (
+                <div
+                  className="text-[1.4rem] font-medium py-4 px-4 last:text-end mr-4"
+                  key={i}
+                >
+                  {head}
+                </div>
+              ))}
             </div>
-            <div className="mt-10 space-y-4">
-              <div className="grid grid-cols-5 gap-2">
-                {["Make", "Model", "Year", "Engine", "Options"].map((head) => (
-                  <div className="text-[1.4rem] font-medium">{head}</div>
-                ))}
-              </div>
-              {vehicles.map(
-                ({ make, model, engine, start_year, end_year, _id }) => {
-                  let matching_vehicle = update.selectedVehicle === _id;
-                  return (
-                    <div
-                      className={`grid grid-cols-5 gap-2 text-[1.4rem] hover:bg-neutral-200 active:bg-neutral-300/50 cursor-pointer transition-colors py-1 ${
-                        matching_vehicle ? "bg-neutral-200" : ""
-                      }`}
-                      key={_id}
-                      onClick={() => update.handleVehicle(_id)}
-                    >
-                      <div>{make}</div>
-                      <div>{model}</div>
-                      <div>{`${start_year} - ${end_year}`}</div>
-                      <div>{engine}</div>
-                    </div>
-                  );
-                },
-              )}
-              <div></div>
-            </div>
+            {vehicles && vehicles.length >= 1 ? (
+              vehicles.map((v) => (
+                <Data
+                  v={v}
+                  select={() => setSelectedVehicle({ ...v })}
+                  refetch={refetch}
+                  key={v._id}
+                />
+              ))
+            ) : (
+              <EmptyRow text="No result found" />
+            )}
           </div>
-        ) : (
-          <div className="p-6">
-            <div className="text-[1.8rem] font-medium">No Vehicles Found</div>
-            <div className="text-[1.6rem]">
-              Counldn't found any vehicles. Add more vehicles
-            </div>
-          </div>
-        )}
+        </div>
       </div>
-      <Form utils={formUtils} />
+
+      {modalBox && (
+        <div className="fixed inset-0 bg-black/30 z-100 flex justify-center items-center">
+          <Form
+            selectedVehicle={selectedVehicle}
+            setSelectedVehicle={setSelectedVehicle}
+            refetch={refetch}
+            close={() => setModalBox(false)}
+          />
+        </div>
+      )}
     </main>
   );
 };

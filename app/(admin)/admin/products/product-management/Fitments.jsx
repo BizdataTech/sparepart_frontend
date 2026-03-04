@@ -13,6 +13,16 @@ const Fitments = ({ utility_object, error }) => {
   let BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
   let { selectedVehicles, selectVehicle, removeVehicle } = utility_object;
+  let visibleRef = useRef(null);
+
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (visibleRef.current && !visibleRef.current.contains(e.target))
+        setVisible(false);
+    };
+    document.addEventListener("click", handleClick);
+    return () => document.removeEventListener("click", handleClick);
+  });
 
   useEffect(() => {
     if (debounce.current) clearTimeout(debounce.current);
@@ -65,7 +75,10 @@ const Fitments = ({ utility_object, error }) => {
             </div>
 
             {visible && (
-              <div className="absolute w-full bg-white shadow-sm p-4 min-h-auto max-h-[22rem] overflow-y-scroll text-[1.4rem]">
+              <div
+                className="absolute w-full bg-white shadow-sm p-4 min-h-auto max-h-[22rem] overflow-y-scroll text-[1.4rem]"
+                ref={visibleRef}
+              >
                 {searchLoad ? (
                   <div className="flex gap-2 items-center justify-center">
                     <span className="text-[1.4rem]">Searching</span>{" "}

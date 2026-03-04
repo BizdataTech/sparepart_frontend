@@ -28,18 +28,20 @@ const Sections = () => {
         <div className="space-y-2">
           <div className="a-section--title">Sections</div>
           <div className="space-y-8">
-            {sections.map((section) =>
+            {sections.map((section, i) =>
               section.section_type === "banner" ? (
                 <BannerSectionCard
                   section={section}
                   deleteSection={deleteSection}
                   refetch={refetch}
+                  key={i}
                 />
               ) : section.section_type === "product_listing" ? (
                 <ProductListingSectionCard
                   section={section}
                   deleteSection={deleteSection}
                   refetch={refetch}
+                  key={i}
                 />
               ) : (
                 <></>

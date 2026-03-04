@@ -36,15 +36,6 @@ export default [
     breadcrumbs: "Admin Vehicles",
   },
   {
-    path: "/admin/brands",
-    sidebar_title: "Brands",
-    page_title: "Brand Management",
-    icon_class: "fa-solid fa-gem",
-    sidebar: true,
-    slug: "brands",
-    breadcrumbs: "Brand Management",
-  },
-  {
     path: "/admin/users",
     sidebar_title: "Users",
     page_title: "Admin Users",
@@ -52,6 +43,15 @@ export default [
     sidebar: true,
     slug: "users",
     breadcrumbs: "Admin Users",
+  },
+  {
+    path: "/admin/brands",
+    sidebar_title: "Brands",
+    page_title: "Brand Management",
+    icon_class: "fa-solid fa-gem",
+    sidebar: true,
+    slug: "brands",
+    breadcrumbs: "Brand Management",
   },
   {
     path: "/admin/home-management",

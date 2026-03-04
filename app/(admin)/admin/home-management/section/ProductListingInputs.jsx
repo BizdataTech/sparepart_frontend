@@ -114,6 +114,7 @@ const ProductListingInputs = ({ refetch }) => {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify(values),
       });
       let result = await response.json();
@@ -212,7 +213,7 @@ const ProductListingInputs = ({ refetch }) => {
       <div className="space-y-4 w-1/2">
         <InputLabel label="Section Item Count" error={errors?.count?.message} />
         <div className="flex gap-[4rem]">
-          {["4", "6", "8", "10", "12"].map((count) => (
+          {["4", "5", "6", "8", "10", "12"].map((count) => (
             <div className="flex items-center gap-2">
               <input
                 type="radio"
@@ -227,28 +228,6 @@ const ProductListingInputs = ({ refetch }) => {
         </div>
       </div>
       <div className="flex items-center gap-4">
-        <div className="space-y-2 w-1/2">
-          <InputLabel
-            label="Enable Full List Redirection"
-            error={errors?.redirection?.message}
-          />
-          <div className="flex items-center gap-[4rem]">
-            {["yes", "no"].map((value) => (
-              <div className="flex items-center gap-2">
-                <input
-                  type="radio"
-                  name="redirection"
-                  id={value}
-                  value={value}
-                  {...register("redirection", { required: "Required" })}
-                />
-                <label htmlFor={value} className="capitalize">
-                  {value}
-                </label>
-              </div>
-            ))}
-          </div>
-        </div>
         <div className="space-y-2 w-1/2">
           <InputLabel label="Layout" error={errors?.layout?.message} />
           <div className="flex items-center gap-[4rem]">

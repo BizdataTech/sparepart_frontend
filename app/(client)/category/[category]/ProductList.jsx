@@ -10,7 +10,7 @@ const ProductList = ({ products }) => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           {products.map((product) => (
             <Link
-              className="space-y-4 p-8 border border-neutral-300 hover:scale-102 transition-transform cursor-pointer"
+              className="space-y-4 p-8 shadow-xl hover:scale-102 transition-transform cursor-pointer"
               href={`/product/${product._id}`}
             >
               <div>

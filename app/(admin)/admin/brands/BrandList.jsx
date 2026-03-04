@@ -1,33 +1,38 @@
-const BrandList = ({ brands, handleSelect }) => {
+import EmptyRow from "@/components/admin/EmptyRow";
+import Brand from "./Brand";
+
+const BrandList = ({ brands, handleSelect, refetch }) => {
   return (
-    <section className="w-4/6 flex flex-col gap-4">
-      <div className="a-text--section">Existing Brands</div>
-      {brands.length ? (
-        <div className="grid grid-cols-7 auto-rows-[12rem] gap-4">
-          {brands.map((brand) => (
+    <section className="w-full a-section--box !p-0">
+      <div className="a-text--body">
+        <div className="grid grid-cols-5">
+          {[
+            "Brand Name",
+            "Brand Image Logo",
+            "Created Date",
+            "Created Time",
+            "Options",
+          ].map((item, i) => (
             <div
-              className="bg-white flex flex-col justify-between py-2 cursor-pointer hover:border-2 border-neutral-300"
-              onClick={() => handleSelect(brand)}
+              className="text-center first:text-start last:text-end font-medium px-4 py-4"
+              key={i}
             >
-              <img
-                src={brand.image.url}
-                alt="brand image"
-                className="w-full h-[8rem] object-contain p-2"
-              />
-              <div className="text-[1.4rem] font-medium text-center">
-                {brand.brand_name}
-              </div>
+              {item}
             </div>
           ))}
         </div>
-      ) : (
-        <div className="flex flex-col items-center justify-center p-[3rem] bg-white">
-          <div className="text-[2rem] font-medium">No Brand to List</div>
-          <div className="text-[1.4rem]">
-            Cannot find any brands. Create brands above.
-          </div>
-        </div>
-      )}
+        {brands &&
+          brands.length >= 1 &&
+          brands.map((brand) => (
+            <Brand
+              key={brand._id}
+              brand={brand}
+              select={() => handleSelect(brand)}
+              refetch={refetch}
+            />
+          ))}
+        {brands && brands.length === 0 && <EmptyRow text="No result found" />}
+      </div>
     </section>
   );
 };
