@@ -27,7 +27,7 @@ const ClientPage = () => {
   }, []);
 
   return (
-    <main className="pt-[16rem] md:pt-[16rem] lg:py-[18rem] flex flex-col gap-[2rem] lg:gap-[4rem]">
+    <main className="pt-[13rem] md:pt-[16rem] lg:py-[18rem] flex flex-col gap-[1rem] lg:gap-[4rem]">
       {sections === null && <LayoutLoading />}
       {sections &&
         sections.length >= 1 &&

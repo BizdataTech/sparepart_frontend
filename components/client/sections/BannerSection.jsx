@@ -28,9 +28,9 @@ const BannerSection = ({ section }) => {
   const getHeight = () => {
     switch (section.banner_type) {
       case "main":
-        return "h-[12rem] lg:h-[45rem] rounded-[2rem]";
+        return "h-[13rem] lg:h-[45rem] md:rounded-[2rem] object-fill lg:object-cover";
       case "mini":
-        return "h-[9rem] lg:h-[35rem] rounded-[2rem]";
+        return "h-[10rem] lg:h-[35rem] md:rounded-[2rem] object-cover lg:object-cover";
     }
   };
   return (
@@ -40,7 +40,7 @@ const BannerSection = ({ section }) => {
           <img
             src={section.secure_url}
             alt="banner image"
-            className={`w-full ${getHeight()} object-cover `}
+            className={`w-full ${getHeight()}  `}
           />
         </Link>
       ) : (

@@ -39,21 +39,21 @@ export const HeaderBottom = () => {
   };
 
   return (
-    <nav style={{ backgroundColor: "#121212", color: "white" }}>
+    <nav className="" style={{ backgroundColor: "#121212", color: "white" }}>
       {loading ? (
         <div className="loading--container w-full h-[4rem] !bg-black">
           <div className="loading--mask loading--animation"></div>
         </div>
       ) : (
         <div
-          className="w-[95%] md:w-[85%] text-[1.3rem] md:text-[1.6rem] flex mx-auto relative group"
+          className="w-[95%] md:w-[85%] text-[1rem] md:text-[1.6rem] flex mx-auto relative group"
           onMouseLeave={() => setChildren(null)}
         >
           {categories.map((cata, i) => (
             <>
               <div
                 key={i}
-                className=" py-3 md:py-4 px-4 md:px-6 cursor-pointer hover:bg-neutral-700 transition-colors leading-[1.6rem] md:leading-normal"
+                className=" py-3 md:py-4 px-2 md:px-6 cursor-pointer hover:bg-neutral-700 transition-colors leading-[1.6rem] md:leading-normal"
                 onMouseEnter={() => getChildren(cata._id)}
               >
                 {cata.title}
@@ -62,7 +62,7 @@ export const HeaderBottom = () => {
                 <div className="group-hover:flex flex-col absolute left-0 w-full top-full h-[40rem] bg-[#121212] p-6">
                   {children.map((c) => (
                     <Link
-                      className="font-light py-2 cursor-pointer hover:underline block"
+                      className="font-light py-2 cursor-pointer hover:underline"
                       href={`/category/${c.slug}`}
                       onClick={() => setChildren(null)}
                     >

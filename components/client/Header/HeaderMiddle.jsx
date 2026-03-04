@@ -38,7 +38,7 @@ const HeaderMiddle = () => {
             <img
               src={logo}
               alt="website logo"
-              className="w-[5rem] lg:w-[9rem] h-[5rem] lg:h-[6.5rem] object-contain"
+              className="w-[3.5rem] lg:w-[9rem] h-[3.5rem] lg:h-[6.5rem] object-contain"
             />
           </Link>
           <div className="hidden md:flex items-center space-x-3">
@@ -78,7 +78,7 @@ const HeaderMiddle = () => {
 
         <NavLinks />
         <div className="md:hidden" onClick={() => setSlide(true)}>
-          <List className="w-[3rem] h-[3rem] text-black" weight="fill" />
+          <List className="w-[2rem] h-[2rem] text-black" weight="fill" />
         </div>
       </div>
 

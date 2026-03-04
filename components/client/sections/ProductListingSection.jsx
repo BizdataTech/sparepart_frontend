@@ -25,8 +25,8 @@ const ProductListingSection = ({ section }) => {
     getData();
   }, []);
   return (
-    <section className="flex flex-col space-y-8 w-full mb-8">
-      <div className="text-[1.3rem] lg:text-[3rem] text-center font-semibold uppercase ">
+    <section className="flex flex-col gap-2 md:gap-8 w-full my-8">
+      <div className="text-[1.6rem] lg:text-[3rem] text-start md:text-center font-semibold uppercase ">
         {section?.title}
       </div>
       <div className="w-full">
@@ -40,13 +40,13 @@ const ProductListingSection = ({ section }) => {
           </div>
         )}
         {items && items.length >= 1 && (
-          <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-8">
+          <div className="grid grid-cols-3 lg:grid-cols-5 gap-2 lg:gap-8">
             {items.map((item) => (
               <Link
                 href={`/product/${item._id}`}
-                className="bg-white shadow-md flex flex-col gap-6 overflow-hidden py-8"
+                className="bg-white shadow-md flex flex-col gap-6 overflow-hidden py-2 md:py-8"
               >
-                <div className="h-[8rem] lg:h-[12rem]">
+                <div className="h-[7rem] lg:h-[12rem]">
                   <img
                     src={item.image}
                     alt="product image"
@@ -54,14 +54,14 @@ const ProductListingSection = ({ section }) => {
                   />
                 </div>
 
-                <div className="h-full flex flex-col gap-1 md:gap-2 px-6">
-                  <div className="text-[1.3rem] lg:text-[1.8rem] text-center font-medium uppercase leading-normal">
+                <div className="h-full flex flex-col gap-1 md:gap-2 px-2 md:px-6">
+                  <div className="text-[1.1rem] lg:text-[1.8rem] text-center font-medium md:uppercase leading-[1.4rem] md:leading-normal">
                     {item.product_title}
                   </div>
-                  <div className="text-[1.3rem] lg:text-[1.6rem] text-center">
+                  <div className="text-[.8rem] lg:text-[1.6rem] text-center">
                     {item.brand}
                   </div>
-                  <div className="text-[1.4rem] lg:text-[2rem] text-center font-semibold mt-8">
+                  <div className="text-[1.1rem] lg:text-[2rem] text-center font-semibold mt-8">
                     ₹ {Intl.NumberFormat("en-IN").format(item.price)}
                   </div>
                 </div>

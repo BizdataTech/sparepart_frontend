@@ -11,10 +11,10 @@ const Footer = () => {
         className="py-16"
         style={{ backgroundColor: "#282828", color: "white" }}
       >
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 w-[85%] mx-auto text-[1.3rem] text-center sm:text-left">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6 w-[85%] mx-auto text-[1rem] md:text-[1.5rem] text-center sm:text-left">
           <div>
-            <h3 className="font-medium text-[1.7rem] mb-4">About</h3>
-            <ul className="space-y-1 text-[1.5rem]">
+            <h3 className="font-mediummb-4">About</h3>
+            <ul className="space-y-1">
               <li>
                 <Link href="/about" className="hover:underline">
                   About Us
@@ -39,10 +39,8 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3 className="font-medium text-[1.7rem] mb-4">
-              Grouped Companies
-            </h3>
-            <ul className="space-y-1 text-[1.5rem]">
+            <h3 className="font-medium mb-4">Grouped Companies</h3>
+            <ul className="space-y-1">
               <li>Flipkart</li>
               <li>Myntra</li>
               <li>Amazon</li>
@@ -50,8 +48,8 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3 className="font-medium text-[1.7rem] mb-4">Help</h3>
-            <ul className="space-y-1 text-[1.5rem]">
+            <h3 className="font-medium mb-4">Help</h3>
+            <ul className="space-y-1">
               <li>
                 <Link href="/payment-policy" className="hover:underline">
                   Payment
@@ -74,8 +72,8 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3 className="font-medium text-[1.7rem] mb-4">Consumer Policy</h3>
-            <ul className="space-y-1 text-[1.5rem]">
+            <h3 className="font-medium mb-4">Consumer Policy</h3>
+            <ul className="space-y-1">
               <li>
                 <Link href="/cancellation-return" className="hover:underline">
                   Cancellation & Return
@@ -105,8 +103,8 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3 className="font-medium text-[1.7rem] mb-4">Mail Us</h3>
-            <ul className="space-y-1 text-[1.5rem]">
+            <h3 className="font-medium mb-4">Mail Us</h3>
+            <ul className="space-y-1">
               <li className="flex justify-center sm:justify-start gap-2">
                 info@gmail.com
               </li>
@@ -120,11 +118,9 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3 className="font-medium text-[1.7rem] mb-4">
-              Registered Office Address
-            </h3>
+            <h3 className="font-medium mb-4">Registered Office Address</h3>
             <ul>
-              <li className="text-lg leading-relaxed text-[1.5rem]">
+              <li className="text-lg leading-relaxed">
                 Prototype Ashtamudi Towers TechnoPark Kollam 691501{" "}
               </li>
             </ul>
