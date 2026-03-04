@@ -45,20 +45,22 @@ const Wishlist = () => {
   };
 
   return (
-    <section className="space-y-8">
-      <h1 className="text-[2rem] uppercase font-medium">Wishlist</h1>
+    <section className="flex flex-col gap-4 md:gap-8">
+      <h1 className="text-[1.4rem] md:text-[2rem] uppercase font-medium">
+        Wishlist
+      </h1>
       <div>
         {!products ? (
           <div>loading</div>
         ) : products.length ? (
-          <div className="space-y-4">
+          <div className="flex flex-col gap-4">
             {products.map((p, i) => (
               <Link
                 href={`/product/${p._id}`}
                 key={i}
-                className="text-[1.4rem] md:text-[1.6rem] border border-neutral-300 flex justify-between items-start p-8"
+                className="text-[1.2rem] md:text-[1.6rem] border border-neutral-300 flex justify-between items-start p-4 md:p-8"
               >
-                <div className="flex gap-8">
+                <div className="flex gap-4 md:gap-8">
                   <div>
                     <img
                       src={p.images[0]?.url}
@@ -75,14 +77,14 @@ const Wishlist = () => {
                   </div>
                 </div>
                 <X
-                  className="w-[2rem] h-[2rem] text-red-700 cursor-pointer z-100"
+                  className="w-[1.5rem] md:w-[2rem] h-[1.5rem] md:h-[2rem] text-red-700 cursor-pointer z-100"
                   onClick={(e) => removeProduct(e, p._id)}
                 />
               </Link>
             ))}
           </div>
         ) : (
-          <div className="text-[1.6rem]">
+          <div className="text-[1.2rem] md:text-[1.6rem]">
             <div className="font-medium">Your Wishlist is Empty</div>
             <div>
               Couldn't find any products. Add your favourite products here in

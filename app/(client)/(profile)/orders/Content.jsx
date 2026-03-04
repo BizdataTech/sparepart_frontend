@@ -20,7 +20,7 @@ const Content = ({ orders }) => {
           <div className="loading--mask loading--animation"></div>
         </div>
       ) : !orders.length ? (
-        <div className="p-6 border border-neutral-300 text-[1.4rem]">
+        <div className="border border-neutral-300 text-[1.2rem] md:text-[1.4rem] p-4 md:p-6">
           <div className="font-medium">No Order Found</div>
           <div>Couldn't find any orders here.</div>
         </div>

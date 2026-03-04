@@ -32,12 +32,14 @@ const Profile = () => {
 
   if (!userData) return <div>Loading Data...</div>;
   return (
-    <section className="space-y-4">
-      <div className="space-y-4 md:space-y-8">
-        <h1 className="text-[2rem] uppercase font-medium">User Profile</h1>
-        <div className="space-y-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 text-[1.6rem] gap-8">
-            <div className="space-y-2">
+    <section className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 md:gap-8">
+        <h1 className="hidden md:block text-[1.4rem] md:text-[2rem] md:uppercase font-medium">
+          User Profile
+        </h1>
+        <div className="flex flex-col gap-4 md:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 text-[1.2rem] md:text-[1.6rem] gap-4 md:gap-8">
+            <div className="flex flex-col gap-2">
               <div className="font-medium">User Name</div>
               <div className="p-4 bg-red-50 flex justify-between items-center">
                 <div>{userData?.username}</div>
@@ -47,7 +49,7 @@ const Profile = () => {
                 />
               </div>
             </div>
-            <div className="space-y-2">
+            <div className="flex flex-col gap-2">
               <div className="font-medium">Email</div>
               <div className="p-4 bg-red-50 flex justify-between items-center">
                 <div>{userData?.email}</div>
@@ -58,11 +60,13 @@ const Profile = () => {
               </div>
             </div>
           </div>
-          <div className="space-y-8">
-            <div className="flex justify-between items-end">
-              <div className="text-[1.6rem] font-medium">Addresses</div>
+          <div className="flex flex-col gap-2 md:gap-8">
+            <div className="flex justify-between items-center md:items-end">
+              <div className="text-[1.2rem] md:text-[1.6rem] font-medium">
+                Addresses
+              </div>
               <button
-                className="text-red-700 font-medium underline text-[1.4rem] cursor-pointer p-2"
+                className="text-red-700 font-medium underline text-[1.2rem] md:text-[1.4rem] cursor-pointer p-2"
                 onClick={() => handleMode("address")}
               >
                 Add New Address
@@ -70,9 +74,9 @@ const Profile = () => {
             </div>
 
             {addresses.length ? (
-              <div className="space-y-6">
+              <div className="flex flex-col gap-4">
                 {addresses.map((ad) => (
-                  <div className="text-[1.6rem] border border-neutral-300 flex justify-between p-4">
+                  <div className="text-[1.2rem] md:text-[1.6rem] border border-neutral-300 flex justify-between p-4">
                     <div className="space-y-4">
                       <div>
                         <div>
@@ -88,7 +92,7 @@ const Profile = () => {
                     </div>
                     <div className="flex flex-col justify-between">
                       <button
-                        className={`self-end border border-neutral-300 text-[1.4rem] cursor-pointer py-1 px-2 ${
+                        className={`self-end border border-neutral-300 text-[1rem] md:text-[1.4rem] cursor-pointer py-1 px-2 ${
                           ad.default &&
                           "bg-green-100 text-green-800 font-medium border-0"
                         }`}
@@ -97,7 +101,7 @@ const Profile = () => {
                       >
                         {ad.default ? "Default address" : "Set as default"}
                       </button>
-                      <div className="flex gap-4 items-end mt-auto text-[1.4rem]">
+                      <div className="flex gap-4 items-end mt-auto text-[1.2rem] md:text-[1.4rem]">
                         <button
                           className="text-red-700 underline cursor-pointer"
                           onClick={() => deleteAddress(ad._id)}
