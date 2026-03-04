@@ -86,7 +86,7 @@ html {
 }
 
 .button {
-  @apply px-4 md:px-8 py-2 md:py-4 text-[1.5rem] font-medium rounded-[.1rem] md:rounded-[.3rem] transition;
+  @apply px-4 md:px-8 py-2 md:py-4 text-[1.1rem] md:text-[1.5rem] font-medium rounded-[.1rem] md:rounded-[.3rem] transition;
 }
 
 .box--form {
@@ -110,13 +110,13 @@ html {
 
 /* MODALS */
 .modal {
-  @apply w-[50rem] bg-white p-8;
+  @apply w-[90%] md:w-[50rem] bg-white shadow-md rounded-[.5rem] md:rounded-[1rem] p-6 md:p-8;
 }
 .modal--input {
-  @apply w-full text-[1.6rem] bg-neutral-200/50 rounded-[.7rem] outline-0 p-4;
+  @apply w-full text-[1.2rem] md:text-[1.6rem] bg-neutral-200/50 rounded-[.7rem] outline-0 p-3 md:p-4;
 }
 .modal--button {
-  @apply text-[1.5rem] text-white bg-black font-medium py-4 w-full;
+  @apply text-[1.2rem] md:text-[1.5rem] text-white bg-black font-medium rounded-[.3rem] md:rounded-[.7rem] py-3 md:py-4 w-full;
 }
 
 .shimmer {

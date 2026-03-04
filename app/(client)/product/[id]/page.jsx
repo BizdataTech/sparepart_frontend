@@ -57,17 +57,18 @@ const Productpage = () => {
           imageConfig={imageConfig}
         />
       </div>
-      <div className="p-[3rem] bg-red-200/30 text-[1.6rem] grid grid-cols-1 md:grid-cols-3 gap-[6rem] md:gap-0">
-        <div className="flex flex-col md:flex-row gap-4 items-center justify-center">
-          <Truck className="w-[4rem] h-[4rem] text-red-900" /> Free Delivery
-          (within 3 days)
+      <div className="p-[3rem] bg-red-200/30 text-[1.2rem] md:text-[1.6rem] grid grid-cols-1 md:grid-cols-3 gap-[6rem] md:gap-0">
+        <div className="flex flex-col md:flex-row gap-2 md:gap-4 items-center justify-center">
+          <Truck className="w-[2.5rem] md:w-[4rem] h-[2.5rem] md:h-[4rem] text-red-900" />{" "}
+          Free Delivery (within 3 days)
         </div>
-        <div className="flex flex-col md:flex-row gap-4 items-center justify-center">
-          <Calendar className="w-[4rem] h-[4rem] text-red-900" /> 10 Days
-          Assured Return
+        <div className="flex flex-col md:flex-row gap-2 md:gap-4 items-center justify-center">
+          <Calendar className="w-[2.5rem] md:w-[4rem] h-[2.5rem] md:h-[4rem] text-red-900" />{" "}
+          10 Days Assured Return
         </div>
-        <div className="flex flex-col md:flex-row gap-4 items-center justify-center">
-          <Newspaper className="w-[4rem] h-[4rem] text-red-900" /> GST Invoice
+        <div className="flex flex-col md:flex-row gap-2 md:gap-4 items-center justify-center">
+          <Newspaper className="w-[2.5rem] md:w-[4rem] h-[2.5rem] md:h-[4rem] text-red-900" />{" "}
+          GST Invoice
         </div>
       </div>
       {genuineProduct && (

@@ -6,7 +6,7 @@ const OrderHistory = ({ history }) => {
     return "#0e611a";
   };
   return (
-    <div>
+    <div className="text-[1.2rem] md:text-[1.6rem]">
       {history &&
         history.map((event) => (
           <div

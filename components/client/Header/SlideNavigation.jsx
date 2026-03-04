@@ -13,18 +13,18 @@ const SlideNavigation = ({ open }) => {
     if (open) open(false);
   };
   return (
-    <div className="py-8 md:py-12 px-10 text-[1.6rem] space-y-4">
+    <div className="py-8 md:py-12 px-10 flex flex-col gap-8">
       <div className="flex justify-between items-center">
-        <div className="uppercase">Menu</div>
+        <div className="text-[1.4rem] font-medium uppercase">Menu</div>
         <X
-          className="w-[2rem] h-[2rem] text-red-800"
+          className="w-[1.8rem] h-[1.8rem] text-red-800"
           weight="bold"
           onClick={() => open(false)}
         />
       </div>
       <nav className="md:hidden">
         <ul
-          className={`options flex flex-col gap-4 text-[1.6rem] font-medium text-neutral-800`}
+          className={`options flex flex-col gap-6 text-[1.4rem] font-medium text-neutral-800`}
         >
           <div className="relative">
             <Link

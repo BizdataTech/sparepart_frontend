@@ -7,7 +7,7 @@ export const Details = ({ config, show, zoomPosition, image, imageConfig }) => {
     <div className="md:w-3/6 space-y-6">
       <section className="relative bg-white p-6 flex flex-col gap-4">
         <div className="flex items-start justify-between">
-          <div className="space-y-8">
+          <div className="flex flex-col gap-8">
             <div className="hidden md:block">
               <h1 className="text-[2rem] font-medium leading-[3rem] uppercase">
                 {product?.product_title}
@@ -16,7 +16,7 @@ export const Details = ({ config, show, zoomPosition, image, imageConfig }) => {
                 {product?.brand?.brand_name}
               </h2>
             </div>
-            <div className="text-[1.6rem] flex">
+            <div className="text-[1.2rem] md:text-[1.6rem] flex">
               {product.available_stock > 0 ? (
                 <div className="font-medium text-green-900 bg-green-100 px-2 py-1">
                   Stock available
@@ -27,7 +27,7 @@ export const Details = ({ config, show, zoomPosition, image, imageConfig }) => {
                 </div>
               )}
             </div>
-            <div className="text-[1.6rem] uppercase font-medium">
+            <div className="text-[1.2rem] md:text-[1.6rem] uppercase font-medium">
               <span>P/N : </span>
               <span className="text-red-600">{product.part_number}</span>
             </div>
@@ -35,7 +35,7 @@ export const Details = ({ config, show, zoomPosition, image, imageConfig }) => {
 
           <div>
             {["genuine", "oem"].includes(product.product_type) && (
-              <div className="uppercase text-[1.2rem] text-white bg-red-700 font-medium py-1 px-4 self-start">
+              <div className="uppercase text-[1rem] md:text-[1.2rem] text-white bg-red-700 font-medium py-1 px-4 self-start">
                 {product.product_type}
               </div>
             )}
@@ -54,7 +54,7 @@ export const Details = ({ config, show, zoomPosition, image, imageConfig }) => {
           <p className="text-[3.5rem] font-semibold">₹{product.price}</p>
         </div>
 
-        <div className="space-y-[.5rem] mt-8 text-[1.6rem]">
+        <div className="text-[1.2rem] md:text-[1.6rem] space-y-[.5rem] mt-4 md:mt-8 ">
           <div className="font-medium">Product Description</div>
           <p className="line-clamp-4">{product?.description}</p>
         </div>
@@ -74,7 +74,7 @@ export const Details = ({ config, show, zoomPosition, image, imageConfig }) => {
         <section className="bg-white p-6">
           {sections.map((section, index) => (
             <div
-              className="text-[1.6rem] border-b border-neutral-300 last:border-b-0 space-y-4"
+              className="text-[1.2rem] md:text-[1.6rem] border-b border-neutral-300 last:border-b-0 space-y-4"
               key={index}
             >
               <div className="font-medium">{section.title}</div>

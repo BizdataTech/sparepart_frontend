@@ -70,9 +70,9 @@ const AddressModal = ({ close, refetch, addressId }) => {
     }
   };
   return (
-    <div className="bg-white p-8 w-[35rem] md:w-[80rem] h-[50rem] md:h-auto overflow-y-scroll space-y-2 md:space-y-8 relative">
+    <div className="bg-white shadow-xl w-[90%] md:w-[80rem] h-[40rem] md:h-auto overflow-y-scroll space-y-2 md:space-y-8 rounded-[.5rem]  md:rounded-[1rem] mb-[10rem] md:mb-0 p-4 md:p-8 relative">
       <div>
-        <div className="text-[1.8rem] font-medium">
+        <div className="text-[1.4rem] md:text-[1.8rem] font-medium">
           {addressId ? "Update this address" : "Add new address"}
         </div>
         <div className="flex justify-between items-end hidden md:block">
@@ -176,17 +176,20 @@ const AddressModal = ({ close, refetch, addressId }) => {
           </div>
         </div>
         <button
-          className="modal--button self-end !w-auto cursor-pointer px-4"
+          className="modal--button !w-auto cursor-pointer px-4"
           type="submit"
         >
           {addressId ? "Update the change" : "Create new address"}
         </button>
       </form>
       <div
-        className="absolute top-0 right-0 bg-black text-white cursor-pointer p-2"
+        className="absolute top-5 md:top-[2rem] right-5 md:right-[2rem] text-red-700 cursor-pointer"
         onClick={() => close()}
       >
-        <X className="w-[2rem] h-[2rem]" weight="bold" />
+        <X
+          className="w-[1.5rem] md:w-[2rem] h-[1.5rem] md:h-[2rem]"
+          weight="bold"
+        />
       </div>
     </div>
   );

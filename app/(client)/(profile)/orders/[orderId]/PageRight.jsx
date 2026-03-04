@@ -4,17 +4,17 @@ const PageRight = ({ config }) => {
   let { address, priceDetails } = config;
   console.log("address:", address);
   return (
-    <section className="w-2/6 space-y-4">
+    <section className="md:w-2/6 flex flex-col gap-4">
       {!address ? (
         <div className="loading--container w-full h-[20rem]">
           <div className="loading--mask loading--animation"></div>
         </div>
       ) : (
-        <div className="border border-neutral-300 p-4 text-[1.6rem] space-y-4">
+        <div className="border border-neutral-300 text-[1.2rem] md:text-[1.6rem] flex flex-col gap-2 md:gap-4 p-4">
           <div className="font-medium">Delivery Address</div>
-          <div className="flex items-center gap-6 p-2 bg-neutral-100 leading-[2.5rem]">
+          <div className="flex items-center gap-4 md:gap-6 bg-neutral-100 leading-[2rem] md:leading-[2.5rem] p-2">
             <div className="">
-              <House className="w-[2rem] h-[2rem]" />
+              <House className="w-[1.5rem] md:w-[2rem] h-[1.5rem] md:h-[2rem]" />
             </div>
             <div>
               <div>
@@ -24,9 +24,9 @@ const PageRight = ({ config }) => {
               <div>{`${address.district} ${address.state}, ${address.pincode}`}</div>
             </div>
           </div>
-          <div className="flex items-center gap-6 p-2 bg-neutral-100 leading-[2.5rem]">
+          <div className="flex items-center gap-4 md:gap-6 bg-neutral-100 leading-[2rem] md:leading-[2.5rem] p-2">
             <div>
-              <User className="w-[2rem] h-[2rem]" />
+              <User className="w-[1.5rem] md:w-[2rem] h-[1.5rem] md:h-[2rem]" />
             </div>
             <div>
               <div>{`User Name : ${address.name || "Name not found"}`}</div>
@@ -36,11 +36,11 @@ const PageRight = ({ config }) => {
         </div>
       )}
       {!priceDetails.totalAmount ? (
-        <div className="loading--container w-full h-[30rem]">
+        <div className="loading--container w-full h-[20rem] md:h-[30rem]">
           <div className="loading--mask loading--animation"></div>
         </div>
       ) : (
-        <div className="border border-neutral-300 p-4 text-[1.6rem] space-y-4">
+        <div className="border border-neutral-300 text-[1.2rem] md:text-[1.6rem] flex flex-col gap-2 md:gap-4 p-4">
           <div className="font-medium">Price Details</div>
           <div>
             <div className="flex justify-between items-center py-1">

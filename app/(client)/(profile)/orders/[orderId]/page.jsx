@@ -26,15 +26,15 @@ const Page = () => {
     },
   };
   return (
-    <main className="space-y-8">
-      <div className="flex items-center gap-2 text-[1.4rem]">
+    <main className="flex flex-col gap-4 md:gap-8">
+      <div className="flex items-center gap-2 text-[1rem] md:text-[1.4rem]">
         <Link href="/orders" className="underline hover:text-purple-800">
           Orders
         </Link>
         <CaretRight />
         <div>Details</div>
       </div>
-      <div className="flex gap-[1rem]">
+      <div className="flex flex-col md:flex-row gap-8 md:gap-[1rem]">
         <PageLeft config={leftConfig} />
         <PageRight config={rightConfig} />
       </div>
