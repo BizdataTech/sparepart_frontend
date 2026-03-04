@@ -108,7 +108,7 @@ export const ImageGrid = ({
   return (
     <div className="md:w-3/6 space-y-8">
       <div className="h-[35rem] flex gap-4 self-start">
-        <div className="flex flex-col gap-4 items-center justify-start">
+        <div className="hidden md:flex flex-col gap-4 items-center justify-start">
           {images.map((image, index) => (
             <img
               src={image.url}

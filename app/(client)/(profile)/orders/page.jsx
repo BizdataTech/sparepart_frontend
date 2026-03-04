@@ -12,7 +12,7 @@ const Orders = () => {
   let { orders } = useOrders(query);
 
   return (
-    <main className="space-y-8">
+    <main className="flex flex-col gap-8">
       <Search
         input={input}
         setInput={setInput}

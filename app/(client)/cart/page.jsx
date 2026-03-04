@@ -37,7 +37,7 @@ const Cart = () => {
           </div>
         </div>
       ) : (
-        <div className="flex flex-col md:flex-row gap-4 pt-[16rem] md:pt-[18rem]">
+        <div className="flex flex-col md:flex-row gap-4 pt-[13rem] md:pt-[18rem]">
           <div className="md:w-4/6 flex flex-col gap-4">
             {cart?.items.map((item) => (
               <CartItem

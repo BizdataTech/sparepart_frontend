@@ -39,7 +39,7 @@ const Productpage = () => {
   };
 
   return product ? (
-    <div className="pt-[15rem] md:pt-[17rem] lg:pt-[19rem] pb-12 space-y-16">
+    <div className="pt-[13rem] md:pt-[17rem] lg:pt-[19rem] pb-12 space-y-16">
       <div className="flex flex-col md:flex-row gap-5">
         <SmallDetails config={productConfig} />
         <ImageGrid

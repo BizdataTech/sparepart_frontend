@@ -16,7 +16,7 @@ const ProfileLayout = ({ children }) => {
   if (user === null)
     return <div className="fixed inset-0 bg-white z-100"></div>;
   return (
-    <main className="flex flex-col md:flex-row gap-8 pt-[15rem] md:pt-[18rem] pb-[4rem]">
+    <main className="flex flex-col md:flex-row gap-8 pt-[12rem] md:pt-[18rem] pb-[4rem]">
       <ProfileSidebar />
       <div className="bg-white w-full p-6 shadow-sm">{children}</div>
       <div id="container--modal"></div>
