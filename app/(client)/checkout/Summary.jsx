@@ -48,23 +48,25 @@ const Summary = ({ cartTotal, addressId, payment, cart_loading }) => {
   };
 
   return (
-    <section className="md:w-4/12 space-y-4">
-      <div className="text-[1.6rem] uppercase font-medium">Order Summary</div>
-      <div className="text-[1.6rem] bg-white border border-neutral-400 p-4">
-        <div className="flex justify-between py-4">
+    <section className="md:w-4/12 flex flex-col gap-2 md:gap-4">
+      <div className="text-[1.2rem] md:text-[1.6rem] uppercase font-medium">
+        Order Summary
+      </div>
+      <div className="text-[1.2rem] md:text-[1.6rem] bg-white border border-neutral-400 px-3 md:p-4">
+        <div className="flex justify-between py-3 md:py-4">
           <div>Shipping</div>
           <div>Free</div>
         </div>
-        <div className="flex justify-between items-center py-4">
+        <div className="flex justify-between items-center py-3 md:py-4">
           <div>Cart Total</div>
           <div>{getAmount(cartTotal)}</div>
         </div>
-        <div className="flex justify-between items-center py-4 border-t border-neutral-300 text-green-800 font-medium">
+        <div className="flex justify-between items-center py-3 md:py-4 border-t border-neutral-300 text-green-800 font-medium">
           <div>Checkout Total</div>
           <div>{getAmount(cartTotal)}</div>
         </div>
         <button
-          className={`button w-full bg-black text-white mt-8 transition-colors ${
+          className={`button !py-4 w-full bg-black text-white mt-8 transition-colors ${
             loading || cart_loading
               ? "cursor-not-allowed opacity-70"
               : "cursor-pointer"

@@ -50,12 +50,12 @@ const OrderSummaryLayout = () => {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {order.items.map((item) => (
-                  <div className="flex gap-4 border border-stone-200 text-[1.2rem] md:text-[1.6rem] p-4">
+                  <div className="flex gap-6 border border-stone-300 text-[1.2rem] md:text-[1.6rem] p-4">
                     <div>
                       <img
                         src={item.product.images[0]?.url}
                         alt="product image"
-                        className="w-[6rem] md:w-[12rem] h-[6rem] md:h-[10rem] object-cover"
+                        className="w-[4rem] md:w-[7rem] h-[4rem] md:h-[7rem] object-cover"
                       />
                     </div>
                     <div>

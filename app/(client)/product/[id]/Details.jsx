@@ -12,7 +12,7 @@ export const Details = ({ config, show, zoomPosition, image, imageConfig }) => {
               <h1 className="text-[2rem] font-medium leading-[3rem] uppercase">
                 {product?.product_title}
               </h1>
-              <h2 className="text-[1.6rem] uppercase underline">
+              <h2 className="text-[1.6rem] uppercase text-neutral-700">
                 {product?.brand?.brand_name}
               </h2>
             </div>

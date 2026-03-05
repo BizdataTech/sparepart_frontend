@@ -37,8 +37,8 @@ const Checkout = () => {
   }, []);
 
   return (
-    <div className="pt-[13rem] md:pt-[18rem] pb-[4rem] text-neutral-800 flex flex-col md:flex-row gap-6">
-      <div className="w-full md:w-8/12 space-y-[4rem]">
+    <div className="pt-[13rem] md:pt-[18rem] pb-[4rem] text-neutral-800 flex flex-col md:flex-row gap-4 md:gap-6">
+      <div className="w-full md:w-8/12 flex flex-col gap-8 md:gap-[4rem]">
         <ProductList items={cart?.items || []} loading={cartLoad} />
         <Address selectedId={selectedAddressId} setId={setSelectedAddressId} />
         <Payment payment={payment} setPayment={setPayment} />

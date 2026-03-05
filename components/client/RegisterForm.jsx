@@ -71,10 +71,19 @@ const RegisterForm = ({ setBox }) => {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-center items-center shadow-xl z-200">
-      <div className="bg-white w-[35rem] md:w-[55rem] space-y-[2.5rem] md:space-y-[3rem] px-8 md:px-10 py-10 md:py-12 relative">
-        <div className="text-[2.4rem] md:text-[3rem] font-bold uppercase">
-          Sign in / Sign up
+      <div className="bg-white w-[35rem] md:w-[55rem] flex flex-col gap-[2.5rem] md:gap-[3rem] px-8 md:px-10 py-10 md:py-12 ">
+        <div className="flex items-center justify-between">
+          <div className="text-[1.8rem] md:text-[2.4rem] font-bold uppercase">
+            Sign in / Sign up
+          </div>
+          <div
+            className="text-red-700 cursor-pointer"
+            onClick={() => setBox(false)}
+          >
+            <X className="w-[2rem] md:w-[2.8rem] h-[2rem] md:h-[2.8rem]" />
+          </div>
         </div>
+
         <form
           className="space-y-6"
           onSubmit={handleSubmit(submitForm)}
@@ -144,7 +153,7 @@ const RegisterForm = ({ setBox }) => {
               </div>
             )}
             <button
-              className="w-full bg-black text-[1.6rem] text-white font-semibold uppercase py-6 flex justify-center cursor-pointer"
+              className="w-full bg-black text-[1.2rem] md:text-[1.6rem] text-white font-semibold uppercase py-4 md:py-6 flex justify-center cursor-pointer"
               type="submit"
             >
               {loading ? (
@@ -161,7 +170,7 @@ const RegisterForm = ({ setBox }) => {
                 "Log In"
               )}
             </button>
-            <div className="mt-2 text-[1.6rem] text-neutral-700">
+            <div className="mt-2 text-[1.2rem] md:text-[1.6rem] text-neutral-700">
               {isRegister ? (
                 <div>
                   Already have an Account?{" "}
@@ -186,12 +195,6 @@ const RegisterForm = ({ setBox }) => {
             </div>
           </div>
         </form>
-        <div
-          className="absolute -right-[1rem] -top-[1rem] bg-white border-2 p-2 cursor-pointer"
-          onClick={() => setBox(false)}
-        >
-          <X className="w-[3rem] h-[3rem]" />
-        </div>
       </div>
     </div>
   );

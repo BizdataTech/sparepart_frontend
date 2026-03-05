@@ -33,16 +33,18 @@ const AddressModal = ({ setModal, addressId, setAddressId, setAddress }) => {
     setAddress(address);
   };
   return (
-    <div className="w-[80rem] max-h-[60rem] overflow-y-scroll bg-white mb-[4rem] p-8">
+    <div className="w-[90%] md:w-[80rem] max-h-[60rem] overflow-y-scroll bg-white mb-[4rem] p-8">
       <div className="flex justify-between items-center">
-        <div className="text-[2rem] font-medium uppercase">Change Address</div>
+        <div className="text-[1.4rem] md:text-[2rem] font-medium uppercase">
+          Change Address
+        </div>
         <X
-          className="w-[2rem] h-[2rem] text-red-700 cursor-pointer"
+          className="w-[1.6rem] md:w-[2rem] h-[1.6rem] md:h-[2rem] text-red-700 cursor-pointer"
           weight="bold"
           onClick={() => setModal(false)}
         />
       </div>
-      <div className="text-[1.6rem] space-y-8">
+      <div className="text-[1.2rem] md:text-[1.6rem] space-y-8">
         <div>
           Select a single delivery address from your saved addresses to proceed
           with your order.
@@ -51,7 +53,7 @@ const AddressModal = ({ setModal, addressId, setAddressId, setAddress }) => {
           {!addresses ? (
             <div></div>
           ) : !addresses.length ? (
-            <div className="border border-neutral-400 bg-neutral-200/80 p-8">
+            <div className="border border-neutral-400 bg-neutral-200/80 p-4 md:p-8">
               <div className="font-medium uppercase">Address not added!</div>
               <div>
                 Couldn't find any address. Visit{" "}
@@ -72,7 +74,7 @@ const AddressModal = ({ setModal, addressId, setAddressId, setAddress }) => {
                 <AddressCard address={address} />
                 {address._id === addressId && (
                   <CheckCircle
-                    className="absolute top-4 right-4 w-[2.3rem] h-[2.3rem] text-blue-700"
+                    className="absolute top-4 right-4 w-[1.6rem] md:w-[2.3rem] h-[1.6rem] md:h-[2.3rem] text-blue-700"
                     weight="fill"
                   />
                 )}

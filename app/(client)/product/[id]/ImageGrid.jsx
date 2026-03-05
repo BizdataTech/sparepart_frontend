@@ -132,17 +132,17 @@ export const ImageGrid = ({
           />
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-2 md:gap-4">
         {wishlistStatus ? (
           <Link
             href="/wishlist"
-            className="button bg-white border border-red-900 text-red-900 text-center"
+            className="button !py-4 bg-white border border-red-900 text-red-900 text-center"
           >
             View Wishlist
           </Link>
         ) : (
           <button
-            className="button border border-neutral-900 text-neutral-900 bg-white cursor-pointer"
+            className="button !py-4 border border-neutral-600 text-neutral-900 bg-white cursor-pointer"
             onClick={addToWishlist}
           >
             Add to Whishlist
@@ -151,7 +151,7 @@ export const ImageGrid = ({
 
         {cartStatus ? (
           <Link
-            className={`button bg-red-900 text-white text-center ${
+            className={`button !py-4 bg-red-900 text-white text-center ${
               viewLoading && "cursor-not-allowed opacity-70 pointer-events-none"
             }`}
             onClick={() => setViewLoading(true)}
@@ -165,7 +165,7 @@ export const ImageGrid = ({
           </Link>
         ) : (
           <button
-            className={`button bg-red-900 text-white text-center ${
+            className={`button !py-4 bg-red-900 text-white text-center ${
               stock <= 0 || cartLoading
                 ? "cursor-not-allowed opacity-40"
                 : "cursor-pointer"

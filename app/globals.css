@@ -94,7 +94,7 @@ html {
 }
 
 .input--form {
-  @apply w-full border border-neutral-400 py-4 px-4 text-[1.6rem] rounded-[.5rem];
+  @apply w-full border border-neutral-400 py-4 px-4 text-[1.2rem] md:text-[1.6rem] rounded-[.5rem];
 }
 .error--input {
   @apply text-[1.55rem] text-red-800 mt-1 ml-2;

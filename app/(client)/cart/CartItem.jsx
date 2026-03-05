@@ -73,21 +73,21 @@ const CartItem = ({ item, setCartTotal, getCart }) => {
   };
 
   return (
-    <div className="border border-neutral-300 p-4 md:p-8 bg-white flex flex-col md:flex-row justify-between gap-[2rem]">
+    <div className="border border-neutral-300 p-4 md:p-8 bg-white flex flex-col md:flex-row justify-between gap-4 md:gap-[2rem]">
       <div className="flex justify-between md:justify-start gap-8">
         <div className="">
           <img
             src={item?.productId?.images[0]?.url}
             alt="product image"
-            className="w-[8rem] md:w-[10rem] h-[8rem] md:h-[10rem] object-cover"
+            className="w-[5rem] md:w-[10rem] h-[5rem] md:h-[10rem] object-cover"
           />
         </div>
-        <div className="text-[1.4rem] md:text-[1.6rem] text-end md:text-start space-y-2 md:space-y-0">
-          <div className="font-medium uppercase">
+        <div className="text-[1.2rem] md:text-[1.6rem] text-end md:text-start">
+          <div className="font-medium uppercase text-[1.4rem] md:text-[1.6rem]">
             {item?.productId?.product_title}
           </div>
           <div className="">{item?.productId?.brand?.brand_name}</div>
-          <div className="font-semibold">
+          <div className="font-semibold mt-2 md:mt-4">
             Rs {Intl.NumberFormat("en-IN").format(item.productId.price)}
           </div>
         </div>
@@ -97,20 +97,20 @@ const CartItem = ({ item, setCartTotal, getCart }) => {
           <X className="w-[1.8rem] h-[1.8rem] text-neutral-400 hover:text-red-600 transition-colors cursor-pointer" />
         </div>
         <div className="flex justify-between md:justify-normal gap-[4rem]">
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4 md:gap-6">
             <MinusCircle
-              className="w-[2.5rem] h-[2.5rem] cursor-pointer"
+              className="w-[1.6rem] md:w-[2.5rem] h-[1.6rem] md:h-[2.5rem] cursor-pointer"
               weight="regular"
               onClick={decrease}
             />
-            <div className="text-[1.5rem]">{quantity}</div>
+            <div className="text-[1.2rem] md:text-[1.5rem]">{quantity}</div>
             <PlusCircle
-              className="w-[2.5rem] h-[2.5rem] cursor-pointer"
+              className="w-[1.6rem] md:w-[2.5rem] h-[1.6rem] md:h-[2.5rem] cursor-pointer"
               weight="regular"
               onClick={increase}
             />
           </div>
-          <div className="text-[1.8rem] font-semibold">
+          <div className="text-[1.4rem] md:text-[1.8rem] font-semibold">
             {`₹ ${Intl.NumberFormat("en-IN").format(productTotal)}`}
           </div>
         </div>

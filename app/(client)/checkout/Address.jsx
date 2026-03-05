@@ -22,7 +22,7 @@ const Address = ({ selectedId, setId }) => {
         {
           method: "GET",
           credentials: "include",
-        }
+        },
       );
       let result = await response.json();
       if (!response.ok) throw new Error(result.message);
@@ -35,8 +35,8 @@ const Address = ({ selectedId, setId }) => {
   };
 
   return (
-    <section className="space-y-4">
-      <div className="flex justify-between items-center text-[1.6rem]">
+    <section className="flex flex-col gap-2 md:gap-4">
+      <div className="flex justify-between items-center text-[1.2rem] md:text-[1.6rem]">
         <div className="font-medium uppercase">Deliver To:</div>
         {address && (
           <div
@@ -49,11 +49,11 @@ const Address = ({ selectedId, setId }) => {
       </div>
 
       {address === null ? (
-        <div className="loading--container w-full h-[15rem]">
+        <div className="loading--container w-full h-[11rem] md:h-[15rem]">
           <div className="loading--mask loading--animation"></div>
         </div>
       ) : address === undefined ? (
-        <div className="bg-white border border-neutral-300 text-[1.6rem] p-4">
+        <div className="bg-white border border-neutral-300 text-[1.2rem] md:text-[1.6rem] flex flex-col gap-2 p-4">
           <div className="font-medium">Address Not found</div>
           <div>
             You have not added any address so far. Add a new address to place
@@ -79,14 +79,14 @@ const Address = ({ selectedId, setId }) => {
               setAddress={setAddress}
             />
           </div>,
-          document.getElementById("modal-container")
+          document.getElementById("modal-container"),
         )}
       {newModal &&
         createPortal(
           <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-200">
             <ProfileModal close={setNewModal} refetch={getDefaultAddress} />
           </div>,
-          document.getElementById("modal-container")
+          document.getElementById("modal-container"),
         )}
     </section>
   );

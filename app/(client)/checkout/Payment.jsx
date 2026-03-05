@@ -1,8 +1,8 @@
 const Payment = ({ payment, setPayment }) => {
   return (
-    <section className="space-y-4 text-[1.6rem]">
+    <section className="flex flex-col gap-2 md:gap-4 text-[1.2rem] md:text-[1.6rem]">
       <div className="font-medium uppercase">Payment Options</div>
-      <div className="bg-white p-4 border border-neutral-300">
+      <div className="bg-white  border border-neutral-300 px-3 md:p-4">
         <div className="flex items-center justify-between gap-6 py-2 border-b border-neutral-300">
           <label htmlFor="cod">Cash on Delivery (COD)</label>
           <input
