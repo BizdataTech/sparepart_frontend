@@ -56,7 +56,11 @@ export const HeaderBottom = () => {
                 className=" py-3 md:py-4 px-2 md:px-6 cursor-pointer hover:bg-neutral-700 transition-colors leading-[1.6rem] md:leading-normal"
                 onMouseEnter={() => getChildren(cata._id)}
               >
-                {cata.title}
+                {cata.children === null ? (
+                  <Link href={`/category/${cata.slug}`}>{cata.title}</Link>
+                ) : (
+                  <div>{cata.title}</div>
+                )}
               </div>
               {children && (
                 <div className="group-hover:flex flex-col absolute left-0 w-full top-full h-[40rem] bg-[#121212] p-6">
