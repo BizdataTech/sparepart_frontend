@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import useCategoryProducts from "./useCategoryProducts";
 
 const ProductList = ({ products }) => {
   return (
@@ -29,11 +28,11 @@ const ProductList = ({ products }) => {
           ))}
         </div>
       ) : (
-        <div className="text-center mt-[5rem]">
-          <div className="text-[2rem] font-medium">
-            Couldn't find any products!
+        <div className="text-center p-6 md:p-16">
+          <div className="text-[1.6rem] md:text-[2rem] font-medium">
+            Could not find any products!
           </div>
-          <div className="text-[1.6rem]">
+          <div className="text-[1.2rem] md:text-[1.6rem]">
             No products are found under this category.
           </div>
         </div>

@@ -33,10 +33,11 @@ export const useProduct = () => {
           `${BACKEND_URL}/api/auto-products?filter=product-page&genuine_reference=${id}`,
           {
             method: "GET",
-          }
+          },
         );
         let result = await response.json();
         if (!response.ok) throw new Error(result.message);
+        console.log("products:", result.products);
         setProducts(result.products);
       } catch (error) {
         console.log("product page products fetch failed:", error.message);
@@ -50,7 +51,7 @@ export const useProduct = () => {
       try {
         let response = await fetch(
           `${BACKEND_URL}/api/auto-products/${product?.genuine_reference}?filter=genuine`,
-          { method: "GET" }
+          { method: "GET" },
         );
         let result = await response.json();
         if (!response.ok) throw new Error(result.message);
@@ -70,7 +71,7 @@ export const useProduct = () => {
         {
           method: "GET",
           credentials: "include",
-        }
+        },
       );
       const result = await response.json();
       if (!response.ok) throw new Error(result.message);

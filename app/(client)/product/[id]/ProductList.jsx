@@ -5,7 +5,7 @@ const ProductList = ({ title, products }) => {
       <div className="text-[1.6rem] md:text-[2rem] uppercase font-semibold text-red-900">
         {title}
       </div>
-      <div className="flex md:grid md:grid-cols-5 gap-4 overflow-x-auto">
+      <div className="grid grid-cols-3 md:grid md:grid-cols-5 gap-4 overflow-x-auto">
         {products.map((product) => (
           <ProductCard product={product} />
         ))}

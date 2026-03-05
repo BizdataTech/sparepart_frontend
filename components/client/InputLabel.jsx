@@ -5,7 +5,9 @@ const InputLabel = ({ title, error = null }) => {
         {title}
       </label>
       {error && (
-        <div className="text-red-600 text-[1.5rem] leading-[2rem]">{error}</div>
+        <div className="text-red-600 text-[1.2rem] md:text-[1.6rem] leading-[2rem]">
+          {error}
+        </div>
       )}
     </div>
   );

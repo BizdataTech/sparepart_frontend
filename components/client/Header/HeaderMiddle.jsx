@@ -84,7 +84,7 @@ const HeaderMiddle = () => {
                       </div>
                     ))
                   ) : (
-                    <div className="text-center">
+                    <div className="text-center py-4">
                       No Matching Results found!
                     </div>
                   )}

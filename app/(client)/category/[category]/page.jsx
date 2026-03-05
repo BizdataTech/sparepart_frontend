@@ -13,7 +13,11 @@ const CategoryProductList = () => {
 
   return (
     <main className="pt-[15rem] md:pt-[18rem] pb-[2rem] md:pb-[4rem] flex gap-4 md:gap-8">
-      <Sidebar setter={setCustomerFilters} filters={filters} />
+      <Sidebar
+        setter={setCustomerFilters}
+        filters={filters}
+        products={products.length}
+      />
       <ProductList products={products} />
     </main>
   );

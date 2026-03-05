@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import ProductCard from "../Product/ProductCard";
 
 const ProductListingSection = ({ section }) => {
   console.log("section data:", section);
@@ -42,30 +43,7 @@ const ProductListingSection = ({ section }) => {
         {items && items.length >= 1 && (
           <div className="grid grid-cols-3 lg:grid-cols-5 gap-2 lg:gap-8">
             {items.map((item) => (
-              <Link
-                href={`/product/${item._id}`}
-                className="bg-white shadow-md flex flex-col gap-6 overflow-hidden py-2 md:py-8"
-              >
-                <div className="h-[7rem] lg:h-[12rem]">
-                  <img
-                    src={item.image}
-                    alt="product image"
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-
-                <div className="h-full flex flex-col gap-1 md:gap-2 px-2 md:px-6">
-                  <div className="text-[1.1rem] lg:text-[1.8rem] text-center font-medium md:uppercase leading-[1.4rem] md:leading-normal">
-                    {item.product_title}
-                  </div>
-                  <div className="text-[.8rem] lg:text-[1.6rem] text-center">
-                    {item.brand}
-                  </div>
-                  <div className="text-[1.1rem] lg:text-[2rem] text-center font-semibold mt-8">
-                    ₹ {Intl.NumberFormat("en-IN").format(item.price)}
-                  </div>
-                </div>
-              </Link>
+              <ProductCard product={item} />
             ))}
           </div>
         )}
