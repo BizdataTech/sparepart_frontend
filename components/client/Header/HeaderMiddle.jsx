@@ -43,7 +43,7 @@ const HeaderMiddle = () => {
   return (
     <div className="border border-neutral-300">
       <div className="header w-full flex justify-between">
-        <div className="w-full flex items-center gap-8">
+        <div className="w-full md:w-auto flex items-center gap-8">
           <Link href={`/`}>
             <img
               src={logo}

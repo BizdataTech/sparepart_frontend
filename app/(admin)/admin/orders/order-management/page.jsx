@@ -4,13 +4,17 @@ import { useSearchParams } from "next/navigation";
 import useOrder from "./useOrder";
 import OrderHistory from "./OrderHistory";
 import ActionButtons from "./ActionButtons";
+import { Download, Spinner } from "phosphor-react";
 
 const OrderManagement = () => {
   let params = useSearchParams();
   let id = params.get("id");
 
-  let { data, getData } = useOrder(id);
+  let { data, getData, getProductListPDF, loading } = useOrder(id);
   let { deliveryAddress: address } = data || {};
+
+  let disable = Object.values(loading).some(Boolean);
+
   if (data === null)
     return (
       <div className="flex gap-6">
@@ -23,80 +27,100 @@ const OrderManagement = () => {
       </div>
     );
   return (
-    <main className="pt-2 flex gap-4">
-      <div className="W-1/2 flex-1 flex flex-col gap-4">
-        <div className="grid grid-cols-2 gap-4">
-          {data.items.map((item) => (
-            <div
-              className="a-section--box !rounded-[0rem] a-text--body gap-8"
-              key={item.product?._id}
-            >
-              <div className="self-start">
-                <img
-                  src={item.product?.images[0]?.url}
-                  alt={`${item.product?.product_title} image`}
-                  className="w-[7rem] h-[7rem] object-cover"
-                />
-              </div>
-              <div>
-                <div>{item.product?.product_title}</div>
+    <main className="pt-2 flex flex-col gap-4">
+      <div className="flex gap-4">
+        <div className="w-1/2 flex flex-col gap-4">
+          <div className="grid grid-cols-2 gap-4">
+            {data.items.map((item) => (
+              <div
+                className="a-section--box !rounded-[0rem] a-text--body gap-8"
+                key={item.product?._id}
+              >
+                <div className="self-start">
+                  <img
+                    src={item.product?.images[0]?.url}
+                    alt={`${item.product?.product_title} image`}
+                    className="w-[7rem] h-[7rem] object-cover"
+                  />
+                </div>
                 <div>
-                  Part Number :{" "}
-                  <span className="font-medium">
-                    {item.product?.part_number}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between mt-8">
+                  <div>{item.product?.product_title}</div>
                   <div>
-                    ₹ <span className="font-medium">{item.product?.price}</span>
+                    Part Number :{" "}
+                    <span className="font-medium">
+                      {item.product?.part_number}
+                    </span>
                   </div>
-                  <div>
-                    Quantity :{" "}
-                    <span className="font-medium">{item?.quantity}</span>
+                  <div className="flex items-center justify-between mt-8">
+                    <div>
+                      ₹{" "}
+                      <span className="font-medium">{item.product?.price}</span>
+                    </div>
+                    <div>
+                      Quantity :{" "}
+                      <span className="font-medium">{item?.quantity}</span>
+                    </div>
                   </div>
                 </div>
               </div>
+            ))}
+          </div>
+          <div className="a-section--box !rounded-[0rem]">
+            <div className="flex items-center justify-between">
+              <div className="a-section--title">Order History</div>
+              {data.currentOrderStatus === "placed" && (
+                <button
+                  className={`flex items-center gap-1 bg-blue-50 hover:bg-blue-100/80 active:bg-blue-50 transition-colors text-blue-800 text-[1.2rem] font-medium ${loading.productListLoading ? "cursor-not-allowed opacity-70" : "cursor-pointer"} py-1 px-2`}
+                  onClick={getProductListPDF}
+                  disabled={disable}
+                >
+                  Product List Report{" "}
+                  {loading.productListLoading ? (
+                    <Spinner className="animate-spin" />
+                  ) : (
+                    <Download />
+                  )}
+                </button>
+              )}
             </div>
-          ))}
-        </div>
-        <div className="a-section--box !rounded-[0rem]">
-          <div className="a-section--title">Order History</div>
-          <OrderHistory history={data.orderStatusHistory} />
-        </div>
-      </div>
-      <div className="w-1/2 flex-1 flex flex-col gap-4">
-        <div className="a-section--box !rounded-[0rem]">
-          <div className="a-section--title">Delivery Address</div>
-          <div className="a-text--body">
-            <div>{address.name || "Unknown Name"}</div>
-            <div>{`${address.address}, ${address.house_number}`}</div>
-            <div>{`${address.street}, ${address.city}, ${address.district}, ${address.state}, ${address.pincode}`}</div>
-            <div className="mt-4">
-              Contact : <span>{address.phone_number}</span>
-            </div>
+
+            <OrderHistory history={data.orderStatusHistory} />
           </div>
         </div>
-        <div className="a-section--box !rounded-[0rem]">
-          <div className="a-section--title">Payment Details</div>
-          <div className="a-text--body">
-            <div className="flex items-center justify-between py-3 border-b border-neutral-200">
-              <div>Total Amount</div>
-              <div className="font-semibold">
-                {Intl.NumberFormat("en-IN").format(data?.totalAmount)}
+        <div className="w-1/2 flex flex-col gap-4">
+          <div className="a-section--box !rounded-[0rem]">
+            <div className="a-section--title">Delivery Address</div>
+            <div className="a-text--body">
+              <div>{address.name || "Unknown Name"}</div>
+              <div>{`${address.address}, ${address.house_number}`}</div>
+              <div>{`${address.street}, ${address.city}, ${address.district}, ${address.state}, ${address.pincode}`}</div>
+              <div className="mt-4">
+                Contact : <span>{address.phone_number}</span>
               </div>
             </div>
-            <div className="flex items-center justify-between py-3">
-              <div>Payment Type</div>
-              <div className="uppercase">{data.paymentMethod}</div>
+          </div>
+          <div className="a-section--box !rounded-[0rem] flex-1">
+            <div className="a-section--title">Payment Details</div>
+            <div className="a-text--body flex flex-col">
+              <div className="flex items-center justify-between py-3 border-b border-neutral-200">
+                <div>Total Amount</div>
+                <div className="font-semibold">
+                  {Intl.NumberFormat("en-IN").format(data?.totalAmount)}
+                </div>
+              </div>
+              <div className="flex items-center justify-between py-3">
+                <div>Payment Type</div>
+                <div className="uppercase">{data.paymentMethod}</div>
+              </div>
             </div>
           </div>
         </div>
-        <ActionButtons
-          currentStatus={data.currentOrderStatus}
-          orderId={id}
-          refetch={getData}
-        />
       </div>
+      <ActionButtons
+        currentStatus={data.currentOrderStatus}
+        orderId={id}
+        refetch={getData}
+      />
     </main>
   );
 };

@@ -4,11 +4,11 @@ import { useState } from "react";
 import { Spinner } from "phosphor-react";
 
 const ActionButtons = ({ currentStatus, orderId, refetch }) => {
-  const button_style = "py-3 px-4 text-[1.4rem] font-medium";
+  const button_style = "py-2 px-4 text-[1.4rem] font-medium rounded-[.3rem]";
   const getCancelButton = () => {
     return (
       <button
-        className={`${button_style} text-red-700 bg-white border border-red-800`}
+        className={`${button_style} text-black bg-white border border-neutral-800`}
       >
         Cancel this Order
       </button>
@@ -56,7 +56,7 @@ const ActionButtons = ({ currentStatus, orderId, refetch }) => {
         break;
     }
   };
-  return <div className="flex gap-4 self-end mt-8">{getButtons()}</div>;
+  return <div className="flex gap-4 self-end">{getButtons()}</div>;
 };
 
 export default ActionButtons;
