@@ -24,7 +24,7 @@ const AdminProvider = ({ children }) => {
       if (!response.ok) throw new Error(result.message);
       setUser(result.user);
     } catch (error) {
-      console.log(error.message);
+      console.log("admin verification error: ",error.message);
       setUser(false);
     }
   };

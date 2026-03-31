@@ -68,20 +68,19 @@ const OrderManagement = () => {
           <div className="a-section--box !rounded-[0rem]">
             <div className="flex items-center justify-between">
               <div className="a-section--title">Order History</div>
-              {data.currentOrderStatus === "placed" && (
-                <button
-                  className={`flex items-center gap-1 bg-blue-50 hover:bg-blue-100/80 active:bg-blue-50 transition-colors text-blue-800 text-[1.2rem] font-medium ${loading.productListLoading ? "cursor-not-allowed opacity-70" : "cursor-pointer"} py-1 px-2`}
-                  onClick={getProductListPDF}
-                  disabled={disable}
-                >
-                  Product List Report{" "}
-                  {loading.productListLoading ? (
-                    <Spinner className="animate-spin" />
-                  ) : (
-                    <Download />
-                  )}
-                </button>
-              )}
+
+              <button
+                className={`flex items-center gap-1 bg-blue-50 hover:bg-blue-100/80 active:bg-blue-50 transition-colors text-blue-800 text-[1.2rem] font-medium ${loading.productListLoading ? "cursor-not-allowed opacity-70" : "cursor-pointer"} py-1 px-2`}
+                onClick={getProductListPDF}
+                disabled={disable}
+              >
+                Product List Report{" "}
+                {loading.productListLoading ? (
+                  <Spinner className="animate-spin" />
+                ) : (
+                  <Download />
+                )}
+              </button>
             </div>
 
             <OrderHistory history={data.orderStatusHistory} />
