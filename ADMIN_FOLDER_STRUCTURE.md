@@ -17,6 +17,13 @@ app/(admin)/
     ├── products/
     ├── users/
     └── vehicles/
+
+components/admin/                # Shared admin UI components
+├── AdminBreadCrumbs.jsx
+├── AdminSectionTitle.jsx
+├── SearchSection.jsx
+├── Sidebar.jsx
+└── ... (others)
 ```
 
 ---
@@ -136,6 +143,22 @@ module-name/
 - API calls to backend
 - State management for the module
 - Data fetching and mutations
+
+---
+
+### `components/admin/` (Shared UI Components)
+
+**Purpose:** Reusable UI elements specific to the admin panel.
+
+- **`Sidebar.jsx`**: Main navigation component for the admin panel.
+- **`AdminBreadCrumbs.jsx`**: Displays the current path and allows navigation back.
+- **`AdminSectionTitle.jsx`**: Standardized heading for admin pages.
+- **`SearchSection.jsx`**: Common search and filter interface for lists.
+- **`ShimmerContainer.jsx`**: Loading skeleton for data fetching states.
+- **`AdminElseBlock.jsx`**: Handles empty states or "no data found" messages.
+- **`InputLabel.jsx`**: Styled labels for form inputs.
+- **`EmptyRow.jsx`**: Placeholder for empty table rows.
+- **`ProductNameTag.jsx`**: specialized tag for displaying product names.
 
 ---
 

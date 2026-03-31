@@ -2,39 +2,65 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
+/**
+ * Custom hook for managing product-related operations in the admin panel.
+ * Handles fetching, creating, updating, and form state management for products.
+ * 
+ * @param {Object} product - Optional product object for edit mode.
+ */
 const useProducts = (product = null) => {
+  // --- State Management ---
+  
+  // Tracks only the fields that have been changed (used for PATCH updates)
   let [updateData, setUpdateData] = useState({});
+  
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedBrand, setSelectedBrand] = useState(null);
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
+  
+  // List of images (objects containing url, public_id, and/or file)
   const [images, setImages] = useState([]);
+  
+  // Fitment/Vehicle compatibility data
   const [selectedVehicles, setSelectedVehicles] = useState([]);
+  
+  // For 'aftermarket' products, this references the original 'genuine' product
   const [genuineReference, setGenuineReference] = useState(null);
+  
+  // Form validation errors
   const [errors, setErrors] = useState({});
+  
   const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
   const router = useRouter();
 
+  // Loading state for API submissions
   const [apiLoading, setApiLoading] = useState(false);
 
+  // Default structure for product general information
   let generalDataSchema = {
     product_title: "",
-    product_type: "genuine",
+    product_type: "genuine", // 'genuine' or 'aftermarket'
     description: "",
     price: 0,
     stock: 0,
   };
 
+  // Admin-specific fields like internal part numbers
   let adminFieldSchema = {
     part_number: "",
   };
 
-  // getting all products
+  // --- Pagination & List State ---
   const [products, setProducts] = useState(null);
   const [results, setResults] = useState(null);
   let [currentPage, setCurrentPage] = useState(1);
   let [totalPages, setTotalPages] = useState(1);
 
+  /**
+   * Handles page navigation for the products list
+   * @param {string} action - 'up' to increment, 'down' to decrement
+   */
   const controlPage = async (action) => {
     if (action === "up" && currentPage < totalPages)
       setCurrentPage((prevPage) => prevPage + 1);
@@ -42,14 +68,19 @@ const useProducts = (product = null) => {
       setCurrentPage((prevPage) => prevPage - 1);
   };
 
+  // Refetch products whenever the current page changes
   useEffect(() => {
     fetchProducts();
   }, [currentPage]);
 
+  // Sync results when products state is updated
   useEffect(() => {
     setResults(products);
   }, [products]);
 
+  /**
+   * Fetches a paginated list of products for the admin table
+   */
   const fetchProducts = async () => {
     try {
       let response = await fetch(
@@ -69,6 +100,7 @@ const useProducts = (product = null) => {
     }
   };
 
+  // Fetch all categories on component mount
   useEffect(() => {
     const getCategories = async () => {
       const response = await fetch(
@@ -83,6 +115,7 @@ const useProducts = (product = null) => {
     getCategories();
   }, []);
 
+  // Fetch all brands on component mount
   useEffect(() => {
     let getBrands = async () => {
       try {
@@ -99,6 +132,10 @@ const useProducts = (product = null) => {
     getBrands();
   }, []);
 
+  /**
+   * Handles category selection and resets related fields
+   * @param {Object} category - The selected category object
+   */
   const handleCategory = (category) => {
     setSelectedCategory(category);
     setGenuineReference(null);
@@ -107,12 +144,17 @@ const useProducts = (product = null) => {
       category: category._id,
       genuine_reference: null,
     }));
+    // Clear category error if exists
     setErrors((prev) => {
       let { category, ...rest } = prev;
       return rest;
     });
   };
 
+  /**
+   * Handles brand selection
+   * @param {Object} brand - The selected brand object
+   */
   const handleBrand = (brand) => {
     setSelectedBrand(brand);
     setUpdateData((prev) => ({
@@ -125,16 +167,21 @@ const useProducts = (product = null) => {
     });
   };
 
+  /**
+   * Filters categories to find sub-categories of a specific parent
+   * @param {string} id - Parent category ID
+   */
   const getChildCategories = (id) => {
     return categories.filter((category) => {
       if (category.parent && category.parent._id === id) return category;
     });
   };
 
-  // handle input fields
+  // --- Form Input Handling ---
   let [generalData, setGeneralData] = useState(generalDataSchema);
   let [adminFields, setAdminFields] = useState(adminFieldSchema);
 
+  // Initialization: If a product is provided (Edit Mode), populate the form
   useEffect(() => {
     if (product) {
       setGeneralData({
@@ -158,6 +205,7 @@ const useProducts = (product = null) => {
       );
       setSelectedVehicles(product.fitments);
 
+      // If it's an aftermarket product, fetch its genuine reference details
       try {
         if (product.genuine_reference) {
           const getReferenceObject = async () => {
@@ -179,6 +227,7 @@ const useProducts = (product = null) => {
     }
   }, [product]);
 
+  // Reset reference if product type changes to genuine
   useEffect(() => {
     setErrors((prev) => {
       if (prev.reference) {
@@ -192,8 +241,14 @@ const useProducts = (product = null) => {
     }
   }, [generalData.product_type]);
 
+  /**
+   * Generic input handler for text/number/select fields
+   * Updates state based on the field name and clears errors on interaction
+   */
   let handleInput = (event) => {
     let { name, value } = event.target;
+    
+    // Update appropriate state object based on field categorization
     if (Object.keys(generalDataSchema).includes(name))
       setGeneralData((prev) => ({
         ...prev,
@@ -204,10 +259,14 @@ const useProducts = (product = null) => {
         ...prev,
         [name]: value,
       }));
+    
+    // Track changes for the update request
     setUpdateData((prev) => ({
       ...prev,
       [name]: value,
     }));
+
+    // Clear error for this field if user has typed something
     if (value.trim().length) {
       setErrors((prev) => {
         let { [name]: _, ...rest } = prev;
@@ -217,6 +276,10 @@ const useProducts = (product = null) => {
     return;
   };
 
+  /**
+   * Sets the genuine product reference for aftermarket products
+   * @param {Object} reference_object - The product object to reference
+   */
   const handleGenuineReference = (reference_object) => {
     setGenuineReference(reference_object);
     setUpdateData((prev) => ({
@@ -229,6 +292,10 @@ const useProducts = (product = null) => {
     });
   };
 
+  /**
+   * Adds an image to the preview list and update payload
+   * @param {Object} image_object - Contains file object and preview URL
+   */
   const handleImages = (image_object) => {
     setImages((prev) => [...prev, image_object]);
     if (product) {
@@ -237,6 +304,7 @@ const useProducts = (product = null) => {
         images: [...(prev.images || []), image_object.file],
       }));
     }
+    // Clear image error
     if (!images.length)
       return setErrors((prev) => {
         let { images, ...rest } = prev;
@@ -244,9 +312,12 @@ const useProducts = (product = null) => {
       });
   };
 
-  // image update
+  // --- Image Management (Delete/Update) ---
+  
+  // Tracks IDs of existing images that the user wants to delete
   let [cancelledIDs, setCancelledIDs] = useState([]);
 
+  // Sync deleted image IDs with the update payload
   useEffect(() => {
     setImages((prev) => {
       return prev.filter((file) => !cancelledIDs.includes(file.public_id));
@@ -259,11 +330,18 @@ const useProducts = (product = null) => {
     });
   }, [cancelledIDs]);
 
+  /**
+   * Removes an image from the UI and schedules it for deletion or ignores it if newly added
+   * @param {Event} e - Click event
+   * @param {Object} image - Image object to remove
+   */
   const cancelImage = (e, image) => {
     e.stopPropagation();
     if (image.public_id) {
+      // Existing image on server
       setCancelledIDs((prev) => [...prev, image.public_id]);
     } else {
+      // Newly added image (not yet upoloaded)
       setImages((prev) => prev.filter((obj) => obj.preview !== image.preview));
       setUpdateData((prev) => {
         let new_update = { ...prev };
@@ -277,8 +355,11 @@ const useProducts = (product = null) => {
     }
   };
 
-  const vehicleRef = useRef(false);
+  // --- Vehicle Compatibility (Fitments) ---
+  
+  const vehicleRef = useRef(false); // Tracks if vehicle selection has been interacted with
 
+  // Sync fitments changes to update payload
   useEffect(() => {
     if (!vehicleRef.current) return;
     setUpdateData((prev) => ({
@@ -287,6 +368,10 @@ const useProducts = (product = null) => {
     }));
   }, [selectedVehicles]);
 
+  /**
+   * Adds a vehicle to the product's compatibility list
+   * @param {Object} vehicle - Vehicle object
+   */
   const selectVehicle = (vehicle) => {
     if (!vehicleRef.current) vehicleRef.current = true;
     setSelectedVehicles((prev) => [...prev, vehicle]);
@@ -298,6 +383,10 @@ const useProducts = (product = null) => {
     }
   };
 
+  /**
+   * Removes a vehicle from compatibility list
+   * @param {string} id - Vehicle ID
+   */
   const removeVehicle = (id) => {
     if (!vehicleRef.current) vehicleRef.current = true;
     setSelectedVehicles((prev) => {
@@ -305,6 +394,12 @@ const useProducts = (product = null) => {
     });
   };
 
+  // --- Submission Logic ---
+
+  /**
+   * Validates and submits the product data to the backend.
+   * Handles both Creation (POST) and Update (PATCH).
+   */
   const createProduct = async () => {
     let error_obj = {};
     let data = {
@@ -313,6 +408,8 @@ const useProducts = (product = null) => {
       category: selectedCategory?._id || null,
       brand: selectedBrand?._id || null,
     };
+    
+    // Basic Validation
     Object.entries(data).forEach(([key, value]) => {
       if (typeof value === "string" && !value.trim())
         error_obj[key] = `${key.split("_").join(" ")} required`;
@@ -328,6 +425,7 @@ const useProducts = (product = null) => {
     if (data.product_type !== "genuine" && data.category && !genuineReference)
       error_obj.reference = "genuine product reference required";
 
+    // If there are errors, stop submission and display them
     if (Object.keys(error_obj).length)
       return setErrors((prev) => {
         let new_errors = { ...prev };
@@ -342,12 +440,14 @@ const useProducts = (product = null) => {
 
     try {
       if (product) {
+        // --- Update Flow (PATCH) ---
         console.log("update data:", updateData);
         if (!Object.keys(updateData).length)
           return toast.warning(
             "Updation Dismissed : No new data detected to update product data",
           );
 
+        // Append only modified fields to FormData
         Object.entries(updateData).forEach(([key, value]) => {
           if (key === "images")
             value.forEach((file) => formData.append("image", file));
@@ -361,7 +461,6 @@ const useProducts = (product = null) => {
           else formData.append(key, value);
         });
 
-        // update request
         setApiLoading(true);
         response = await fetch(
           `${BACKEND_URL}/api/auto-products/${product._id}`,
@@ -373,12 +472,15 @@ const useProducts = (product = null) => {
         );
         setApiLoading(false);
       } else {
+        // --- Creation Flow (POST) ---
         Object.entries(data).forEach(([key, value]) => {
           formData.append(key, value.trim());
         });
         if (genuineReference !== null)
           formData.append("genuine_reference", genuineReference._id);
+        
         images.forEach((image) => formData.append("image", image.file));
+        
         let fitments = selectedVehicles.map((vehicle) => vehicle._id);
         formData.append("fitments", JSON.stringify(fitments));
 
@@ -393,7 +495,7 @@ const useProducts = (product = null) => {
 
       let result = await response.json();
       if (!response.ok) throw new Error(result.message);
-      console.log(result.message);
+      
       toast.success(result.message);
       router.push("/admin/products");
     } catch (error) {
@@ -402,6 +504,7 @@ const useProducts = (product = null) => {
     }
   };
 
+  // Return all necessary states and handlers for the Product components
   return {
     data: {
       generalData,
@@ -440,3 +543,4 @@ const useProducts = (product = null) => {
 };
 
 export default useProducts;
+

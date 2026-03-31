@@ -5,11 +5,19 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
 const Brand = ({ brand, select, refetch }) => {
+  // --- State & Refs ---
+  
+  // Controls the visibility of the action dropdown (Update/Delete)
   let [box, setBox] = useState(false);
+  
+  // Ref to the dropdown box for detecting outside clicks
   let boxRef = useRef(null);
 
   let BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
+  /**
+   * Effect: Closes the action dropdown when clicking anywhere outside of it.
+   */
   useEffect(() => {
     const handleClick = (e) => {
       if (boxRef.current && !boxRef.current.contains(e.target)) setBox(false);
@@ -18,7 +26,13 @@ const Brand = ({ brand, select, refetch }) => {
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
+  // Tracks loading state during the delete API call
   const [loading, setLoading] = useState(false);
+
+  /**
+   * Deletes the current brand from the database.
+   * Handles loading state, API request, and success/error notifications.
+   */
   const deleteBrand = async () => {
     try {
       setLoading(true);
@@ -27,11 +41,15 @@ const Brand = ({ brand, select, refetch }) => {
       });
       setLoading(false);
       toast.success(res.data.message);
+      
+      // Refresh the brand list in the parent component
       refetch();
+      // Close the action dropdown
       setBox(false);
     } catch (err) {
       setLoading(false);
       console.log(err.message);
+      // Handle validation or server errors (e.g., brand in use)
       if (err.response?.status === 422)
         toast.error(err.response?.data?.message);
     }

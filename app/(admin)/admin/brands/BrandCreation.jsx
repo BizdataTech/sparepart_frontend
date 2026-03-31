@@ -8,17 +8,24 @@ const BrandCreation = ({
   close,
   refetch,
 }) => {
+  // --- Refs & State ---
+  
   let fileInputRef = useRef(null);
-  let [file, setFile] = useState(null);
-  let [previewURL, setPreviewURL] = useState(null);
-  let [brandName, setBrandName] = useState("");
-  let [errors, setErrors] = useState({});
-  let [loading, setLoading] = useState(false);
+  
+  let [file, setFile] = useState(null);       // The selected image file object
+  let [previewURL, setPreviewURL] = useState(null); // Local URL for image preview
+  let [brandName, setBrandName] = useState("");     // The text input for brand name
+  let [errors, setErrors] = useState({});           // Validation errors
+  let [loading, setLoading] = useState(false);      // Loading state for API operations
 
   let BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
+  // Tracks only the fields that were modified during an update (used for PATCH)
   const [updateData, setUpdateData] = useState({});
 
+  /**
+   * Effect: Initialize form data when a brand is selected for update.
+   */
   useEffect(() => {
     if (selectedBrand) {
       setPreviewURL(selectedBrand.url);
@@ -27,18 +34,28 @@ const BrandCreation = ({
     }
   }, [selectedBrand]);
 
+  /**
+   * Effect: Revoke old object URLs to prevent memory leaks when a new image is selected.
+   */
   useEffect(() => {
-    () => {
-      if (previewURL) {
+    return () => {
+      if (previewURL && previewURL.startsWith("blob:")) {
         URL.revokeObjectURL(previewURL);
       }
     };
   }, [previewURL]);
 
+  /**
+   * Programmatically clicks the hidden file input.
+   */
   const openSystemFiles = () => {
     fileInputRef.current.click();
   };
 
+  /**
+   * Handles text input for the brand name.
+   * Also tracks changes in updateData if in update mode.
+   */
   const handleBrandName = (event) => {
     setBrandName(event.target.value);
     if (selectedBrand)
@@ -52,6 +69,10 @@ const BrandCreation = ({
     });
   };
 
+  /**
+   * Handles file selection for the brand logo.
+   * Sets the file object, generates a preview URL, and tracks it in updateData.
+   */
   const handleFileChange = (event) => {
     let file = event.target.files[0];
     if (!file) return null;
@@ -70,6 +91,9 @@ const BrandCreation = ({
     });
   };
 
+  /**
+   * Resets local state and closes the creation/update sidebar.
+   */
   const cancelUpdate = () => {
     removeSelectedBrand();
     setUpdateData({});
@@ -79,35 +103,40 @@ const BrandCreation = ({
     close();
   };
 
+  /**
+   * Submits the brand form (Create or Update).
+   * Performs validation, constructs FormData, and makes the API request.
+   */
   const submitBrand = async () => {
     try {
+      // Basic Frontend Validation
       let error_object = {};
       if (!brandName.trim()) error_object.brand_name = "Brand Name Required";
-
       if (!previewURL) error_object.brand_image = "Image Required";
+      
       if (Object.keys(error_object).length) {
-        setErrors((prev) => {
-          let newError = { ...prev };
-          Object.entries(error_object).forEach(([key, value]) => {
-            newError[key] = value;
-          });
-          return newError;
-        });
+        setErrors((prev) => ({ ...prev, ...error_object }));
         return;
       }
 
       let formData = new FormData();
       let response;
+
       if (selectedBrand) {
-        console.log("brand update data :", updateData);
+        // --- Update Flow (PATCH) ---
         if (!Object.keys(updateData).length)
           return toast.warning(
             "Update Dismissed : No new data detected to update selected brand",
           );
+
+        // Include only changed fields in the payload
         Object.entries(updateData).forEach(([key, value]) =>
           formData.append(key, value),
         );
+        
+        // Pass public_id to handle potential image deletion/replacement in Cloudinary
         formData.append("public_id", selectedBrand.public_id);
+        
         setLoading(true);
         response = await fetch(
           `${BACKEND_URL}/api/brands/${selectedBrand.id}`,
@@ -119,6 +148,7 @@ const BrandCreation = ({
         );
         setLoading(false);
       } else {
+        // --- Creation Flow (POST) ---
         formData.append("image", file);
         formData.append("brand_name", brandName);
 
@@ -133,6 +163,8 @@ const BrandCreation = ({
 
       let result = await response.json();
       if (!response.ok) throw new Error(result.message);
+      
+      // Cleanup after success
       removeSelectedBrand();
       setUpdateData({});
       setPreviewURL(null);
@@ -143,7 +175,7 @@ const BrandCreation = ({
       toast.success(result.message);
     } catch (error) {
       console.log("error", error.message);
-      toast.error("Failed : Brand updation failed");
+      toast.error("Failed : Brand operation failed");
     }
   };
 

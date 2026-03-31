@@ -34,6 +34,8 @@ const Summary = ({ cartTotal, addressId, payment, cart_loading }) => {
       let result = await response.json();
       if (!response.ok) throw new Error(result.message);
       console.log(result.message);
+      toast.success(result.message);
+      console.log("order data:", result.data);
       router.replace(`/order-summary?orderId=${result.orderId}`);
       getCart();
     } catch (error) {

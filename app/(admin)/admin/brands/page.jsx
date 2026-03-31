@@ -7,11 +7,24 @@ import useBrand from "./useBrand";
 import SearchSection from "@/components/admin/SearchSection";
 
 const Brands = () => {
+  // --- Data & Hooks ---
+  
+  // Custom hook to manage fetching and filtering brands
   const { brands, setResults, refetch } = useBrand();
+
+  // --- UI State ---
+  
+  // Controls the visibility of the BrandCreation (Create/Update) modal/sidebar
   const [box, setBox] = useState(false);
 
+  // Stores the specific brand object when the user clicks 'Update'
   const [selectedBrand, setSelectedBrand] = useState(null);
 
+  /**
+   * Prepares the selected brand data for the update form.
+   * Maps backend properties to the expected format for BrandCreation.
+   * @param {Object} brand - The brand object from the list
+   */
   const handleSelect = (brand) => {
     setSelectedBrand({
       id: brand._id,
@@ -21,10 +34,14 @@ const Brands = () => {
     });
   };
 
+  /**
+   * Effect: Automatically open the creation/update box when a brand is selected.
+   */
   useEffect(() => {
     if (selectedBrand) setBox(true);
   }, [selectedBrand]);
 
+  // Render a loading state until brands data is available
   if (brands === null) return <div>loading...</div>;
   return (
     <main className="flex flex-col gap-4">
